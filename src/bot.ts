@@ -1,7 +1,16 @@
-function doThing(param: number) {
-  console.log(param + 1);
-}
+import Discord from "discord.js";
+const client = new Discord.Client();
 
-console.log("Hola, Ima bot");
+client.once("ready", () => {
+  console.log("Rarin' to go!");
+});
 
-doThing(4);
+client.on("message", (message) => {
+  console.log(message.content);
+
+  if (message.content === "!ping") {
+    message.channel.send("pong!");
+  }
+});
+
+client.login("token-goes-here");
