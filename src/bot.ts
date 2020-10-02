@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import Discord from "discord.js";
 const client = new Discord.Client();
 
@@ -13,4 +16,4 @@ client.on("message", (message) => {
   }
 });
 
-client.login("token-goes-here");
+client.login(process.env.BOT_TOKEN);
