@@ -16,7 +16,7 @@ export default class RoleCommand extends Command {
           key: "action",
           prompt: "(g)ive or (t)ake a role?",
           type: "string",
-          oneOf: ["g", "give", "t", "take"],
+          oneOf: ["g", "give", "gib", "t", "take"],
           error: "Hmm... I couldn't understand that :(",
           default: "",
         },
@@ -30,23 +30,42 @@ export default class RoleCommand extends Command {
     });
   }
 
-  async run(msg: CommandoMessage, args: object) {
-    console.log(args);
+  async run(
+    msg: CommandoMessage,
+    {
+      action,
+      role,
+    }: {
+      action: "g" | "give" | "gib" | "t" | "take";
+      role: string;
+    }
+  ) {
+    if (!action) {
+      const embed = new MessageEmbed()
+        .setTitle("Available Roles")
+        .setColor("#ffaa00")
+        .setDescription("A list of opt-in roles");
 
-    const embed = new MessageEmbed()
-      .setTitle("Available Roles")
-      .setColor("#ffaa00")
-      .setDescription("A list of opt-in roles");
+      for (const role of msg.guild.roles.cache.values()) {
+        if (role.name.startsWith(":")) {
+          const name = role.name.slice(1);
+          const memberCount = role.members.size;
 
-    for (const role of msg.guild.roles.cache.values()) {
-      if (role.name.startsWith(":")) {
-        const name = role.name.slice(1);
-        const memberCount = role.members.size;
-
-        embed.addField(name, `${memberCount} members`, true);
+          embed.addField(name, `${memberCount} members`, true);
+        }
       }
+
+      return msg.embed(embed);
     }
 
-    return msg.embed(embed);
+    if (["g", "give", "gib"].includes(action)) {
+      return msg.say("I should give you a role");
+    }
+
+    if (["t", "take"].includes(action)) {
+      return msg.say("Ima bout to revoke a role");
+    }
+
+    return msg.say("wat?");
   }
 }
