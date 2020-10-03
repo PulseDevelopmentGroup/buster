@@ -31,6 +31,11 @@ client.once("ready", () => {
 client.registry
   .registerGroups([["utils", "Yanno, useful stuff"]])
   .registerDefaults()
-  .registerCommandsIn(path.join(__dirname, "commands"));
+  .registerCommandsIn({
+    // read all the commands that end in js or ts.
+    // basically, a hack to work around https://github.com/discordjs/Commando/issues/297
+    filter: /^([^.].*)\.(js|ts)$/,
+    dirname: path.join(__dirname, "commands"),
+  });
 
 client.login(config.botToken);
