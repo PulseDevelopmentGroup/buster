@@ -5,6 +5,7 @@ import Discord from "discord.js";
 
 const config = {
   botToken: process.env.BOT_TOKEN,
+  prefix: process.env.PREFIX ?? "!",
 };
 
 if (!config.botToken) {
@@ -21,10 +22,23 @@ client.once("ready", () => {
 });
 
 client.on("message", (message) => {
-  console.log(message.content);
+  const { prefix } = config;
+
+  if (!message.content.startsWith(prefix) || message.author.bot) {
+    return;
+  }
+
+  const args = message.content.slice(prefix.length).trim().split(" ");
+  const command = args.shift()?.toLowerCase();
 
   if (message.content === "!ping") {
     message.channel.send("pong!");
+  } else if (command === "args-info") {
+    if (!args.length) {
+      return message.channel.send("No arguments provided");
+    }
+
+    message.channel.send(`Args: ${args}`);
   }
 });
 
