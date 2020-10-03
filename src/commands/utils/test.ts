@@ -1,6 +1,6 @@
 import { Command } from "discord.js-commando";
 
-module.exports = class TestCommand extends Command {
+export default class TestCommand extends Command {
   constructor(client: any) {
     super(client, {
       name: "test",
@@ -17,4 +17,4 @@ module.exports = class TestCommand extends Command {
 
     return msg.say("I LIVE!");
   }
-};
+}
