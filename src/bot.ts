@@ -1,7 +1,9 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import Discord from "discord.js";
+import path from "path";
+
+import { CommandoClient } from "discord.js-commando";
 
 const config = {
   botToken: process.env.BOT_TOKEN,
@@ -15,31 +17,20 @@ if (!config.botToken) {
   process.exit();
 }
 
-const client = new Discord.Client();
+const owners = process.env.OWNERS?.split(",");
+
+const client = new CommandoClient({
+  commandPrefix: config.prefix,
+  owner: owners,
+});
 
 client.once("ready", () => {
   console.log("Rarin' to go!");
 });
 
-client.on("message", (message) => {
-  const { prefix } = config;
-
-  if (!message.content.startsWith(prefix) || message.author.bot) {
-    return;
-  }
-
-  const args = message.content.slice(prefix.length).trim().split(" ");
-  const command = args.shift()?.toLowerCase();
-
-  if (message.content === "!ping") {
-    message.channel.send("pong!");
-  } else if (command === "args-info") {
-    if (!args.length) {
-      return message.channel.send("No arguments provided");
-    }
-
-    message.channel.send(`Args: ${args}`);
-  }
-});
+client.registry
+  .registerGroups([["utils", "Yanno, useful stuff"]])
+  .registerDefaults()
+  .registerCommandsIn(path.join(__dirname, "commands"));
 
 client.login(config.botToken);
