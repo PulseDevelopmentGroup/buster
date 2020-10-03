@@ -1,0 +1,8 @@
+node_modules/
+.vscode/
+.github/
+
+.env
+LICENSE
+README.md
+.gitignore
