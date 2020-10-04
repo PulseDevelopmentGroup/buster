@@ -5,22 +5,11 @@ import path from "path";
 import got from "got";
 import fs from "fs";
 
-/* Define Types */
-type environment = {
-  token: string;
-  config: string;
-  prefix: string;
-};
-
-/*
-type configuration = {
-  owners: string[];
-};
-*/
-
 /* Global Vars */
-let env = {} as environment;
+let env: any = {};
 let config: any = {};
+
+/* Functions */
 
 // init is called before the main function to setup configurations
 // There are more concise ways to do this, but this is more readable
