@@ -1,15 +1,13 @@
 import dotenv from "dotenv";
 import { CommandoClient } from "discord.js-commando";
 import * as util from "./util";
+import { environment, configuration } from "./types";
 import path from "path";
 import got from "got";
 import fs from "fs";
 
-/* Global Vars */
-let env: any = {};
-let config: any = {};
-
-/* Functions */
+let env = {} as environment;
+let config = {} as configuration;
 
 // init is called before the main function to setup configurations
 // There are more concise ways to do this, but this is more readable
