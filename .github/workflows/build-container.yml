@@ -23,7 +23,7 @@ jobs:
         id: build
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: pulsedevelopmentgroup/buster/bot
+          name: pulsedevelopmentgroup/buster/buster
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
