@@ -85,7 +85,9 @@ export default class RoleCommand extends Command {
       msg.member.roles.add(guildRole);
 
       return msg.say(
-        `Congrats! You've been given the role ${guildRole.name}. Welcome to the team.`
+        `Congrats! You've been given the role ${guildRole.name.substring(
+          1
+        )}. Welcome to the team.`
       );
     }
 
@@ -116,10 +118,12 @@ export default class RoleCommand extends Command {
       msg.member.roles.remove(userRole);
 
       return msg.say(
-        `I've just revoked the role ${userRole.name}. If you'd like it back again, just ask!`
+        `I've just revoked the role ${userRole.name.substring(
+          1
+        )}. If you'd like it back again, just ask!`
       );
     }
 
-    return msg.say("wat?");
+    return msg.say("Hmm... I can't understand that. Maybe try again?");
   }
 }
