@@ -90,7 +90,34 @@ export default class RoleCommand extends Command {
     }
 
     if (["t", "take"].includes(action)) {
-      return msg.say("Ima bout to revoke a role");
+      let userRole: Role | undefined;
+
+      for (let r of msg.member.roles.cache.values()) {
+        let name = r.name.toLowerCase();
+        if (!name.startsWith(":")) {
+          continue;
+        } else {
+          name = name.slice(1);
+        }
+
+        if (name === role) {
+          userRole = r;
+
+          break;
+        }
+      }
+
+      if (!userRole) {
+        return msg.say(
+          `You don't seem to have the role ${role}. Make sure you have it, then try again.`
+        );
+      }
+
+      msg.member.roles.remove(userRole);
+
+      return msg.say(
+        `I've just revoked the role ${userRole.name}. If you'd like it back again, just ask!`
+      );
     }
 
     return msg.say("wat?");
