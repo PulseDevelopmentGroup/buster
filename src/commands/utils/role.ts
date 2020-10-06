@@ -59,7 +59,34 @@ export default class RoleCommand extends Command {
     }
 
     if (["g", "give", "gib"].includes(action)) {
-      return msg.say("I should give you a role");
+      let guildRole: Role | undefined;
+
+      for (let r of msg.guild.roles.cache.values()) {
+        let name = r.name.toLowerCase();
+        if (!name.startsWith(":")) {
+          continue;
+        } else {
+          name = name.slice(1);
+        }
+
+        if (name === role) {
+          guildRole = r;
+
+          break;
+        }
+      }
+
+      if (!guildRole) {
+        return msg.say(
+          `Unable to find role ${role}. To see a list of available roles, use ${this.client.commandPrefix}role.`
+        );
+      }
+
+      msg.member.roles.add(guildRole);
+
+      return msg.say(
+        `Congrats! You've been given the role ${guildRole.name}. Welcome to the team.`
+      );
     }
 
     if (["t", "take"].includes(action)) {
