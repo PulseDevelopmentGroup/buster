@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+dotenv.config();
+
 import { CommandoClient } from "discord.js-commando";
 import * as util from "./util";
 import { environment, configuration } from "./types";
@@ -14,8 +16,6 @@ let config = {} as configuration;
 init().then(main);
 
 async function init() {
-  dotenv.config();
-
   env = {
     token: process.env.BOT_TOKEN!,
     config: process.env.CONFIG_URL!,
