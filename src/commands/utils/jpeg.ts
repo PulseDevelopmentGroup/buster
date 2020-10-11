@@ -26,6 +26,14 @@ export default class JpegCommand extends Command {
     });
   }
 
+  async jpegify(image: Buffer): Promise<Buffer> {
+    return await sharp(image)
+      .jpeg({
+        quality: 1,
+      })
+      .toBuffer();
+  }
+
   async run(
     msg: CommandoMessage,
     {
@@ -42,11 +50,7 @@ export default class JpegCommand extends Command {
       const res = await got(target);
       const fileName = target.split(".").slice(-2).join(".");
 
-      const processed = await sharp(res.rawBody)
-        .jpeg({
-          quality: 1,
-        })
-        .toBuffer();
+      const processed = await this.jpegify(res.rawBody);
 
       const attachment = new MessageAttachment(processed, fileName);
 
