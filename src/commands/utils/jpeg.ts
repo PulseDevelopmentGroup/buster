@@ -10,6 +10,7 @@ export default class JpegCommand extends Command {
       name: "jpeg",
       group: "utils",
       memberName: "jpeg",
+      aliases: ["jpg"],
       description: "More JPEG. 'nuff said",
       guildOnly: true,
 
