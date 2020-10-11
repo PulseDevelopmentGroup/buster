@@ -1,5 +1,8 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { isImageUrl } from "../../util";
+import got from "got";
+import sharp from "sharp";
+import { MessageAttachment } from "discord.js";
 
 export default class JpegCommand extends Command {
   constructor(client: CommandoClient) {
@@ -35,7 +38,18 @@ export default class JpegCommand extends Command {
     }
 
     if (isImageUrl(target)) {
-      return msg.say("Jpegify the url");
+      const res = await got(target);
+      const fileName = target.split(".").slice(-2).join(".");
+
+      const processed = await sharp(res.rawBody)
+        .jpeg({
+          quality: 1,
+        })
+        .toBuffer();
+
+      const attachment = new MessageAttachment(processed, fileName);
+
+      return msg.say("", attachment);
     } else {
       return msg.say("jpegify the message");
     }
