@@ -101,7 +101,9 @@ export default class JpegCommand extends Command {
 
       return msg.say("", attachment);
     } else {
-      const message = await msg.channel.messages.fetch(target);
+      let message = await msg.channel.messages
+        .fetch(target)
+        .catch(() => undefined);
 
       if (!message) {
         return msg.say("I couldn't find a message with that ID.");
