@@ -43,7 +43,34 @@ export default class JpegCommand extends Command {
     }
   ) {
     if (!target) {
-      return msg.say(`I'm supposed to jpegify the last image`);
+      const messages = msg.channel.messages.cache.array();
+      const [lastMessage] = messages.slice(
+        messages.length - 2,
+        messages.length - 1
+      );
+
+      const attachmentUrl = lastMessage.attachments.first()?.url;
+
+      if (!attachmentUrl) {
+        return msg.say(
+          "Hmm... There doesn't appear to be an image in the last message. Try specifying a message ID."
+        );
+      }
+
+      if (!isImageUrl(attachmentUrl)) {
+        return msg.say(
+          "Wat. I can't seem to recognize that attachment as an image :3"
+        );
+      }
+
+      const res = await got(attachmentUrl);
+      const fileName = attachmentUrl.split(".").slice(-2).join(".");
+
+      const processed = await this.jpegify(res.rawBody);
+
+      const attachment = new MessageAttachment(processed, fileName);
+
+      return msg.say("", attachment);
     }
 
     if (isImageUrl(target)) {
