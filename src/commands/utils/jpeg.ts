@@ -43,11 +43,29 @@ export default class JpegCommand extends Command {
     }
   ) {
     if (!target) {
-      const messages = msg.channel.messages.cache.array();
-      const [lastMessage] = messages.slice(
+      let messages = msg.channel.messages.cache
+        .sort((a, b) => a.createdTimestamp - b.createdTimestamp)
+        .array();
+      let [lastMessage] = messages.slice(
         messages.length - 2,
         messages.length - 1
       );
+
+      if (!lastMessage) {
+        // If the bot was just started up, we have to fetch the messages since they aren't cached
+        await msg.channel.messages.fetch();
+        messages = msg.channel.messages.cache
+          .sort((a, b) => a.createdTimestamp - b.createdTimestamp)
+          .array();
+        [lastMessage] = messages.slice(
+          messages.length - 2,
+          messages.length - 1
+        );
+
+        if (!lastMessage) {
+          return msg.say("Sorry, I can't find the last message :(");
+        }
+      }
 
       const attachmentUrl = lastMessage.attachments.first()?.url;
 
