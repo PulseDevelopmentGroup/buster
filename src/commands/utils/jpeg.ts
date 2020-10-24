@@ -101,7 +101,32 @@ export default class JpegCommand extends Command {
 
       return msg.say("", attachment);
     } else {
-      return msg.say("jpegify the message");
+      const message = await msg.channel.messages.fetch(target);
+
+      if (!message) {
+        return msg.say("I couldn't find a message with that ID.");
+      }
+
+      const msgAttachment = message.attachments.first();
+
+      if (!msgAttachment) {
+        return msg.say("The specified message doesn't have any attachments.");
+      }
+
+      if (!isImageUrl(msgAttachment.url)) {
+        return msg.say(
+          "The specified message doesn't appear to have any JPEGifiable attachments."
+        );
+      }
+
+      const imgBuffer = (await got(msgAttachment.url)).rawBody;
+      const fileName = msgAttachment.url.split(".").slice(-2).join(".");
+
+      const processed = await this.jpegify(imgBuffer);
+
+      const attachment = new MessageAttachment(processed, fileName);
+
+      return msg.say("", attachment);
     }
   }
 }
