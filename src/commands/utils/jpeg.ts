@@ -28,6 +28,8 @@ export default class JpegCommand extends Command {
 
   async jpegify(image: Buffer): Promise<Buffer> {
     return await sharp(image)
+      .resize(512)
+      .gamma(3)
       .jpeg({
         quality: 1,
       })
