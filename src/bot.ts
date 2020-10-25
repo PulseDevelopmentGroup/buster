@@ -1,46 +1,15 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 import { CommandoClient } from "discord.js-commando";
-import * as util from "./util";
-import { environment, configuration } from "./types";
+import { env, config, getConfig } from "./config";
 import path from "path";
-import got from "got";
-import fs from "fs";
 
-let env = {} as environment;
-let config = {} as configuration;
-
-// init is called before the main function to setup configurations
+// getConfig is called before the main function to setup configurations
 // There are more concise ways to do this, but this is more readable
-init().then(main);
-
-async function init() {
-  env = {
-    token: process.env.BOT_TOKEN!,
-    config: process.env.CONFIG_URL!,
-    prefix: process.env.PREFIX ?? "!",
-  };
-
-  if (!env.token || !env.config) {
-    console.error("BOT_TOKEN and/or CONFIG_URL are not defined.");
+getConfig()
+  .catch((e) => {
+    console.error(`Unable to load config file. ${e}`);
     process.exit();
-  }
-
-  try {
-    if (util.isURL(env.config)) {
-      const response = await got.get(env.config);
-      config = JSON.parse(response.body);
-    } else {
-      config = JSON.parse(
-        fs.readFileSync(path.join(__dirname, env.config)).toString()
-      );
-    }
-  } catch (error) {
-    console.error(`Unable to load config file. ${error}`);
-    process.exit();
-  }
-}
+  })
+  .then(main);
 
 function main() {
   const client = new CommandoClient({
@@ -54,6 +23,7 @@ function main() {
 
   client.registry
     .registerGroups([["utils", "Yanno, useful stuff"]])
+    .registerGroups([["fun", "Definitely not fun"]])
     .registerDefaults()
     .registerCommandsIn({
       // read all the commands that end in js or ts.
@@ -62,5 +32,5 @@ function main() {
       dirname: path.join(__dirname, "commands"),
     });
 
-  client.login(env.token);
+  client.login(env.botToken);
 }

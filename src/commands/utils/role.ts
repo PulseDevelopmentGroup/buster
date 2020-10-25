@@ -17,7 +17,7 @@ export default class RoleCommand extends Command {
           prompt: "(g)ive or (t)ake a role?",
           type: "string",
           oneOf: ["g", "give", "gib", "t", "take"],
-          error: "Hmm... I couldn't understand that :(",
+          error: "hmm... I couldn't understand that :(",
           default: "",
         },
         {

@@ -2,5 +2,31 @@
   "owners": [
     "217448431545745408",
     "140599441328439297"
-  ]
+  ],
+  "commands": {
+    "gif": {
+      "rateLimit": 5,
+      "search": [
+        "tech",
+        "food",
+        "gaming",
+        "cars",
+        "programming",
+        "hacking",
+        "discord",
+        "music",
+        "dancing",
+        "eating",
+        "computers",
+        "drawing",
+        "game",
+        "siege",
+        "minecraft",
+        "beat saber",
+        "virtual reality",
+        "VR"
+      ],
+      "contentfilter": "low"
+    }
+  }
 }
