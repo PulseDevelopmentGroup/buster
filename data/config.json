@@ -4,6 +4,9 @@
     "140599441328439297"
   ],
   "commands": {
+    "inspire": {
+      "rateLimit": 3
+    },
     "gif": {
       "rateLimit": 5,
       "search": [

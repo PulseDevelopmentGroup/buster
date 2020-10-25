@@ -1,7 +1,7 @@
 import { Command, CommandoMessage } from "discord.js-commando";
 import { config, getConfig } from "../../config";
 
-export default class TestCommand extends Command {
+export default class DebugCommand extends Command {
   constructor(client: any) {
     super(client, {
       name: "botctl",

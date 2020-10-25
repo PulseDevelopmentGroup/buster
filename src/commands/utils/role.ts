@@ -1,5 +1,5 @@
-import { MessageEmbed, Role } from "discord.js";
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
+import { MessageEmbed, Role } from "discord.js";
 
 export default class RoleCommand extends Command {
   constructor(client: CommandoClient) {
