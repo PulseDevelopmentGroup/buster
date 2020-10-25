@@ -1,9 +1,11 @@
-export type environment = {
-  token: string;
+export interface Environment {
+  botToken: string;
+  tenorToken: string;
   config: string;
   prefix: string;
-};
+}
 
-export type configuration = {
+export interface Configuration {
   owners: string[];
-};
+  commands: Record<string, { [key: string]: any }>;
+}
