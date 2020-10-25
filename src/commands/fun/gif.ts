@@ -20,9 +20,9 @@ export default class GifCommand extends Command {
       args: [
         {
           key: "search",
-          prompt: "Where should I look for a gif?",
+          prompt: "where should I look for a gif?",
           type: "string",
-          error: "That doesn't seem to be a place.",
+          error: "that doesn't seem to be a place.",
           default: "",
         },
       ],

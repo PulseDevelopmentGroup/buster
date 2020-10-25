@@ -1,14 +1,17 @@
 import { Environment, Configuration } from "./types";
+import { ConfigNotFoundError } from "./models";
 import { isURL } from "./util";
+import dotenv from "dotenv";
 import path from "path";
 import got from "got";
 import fs from "fs";
-import { ConfigNotFoundError } from "./models";
 
 export let env: Environment;
 export let config: Configuration;
 
 export async function getConfig() {
+  dotenv.config();
+
   env = {
     botToken: process.env.BOT_TOKEN!,
     tenorToken: process.env.TENOR_TOKEN!,
