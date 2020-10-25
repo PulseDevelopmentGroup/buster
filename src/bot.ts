@@ -7,7 +7,12 @@ import path from "path";
 
 // getConfig is called before the main function to setup configurations
 // There are more concise ways to do this, but this is more readable
-getConfig().then(main);
+getConfig()
+  .catch((e) => {
+    console.error(`Unable to load config file. ${e}`);
+    process.exit();
+  })
+  .then(main);
 
 function main() {
   const client = new CommandoClient({
