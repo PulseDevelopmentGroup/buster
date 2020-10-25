@@ -2,46 +2,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { CommandoClient } from "discord.js-commando";
-import * as util from "./util";
-import { Environment, Configuration } from "./types";
+import { env, config, getConfig } from "./config";
 import path from "path";
-import got from "got";
-import fs from "fs";
 
-export let env: Environment;
-export let config: Configuration;
-
-// init is called before the main function to setup configurations
+// getConfig is called before the main function to setup configurations
 // There are more concise ways to do this, but this is more readable
-init().then(main);
-
-async function init() {
-  env = {
-    botToken: process.env.BOT_TOKEN!,
-    tenorToken: process.env.TENOR_TOKEN!,
-    config: process.env.CONFIG_URL!,
-    prefix: process.env.PREFIX ?? "!",
-  };
-
-  if (!env.botToken || !env.config) {
-    console.error("BOT_TOKEN and/or CONFIG_URL are not defined.");
-    process.exit();
-  }
-
-  try {
-    if (util.isURL(env.config)) {
-      const response = await got.get(env.config);
-      config = JSON.parse(response.body);
-    } else {
-      config = JSON.parse(
-        fs.readFileSync(path.join(__dirname, env.config)).toString()
-      );
-    }
-  } catch (error) {
-    console.error(`Unable to load config file. ${error}`);
-    process.exit();
-  }
-}
+getConfig().then(main);
 
 function main() {
   const client = new CommandoClient({

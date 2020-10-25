@@ -27,9 +27,6 @@
         "VR"
       ],
       "contentfilter": "low"
-    },
-    "jpeg": {
-      "rateLimit": 5
     }
   }
 }
