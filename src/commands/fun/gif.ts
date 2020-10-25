@@ -1,6 +1,6 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import got from "got";
-import { config, env } from "../../bot";
+import { config, env } from "../../config";
 
 const tenorURL = "https://api.tenor.com/v1/random";
 
@@ -13,7 +13,10 @@ export default class GifCommand extends Command {
       aliases: ["gifs"],
       description: "Random gif getter, use at your own risk",
       guildOnly: true,
-
+      throttling: {
+        usages: config.commands.gif.rateLimit,
+        duration: 60,
+      },
       args: [
         {
           key: "search",
@@ -28,7 +31,7 @@ export default class GifCommand extends Command {
 
   async run(msg: CommandoMessage, { search }: { search: string }) {
     if (!search) {
-      let terms: string[] = config.commands["gif"]["search"];
+      let terms: string[] = config.commands.gif.search;
       search = terms[Math.floor(Math.random() * terms.length)];
     }
 
@@ -37,7 +40,7 @@ export default class GifCommand extends Command {
         key: env.tenorToken,
         q: search,
         locale: "en_US",
-        contentfilter: config.commands["gif"]["contentfilter"],
+        contentfilter: config.commands.gif.contentfilter,
         media_filter: "minimal",
         limit: 1,
         ar_range: "standard",
