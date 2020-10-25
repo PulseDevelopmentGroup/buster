@@ -13,7 +13,7 @@ export default class NoCommand extends Command {
     });
   }
 
-  async run(msg: CommandoMessage, { action }: { action: string }) {
+  async run(msg: CommandoMessage) {
     // If cache is empty, get messages
     if (msg.channel.messages.cache.size == 0) {
       await msg.channel.messages.fetch();
