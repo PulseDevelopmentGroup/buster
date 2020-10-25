@@ -3,13 +3,13 @@ dotenv.config();
 
 import { CommandoClient } from "discord.js-commando";
 import * as util from "./util";
-import { environment, configuration } from "./types";
+import { Environment, Configuration } from "./types";
 import path from "path";
 import got from "got";
 import fs from "fs";
 
-let env = {} as environment;
-let config = {} as configuration;
+export let env: Environment;
+export let config: Configuration;
 
 // init is called before the main function to setup configurations
 // There are more concise ways to do this, but this is more readable
@@ -17,12 +17,13 @@ init().then(main);
 
 async function init() {
   env = {
-    token: process.env.BOT_TOKEN!,
+    botToken: process.env.BOT_TOKEN!,
+    tenorToken: process.env.TENOR_TOKEN!,
     config: process.env.CONFIG_URL!,
     prefix: process.env.PREFIX ?? "!",
   };
 
-  if (!env.token || !env.config) {
+  if (!env.botToken || !env.config) {
     console.error("BOT_TOKEN and/or CONFIG_URL are not defined.");
     process.exit();
   }
@@ -54,6 +55,7 @@ function main() {
 
   client.registry
     .registerGroups([["utils", "Yanno, useful stuff"]])
+    .registerGroups([["fun", "Definitely not fun"]])
     .registerDefaults()
     .registerCommandsIn({
       // read all the commands that end in js or ts.
@@ -62,5 +64,5 @@ function main() {
       dirname: path.join(__dirname, "commands"),
     });
 
-  client.login(env.token);
+  client.login(env.botToken);
 }
