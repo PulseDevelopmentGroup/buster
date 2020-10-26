@@ -39,10 +39,10 @@ export default class TriggeredCommand extends Command {
         .extract({
           left: offsetX,
           top: offsetY,
-          width: imageWidth - offsetX * 2,
-          height: imageWidth - offsetY * 2,
+          width: imageWidth - offsetX - Math.round(offsetX * Math.random()),
+          height: imageWidth - offsetY - Math.round(offsetY * Math.random()),
         })
-        .resize(128);
+        .resize(128, 128);
 
       if (i === 0) {
         trimmedPfp = trimmedPfp.joinChannel(
