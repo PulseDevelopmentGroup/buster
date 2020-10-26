@@ -1,8 +1,8 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
-import got from "got";
 import { config, env } from "../../config";
+import got from "got";
 
-const tenorURL = "https://api.tenor.com/v1/random";
+const url = "https://api.tenor.com/v1/random";
 
 export default class GifCommand extends Command {
   constructor(client: CommandoClient) {
@@ -20,9 +20,9 @@ export default class GifCommand extends Command {
       args: [
         {
           key: "search",
-          prompt: "Where should I look for a gif?",
+          prompt: "where should I look for a gif?",
           type: "string",
-          error: "That doesn't seem to be a place.",
+          error: "that doesn't seem to be a place.",
           default: "",
         },
       ],
@@ -35,7 +35,7 @@ export default class GifCommand extends Command {
       search = terms[Math.floor(Math.random() * terms.length)];
     }
 
-    const { body } = await got.get(tenorURL, {
+    const { body } = await got.get(url, {
       searchParams: {
         key: env.tenorToken,
         q: search,
@@ -49,6 +49,9 @@ export default class GifCommand extends Command {
 
     if (body) {
       let json = JSON.parse(body);
+      if (!json.results[0]) {
+        return msg.say("I can't seem to find any gifs :(");
+      }
       return msg.say(json.results[0].url);
     }
 

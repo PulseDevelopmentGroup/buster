@@ -17,9 +17,9 @@ export default class JpegCommand extends Command {
       args: [
         {
           key: "target",
-          prompt: "Which image should I JPEGify?",
+          prompt: "which image should I JPEGify?",
           type: "string",
-          error: "Say what?",
+          error: "say what?",
           default: "",
         },
       ],
