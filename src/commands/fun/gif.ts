@@ -49,6 +49,9 @@ export default class GifCommand extends Command {
 
     if (body) {
       let json = JSON.parse(body);
+      if (!json.results[0]) {
+        return msg.say("I can't seem to find any gifs :(");
+      }
       return msg.say(json.results[0].url);
     }
 
