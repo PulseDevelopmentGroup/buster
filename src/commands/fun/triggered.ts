@@ -17,16 +17,20 @@ export default class TriggeredCommand extends Command {
   }
 
   async run(msg: CommandoMessage) {
-    const scale = 25;
+    const scale = 50;
     const pfpUrl = msg.author.displayAvatarURL();
 
     const pfp = (await got(pfpUrl)).rawBody;
 
-    const basePfp = await sharp(pfp);
+    let basePfp = await sharp(pfp);
 
     const imageMeta = await basePfp.metadata();
 
     const imageWidth = imageMeta.width ?? 128;
+
+    basePfp = basePfp.joinChannel(Buffer.alloc(imageWidth * imageWidth, 255), {
+      raw: { channels: 1, width: imageWidth, height: imageWidth },
+    });
 
     const shiftedPfps: Buffer[] = [];
 
@@ -43,15 +47,6 @@ export default class TriggeredCommand extends Command {
           height: imageWidth - offsetY - Math.round(offsetY * Math.random()),
         })
         .resize(128, 128);
-
-      if (i === 0) {
-        trimmedPfp = trimmedPfp.joinChannel(
-          Buffer.alloc(imageWidth * imageWidth, 255),
-          {
-            raw: { channels: 1, width: imageWidth, height: imageWidth },
-          }
-        );
-      }
 
       const buffer = await trimmedPfp.raw().toBuffer();
 
