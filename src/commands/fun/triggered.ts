@@ -18,12 +18,12 @@ export default class TriggeredCommand extends Command {
   }
 
   async run(msg: CommandoMessage) {
-    const scale = 50;
+    const scale = 40;
     const pfpUrl = msg.author.displayAvatarURL();
 
     const pfp = (await got(pfpUrl)).rawBody;
 
-    let basePfp = await sharp(pfp).blur(2).sharpen();
+    let basePfp = await sharp(pfp).blur(2).sharpen(3);
 
     const imageMeta = await basePfp.metadata();
 
