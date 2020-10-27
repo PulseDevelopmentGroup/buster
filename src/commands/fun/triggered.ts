@@ -4,6 +4,7 @@ import got from "got/dist/source";
 import sharp from "sharp";
 import GifEncoder from "gifencoder";
 import { Readable } from "stream";
+import path from "path";
 
 export default class TriggeredCommand extends Command {
   constructor(client: CommandoClient) {
@@ -22,15 +23,20 @@ export default class TriggeredCommand extends Command {
 
     const pfp = (await got(pfpUrl)).rawBody;
 
-    let basePfp = await sharp(pfp);
+    let basePfp = await sharp(pfp).blur(2).sharpen();
 
     const imageMeta = await basePfp.metadata();
 
     const imageWidth = imageMeta.width ?? 128;
 
-    basePfp = basePfp.joinChannel(Buffer.alloc(imageWidth * imageWidth, 255), {
-      raw: { channels: 1, width: imageWidth, height: imageWidth },
-    });
+    const overlay = await sharp(
+      path.join(__dirname, "../../assets/triggered.png")
+    )
+      .png({
+        quality: 1,
+      })
+      .blur(1.2)
+      .toBuffer();
 
     const shiftedPfps: Buffer[] = [];
 
@@ -46,7 +52,13 @@ export default class TriggeredCommand extends Command {
           width: imageWidth - offsetX - Math.round(offsetX * Math.random()),
           height: imageWidth - offsetY - Math.round(offsetY * Math.random()),
         })
-        .resize(128, 128);
+        .resize(128, 128)
+        .composite([
+          {
+            input: overlay,
+            gravity: "south",
+          },
+        ]);
 
       const buffer = await trimmedPfp.raw().toBuffer();
 
@@ -60,7 +72,7 @@ export default class TriggeredCommand extends Command {
         encoder.createWriteStream({
           repeat: 0,
           delay: 100,
-          quality: 10,
+          quality: 1,
         })
       );
     });

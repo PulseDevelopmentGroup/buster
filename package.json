@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
+    "postbuild": "mkdir -p ./dist/assets && cp -r ./src/assets/. ./dist/assets",
     "start": "node dist/bot.js",
     "watch": "nodemon src/bot.ts"
   },
