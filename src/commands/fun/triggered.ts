@@ -19,7 +19,13 @@ export default class TriggeredCommand extends Command {
 
   async run(msg: CommandoMessage) {
     const scale = 40;
-    const pfpUrl = msg.author.displayAvatarURL();
+    let pfpUrl: string | undefined;
+    const mentioned = msg.mentions?.users?.first();
+    if (mentioned) {
+      pfpUrl = mentioned.displayAvatarURL();
+    } else {
+      pfpUrl = msg.author.displayAvatarURL();
+    }
 
     const pfp = (await got(pfpUrl)).rawBody;
 
