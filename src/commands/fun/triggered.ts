@@ -18,7 +18,7 @@ export default class TriggeredCommand extends Command {
   }
 
   async run(msg: CommandoMessage) {
-    const scale = 40;
+    const scale = 20;
     let pfpUrl: string | undefined;
     const mentioned = msg.mentions?.users?.first();
     if (mentioned) {
@@ -29,7 +29,16 @@ export default class TriggeredCommand extends Command {
 
     const pfp = (await got(pfpUrl)).rawBody;
 
-    let basePfp = await sharp(pfp).blur(2).sharpen(3);
+    let basePfp = await sharp(pfp)
+      .blur(2)
+      .sharpen(3)
+      .rotate(3)
+      .convolve({
+        width: 3,
+        height: 3,
+        kernel: [-1, -1, -1, -1, 8, 1, -1, -1, -1],
+        scale: 50,
+      });
 
     const imageMeta = await basePfp.metadata();
 
@@ -46,7 +55,7 @@ export default class TriggeredCommand extends Command {
 
     const shiftedPfps: Buffer[] = [];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 20; i++) {
       const offsetX = Math.floor(Math.random() * scale);
       const offsetY = Math.floor(Math.random() * scale);
 
