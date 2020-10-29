@@ -5,6 +5,7 @@ import sharp from "sharp";
 import GifEncoder from "gifencoder";
 import { Readable } from "stream";
 import path from "path";
+import faker from "faker";
 
 export default class TriggeredCommand extends Command {
   constructor(client: CommandoClient) {
@@ -14,15 +15,26 @@ export default class TriggeredCommand extends Command {
       memberName: "triggered",
       description: "Trigger people",
       guildOnly: true,
+
+      args: [
+        {
+          key: "message",
+          prompt: "gargledygook",
+          type: "string",
+          default: "",
+        },
+      ],
     });
   }
 
-  async run(msg: CommandoMessage) {
+  async run(msg: CommandoMessage, { message }: { message: string }) {
     const scale = 20;
     let pfpUrl: string | undefined;
     const mentioned = msg.mentions?.users?.first();
     if (mentioned) {
       pfpUrl = mentioned.displayAvatarURL();
+    } else if (message) {
+      pfpUrl = faker.image.avatar();
     } else {
       pfpUrl = msg.author.displayAvatarURL();
     }
