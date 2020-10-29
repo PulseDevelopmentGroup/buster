@@ -33,31 +33,41 @@ export default class TriggeredCommand extends Command {
       .blur(2)
       .sharpen(3)
       .rotate(3)
+      .gamma(1.2)
       .convolve({
         width: 3,
         height: 3,
         kernel: [-1, -1, -1, -1, 8, 1, -1, -1, -1],
-        scale: 50,
+        scale: 250,
       });
 
     const imageMeta = await basePfp.metadata();
 
     const imageWidth = imageMeta.width ?? 128;
 
-    const overlay = await sharp(
-      path.join(__dirname, "../../assets/triggered.png")
-    )
-      .png({
-        quality: 1,
-      })
-      .blur(1.2)
-      .toBuffer();
-
     const shiftedPfps: Buffer[] = [];
 
     for (let i = 0; i < 20; i++) {
       const offsetX = Math.floor(Math.random() * scale);
       const offsetY = Math.floor(Math.random() * scale);
+      const offsetX2 = Math.floor((Math.random() * scale) / 3);
+      const offsetY2 = Math.floor((Math.random() * scale) / 3);
+
+      const overlay = await sharp(
+        path.join(__dirname, "../../assets/triggered.png")
+      )
+        .png({
+          quality: 1,
+        })
+        .blur(1.2)
+        .extract({
+          left: offsetX2,
+          top: offsetY2,
+          width: imageWidth - offsetX2 - Math.round(offsetX2 * Math.random()),
+          height: imageWidth - offsetY2 - Math.round(offsetY2 * Math.random()),
+        })
+        .resize(128, 128)
+        .toBuffer();
 
       let trimmedPfp = basePfp
         .clone()
