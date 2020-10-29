@@ -14,6 +14,10 @@ export default class TriggeredCommand extends Command {
       memberName: "triggered",
       description: "Trigger people",
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 300,
+      },
     });
   }
 

@@ -8,7 +8,7 @@ export default class SupCommand extends Command {
       memberName: "techtip",
       group: "fun",
       aliases: ["sup"],
-      description: "How to 'puter ",
+      description: "How to computer",
       guildOnly: true,
     });
   }
