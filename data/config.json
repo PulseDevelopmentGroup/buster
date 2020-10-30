@@ -8,7 +8,7 @@
       "rateLimit": 3
     },
     "gif": {
-      "rateLimit": 5,
+      "rateLimit": 2,
       "search": [
         "tech",
         "food",
