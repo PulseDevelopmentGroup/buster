@@ -36,6 +36,34 @@ export async function getConfig() {
   }
 }
 
+const infoFields = [
+  "name",
+  "aliases",
+  "autoAliases",
+  "group",
+  "memberName",
+  "description",
+  "format",
+  "details",
+  "examples",
+  "guildOnly",
+  "ownerOnly",
+  "clientPermissions",
+  "userPermissions",
+  "nsfw",
+  "throttling",
+  "defaultHandling",
+  "args",
+  "argsPromptLimit",
+  "argsType",
+  "argsCount",
+  "argsSingleQuotes",
+  "patterns",
+  "guarded",
+  "hidden",
+  "unknown",
+] as (keyof CommandInfo)[];
+
 export function setupCommand(info: CommandInfo): CommandInfo {
   /* Make sure name is specified (In theory, we should never get this far) */
   if (info.name == undefined) {
@@ -48,88 +76,17 @@ export function setupCommand(info: CommandInfo): CommandInfo {
     return info;
   }
 
-  const fields = [
-    "name",
-    "aliases",
-    "autoAliases",
-    "group",
-    "memberName",
-    "description",
-    "format",
-    "details",
-    "examples",
-    "guildOnly",
-    "ownerOnly",
-    "clientPermissions",
-    "userPermissions",
-    "nsfw",
-    "throttling",
-    "defaultHandling",
-    "args",
-    "argsPromptLimit",
-    "argsType",
-    "argsCount",
-    "argsSingleQuotes",
-    "patterns",
-    "guarded",
-    "hidden",
-    "unknown",
-  ] as (keyof CommandInfo)[];
-
   let commandInfo: Partial<CommandInfo> = {};
 
-  fields.forEach((field) => {
+  /* Iterate through CommandInfo fields and set values */
+  infoFields.forEach((field) => {
     const v: CommandInfo[typeof field] =
       info[field] ?? config.commands[info.name].options[field];
 
     if (v) {
-      const ci = commandInfo[field];
       (commandInfo as any)[field] = v;
     }
   });
-
-  /*
-  let ret = {
-    name: info.name,
-    aliases: info.aliases ?? config.commands[info.name].options.aliases,
-    autoAliases:
-      info.autoAliases ?? config.commands[info.name].options.autoAliases,
-    group: info.group ?? config.commands[info.name].options.group,
-    memberName:
-      info.memberName ?? config.commands[info.name].options.memberName,
-    description:
-      info.description ?? config.commands[info.name].options.description,
-    format: info.format ?? config.commands[info.name].options.format,
-    details: info.details ?? config.commands[info.name].options.details,
-    examples: info.examples ?? config.commands[info.name].options.examples,
-    guildOnly: info.guildOnly ?? config.commands[info.name].options.guildOnly,
-    ownerOnly: info.ownerOnly ?? config.commands[info.name].options.ownerOnly,
-    clientPermissions:
-      info.clientPermissions ??
-      config.commands[info.name].options.clientPermissions,
-    userPermissions:
-      info.userPermissions ??
-      config.commands[info.name].options.userPermissions,
-    nsfw: info.nsfw ?? config.commands[info.name].options.nsfw,
-    throttling:
-      info.throttling ?? config.commands[info.name].options.throttling,
-    defaultHandling:
-      info.defaultHandling ??
-      config.commands[info.name].options.defaultHandling,
-    args: info.args ?? config.commands[info.name].options.args,
-    argsPromptLimit:
-      info.argsPromptLimit ??
-      config.commands[info.name].options.argsPromptLimit,
-    argsType: info.argsType ?? config.commands[info.name].options.argsType,
-    argsCount: info.argsCount ?? config.commands[info.name].options.argsCount,
-    argsSingleQuotes:
-      info.argsSingleQuotes ??
-      config.commands[info.name].options.argsSingleQuotes,
-    patterns: info.patterns ?? config.commands[info.name].options.patterns,
-    guarded: info.guarded ?? config.commands[info.name].options.guarded,
-    hidden: info.hidden ?? config.commands[info.name].options.hidden,
-    unknown: info.unknown ?? config.commands[info.name].options.unknown,
-  };*/
 
   return commandInfo as CommandInfo;
 }

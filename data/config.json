@@ -1,8 +1,5 @@
 {
-  "owners": [
-    "217448431545745408",
-    "140599441328439297"
-  ],
+  "owners": ["217448431545745408", "140599441328439297"],
   "commands": {
     "inspire": {
       "options": {
@@ -14,16 +11,12 @@
     },
     "techtip": {
       "options": {
-        "aliases": [
-          "sup"
-        ]
+        "aliases": ["sup"]
       }
     },
     "jpeg": {
       "options": {
-        "aliases": [
-          "jpg"
-        ]
+        "aliases": ["jpg"]
       },
       "vars": {
         "resize": 512,
@@ -33,18 +26,12 @@
     },
     "botctl": {
       "options": {
-        "aliases": [
-          "ctl",
-          "debug"
-        ]
+        "aliases": ["ctl", "debug"]
       }
     },
     "no": {
       "options": {
-        "aliases": [
-          "bad",
-          "nope"
-        ]
+        "aliases": ["bad", "nope"]
       }
     },
     "triggered": {
@@ -57,9 +44,7 @@
     },
     "gif": {
       "options": {
-        "aliases": [
-          "gifs"
-        ],
+        "aliases": ["gifs", "jif", "jifs"],
         "throttling": {
           "duration": 60,
           "usages": 3

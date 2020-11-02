@@ -34,6 +34,10 @@ export default class DebugCommand extends Command {
             );
           })
           .then(() => {
+            this.client.registry.commands.forEach((c) => {
+              if (this.name != c.name) c.reload();
+            });
+
             return msg.say("Config reloaded!");
           });
         break;
