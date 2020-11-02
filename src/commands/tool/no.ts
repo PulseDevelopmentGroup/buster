@@ -1,16 +1,18 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
-import { config } from "../../config";
+import { config, setupCommand } from "../../config";
 
 export default class NoCommand extends Command {
   constructor(client: CommandoClient) {
-    super(client, {
-      name: "no",
-      group: "util",
-      memberName: "no",
-      aliases: ["bad", "nope"],
-      description: "Remove the most recent bot message in this channel",
-      guildOnly: true,
-    });
+    super(
+      client,
+      setupCommand({
+        name: "no",
+        group: "tool",
+        memberName: "no",
+        description: "Remove the most recent bot message in this channel",
+        guildOnly: true,
+      })
+    );
   }
 
   async run(msg: CommandoMessage) {

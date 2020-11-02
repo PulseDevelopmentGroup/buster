@@ -1,3 +1,5 @@
+import { CommandInfo } from "discord.js-commando";
+
 export interface Environment {
   botToken: string;
   tenorToken: string;
@@ -7,5 +9,10 @@ export interface Environment {
 
 export interface Configuration {
   owners: string[];
-  commands: Record<string, { [key: string]: any }>;
+  commands: Record<string, Command>;
+}
+
+interface Command {
+  options: CommandInfo;
+  vars: Record<string, any>;
 }

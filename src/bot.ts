@@ -22,8 +22,9 @@ function main() {
   });
 
   client.registry
-    .registerGroups([["utils", "Yanno, useful stuff"]])
-    .registerGroups([["fun", "Definitely not fun"]])
+    .registerGroups([["util", "Bot Management"]])
+    .registerGroups([["fun", "Fun and Games"]])
+    .registerGroups([["tool", "Tools"]])
     .registerDefaults()
     .registerCommandsIn({
       // read all the commands that end in js or ts.

@@ -1,37 +1,39 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
+import { MessageAttachment } from "discord.js";
+import { config, setupCommand } from "../../config";
 import { isImageUrl } from "../../util";
 import got from "got";
 import sharp from "sharp";
-import { MessageAttachment } from "discord.js";
 
 export default class JpegCommand extends Command {
   constructor(client: CommandoClient) {
-    super(client, {
-      name: "jpeg",
-      group: "utils",
-      memberName: "jpeg",
-      aliases: ["jpg"],
-      description: "More JPEG. 'nuff said",
-      guildOnly: true,
-
-      args: [
-        {
-          key: "target",
-          prompt: "which image should I JPEGify?",
-          type: "string",
-          error: "say what?",
-          default: "",
-        },
-      ],
-    });
+    super(
+      client,
+      setupCommand({
+        name: "jpeg",
+        group: "tool",
+        memberName: "jpeg",
+        description: "More JPEG. 'nuff said",
+        guildOnly: true,
+        args: [
+          {
+            key: "target",
+            prompt: "which image should I JPEGify?",
+            type: "string",
+            error: "say what?",
+            default: "",
+          },
+        ],
+      })
+    );
   }
 
   async jpegify(image: Buffer): Promise<Buffer> {
     return await sharp(image)
-      .resize(512)
-      .gamma(3)
+      .resize(config.commands.jpeg.vars.resize)
+      .gamma(config.commands.jpeg.vars.gamma)
       .jpeg({
-        quality: 1,
+        quality: config.commands.jpeg.vars.jpeg,
       })
       .toBuffer();
   }

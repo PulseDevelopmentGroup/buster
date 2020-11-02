@@ -1,33 +1,35 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { MessageEmbed, Role } from "discord.js";
+import { setupCommand } from "../../config";
 
 export default class RoleCommand extends Command {
   constructor(client: CommandoClient) {
-    super(client, {
-      name: "role",
-      group: "utils",
-      aliases: ["g", "gib"],
-      memberName: "role",
-      description: "Get, give, and remove roles & permissions",
-      guildOnly: true,
-
-      args: [
-        {
-          key: "action",
-          prompt: "(g)ive or (t)ake a role?",
-          type: "string",
-          oneOf: ["g", "give", "gib", "t", "take"],
-          error: "hmm... I couldn't understand that :(",
-          default: "",
-        },
-        {
-          key: "role",
-          prompt: "what role would you like to edit?",
-          type: "string",
-          default: "",
-        },
-      ],
-    });
+    super(
+      client,
+      setupCommand({
+        name: "role",
+        group: "tool",
+        memberName: "role",
+        description: "Get, give, and remove roles & permissions",
+        guildOnly: true,
+        args: [
+          {
+            key: "action",
+            prompt: "(g)ive or (t)ake a role?",
+            type: "string",
+            oneOf: ["g", "give", "gib", "t", "take"],
+            error: "hmm... I couldn't understand that :(",
+            default: "",
+          },
+          {
+            key: "role",
+            prompt: "what role would you like to edit?",
+            type: "string",
+            default: "",
+          },
+        ],
+      })
+    );
   }
 
   async run(
@@ -69,7 +71,7 @@ export default class RoleCommand extends Command {
           name = name.slice(1);
         }
 
-        if (name === role) {
+        if (name === role.toLowerCase()) {
           guildRole = r;
 
           break;

@@ -5,32 +5,90 @@
   ],
   "commands": {
     "inspire": {
-      "rateLimit": 3
+      "options": {
+        "throttling": {
+          "duration": 60,
+          "usages": 3
+        }
+      }
+    },
+    "techtip": {
+      "options": {
+        "aliases": [
+          "sup"
+        ]
+      }
+    },
+    "jpeg": {
+      "options": {
+        "aliases": [
+          "jpg"
+        ]
+      },
+      "vars": {
+        "resize": 512,
+        "gamma": 3,
+        "jpeg": 1
+      }
+    },
+    "botctl": {
+      "options": {
+        "aliases": [
+          "ctl",
+          "debug"
+        ]
+      }
+    },
+    "no": {
+      "options": {
+        "aliases": [
+          "bad",
+          "nope"
+        ]
+      }
+    },
+    "triggered": {
+      "options": {
+        "throttling": {
+          "duration": 300,
+          "usages": 1
+        }
+      }
     },
     "gif": {
-      "rateLimit": 2,
-      "search": [
-        "tech",
-        "food",
-        "gaming",
-        "cars",
-        "programming",
-        "hacking",
-        "discord",
-        "music",
-        "dancing",
-        "eating",
-        "computers",
-        "drawing",
-        "game",
-        "siege",
-        "minecraft",
-        "beat saber",
-        "virtual reality",
-        "VR",
-        "gif"
-      ],
-      "contentfilter": "low"
+      "options": {
+        "aliases": [
+          "gifs"
+        ],
+        "throttling": {
+          "duration": 60,
+          "usages": 3
+        }
+      },
+      "vars": {
+        "search": [
+          "tech",
+          "food",
+          "gaming",
+          "cars",
+          "programming",
+          "hacking",
+          "discord",
+          "music",
+          "dancing",
+          "eating",
+          "computers",
+          "drawing",
+          "game",
+          "siege",
+          "minecraft",
+          "beat saber",
+          "virtual reality",
+          "VR",
+          "gif"
+        ],
+        "contentfilter": "low"
+      }
     }
   }
 }

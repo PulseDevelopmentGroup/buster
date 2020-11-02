@@ -1,26 +1,28 @@
 import { Command, CommandoMessage } from "discord.js-commando";
-import { config, getConfig } from "../../config";
+import { config, getConfig, setupCommand } from "../../config";
 
 export default class DebugCommand extends Command {
   constructor(client: any) {
-    super(client, {
-      name: "botctl",
-      group: "utils",
-      memberName: "botctl",
-      description: "cOnTrOl ThE bOt",
-      aliases: ["ctl", "debug"],
-      guildOnly: true,
-      ownerOnly: true,
-      args: [
-        {
-          key: "action",
-          prompt: "what admin tool should be used?",
-          type: "string",
-          error: "that doesn't appear to be a valid tool.",
-          oneOf: ["config", "reload"],
-        },
-      ],
-    });
+    super(
+      client,
+      setupCommand({
+        name: "botctl",
+        group: "util",
+        memberName: "botctl",
+        description: "cOnTrOl ThE bOt",
+        guildOnly: true,
+        ownerOnly: true,
+        args: [
+          {
+            key: "action",
+            prompt: "what admin tool should be used?",
+            type: "string",
+            error: "that doesn't appear to be a valid tool.",
+            oneOf: ["config", "reload"],
+          },
+        ],
+      })
+    );
   }
   async run(msg: CommandoMessage, { action }: { action: "reload" | "config" }) {
     switch (action) {

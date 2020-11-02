@@ -1,5 +1,6 @@
 import { MessageAttachment } from "discord.js";
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
+import { setupCommand } from "../../config";
 import got from "got/dist/source";
 import sharp from "sharp";
 import GifEncoder from "gifencoder";
@@ -9,25 +10,24 @@ import faker from "faker";
 
 export default class TriggeredCommand extends Command {
   constructor(client: CommandoClient) {
-    super(client, {
-      name: "triggered",
-      group: "fun",
-      memberName: "triggered",
-      description: "Trigger people",
-      guildOnly: true,
-      throttling: {
-        usages: 1,
-        duration: 300,
-      },
-      args: [
-        {
-          key: "message",
-          prompt: "gargledygook",
-          type: "string",
-          default: "",
-        },
-      ],
-    });
+    super(
+      client,
+      setupCommand({
+        name: "triggered",
+        group: "fun",
+        memberName: "triggered",
+        description: "Trigger people",
+        guildOnly: true,
+        args: [
+          {
+            key: "message",
+            prompt: "gargledygook",
+            type: "string",
+            default: "",
+          },
+        ],
+      })
+    );
   }
 
   async run(msg: CommandoMessage, { message }: { message: string }) {
