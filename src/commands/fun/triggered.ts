@@ -1,12 +1,12 @@
-import { MessageAttachment } from "discord.js";
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
+import { MessageAttachment } from "discord.js";
 import { setupCommand } from "../../config";
-import got from "got/dist/source";
-import sharp from "sharp";
 import GifEncoder from "gifencoder";
+import got from "got/dist/source";
 import { Readable } from "stream";
-import path from "path";
+import sharp from "sharp";
 import faker from "faker";
+import path from "path";
 
 export default class TriggeredCommand extends Command {
   constructor(client: CommandoClient) {
