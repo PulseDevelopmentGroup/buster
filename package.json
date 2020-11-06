@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prebuild": "rm -r dist",
     "build": "tsc",
-    "local-build": "rm -r dist && tsc && mkdir -p ./dist/assets && cp -r ./src/assets/. ./dist/assets",
+    "postbuild": "mkdir -p ./dist/assets && cp -r ./src/assets/. ./dist/assets",
     "start": "node dist/bot.js",
     "watch": "nodemon src/bot.ts"
   },
