@@ -7,8 +7,17 @@ export function isURL(url: string) {
   return true;
 }
 
-const imageUrlRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|png|JPG|JPEG|PNG)/;
+const imageUrlRegex = /https?:\/\/\S*?\.(?:png|jpe?g)(?:\?(?:(?:(?:[\w_-]+=[\w_-]+)(?:&[\w_-]+=[\w_-]+)*)|(?:[\w_-]+)))?/;
 
 export function isImageUrl(url: string) {
   return imageUrlRegex.test(url);
+}
+
+export function getImageUrl(message: string) {
+  let urls = message.match(imageUrlRegex);
+
+  if (urls) {
+    return urls[0];
+  }
+  return undefined;
 }

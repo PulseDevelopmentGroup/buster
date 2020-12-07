@@ -1,7 +1,7 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { MessageAttachment } from "discord.js";
 import { config, setupCommand } from "../../config";
-import { isImageUrl } from "../../util";
+import { isImageUrl, getImageUrl } from "../../util";
 import got from "got";
 import sharp from "sharp";
 
@@ -71,22 +71,24 @@ export default class JpegCommand extends Command {
         }
       }
 
-      const attachmentUrl = lastMessage.attachments.first()?.url;
+      let imageUrl =
+        lastMessage.attachments.first()?.url ??
+        getImageUrl(lastMessage.content);
 
-      if (!attachmentUrl) {
+      if (!imageUrl) {
         return msg.say(
           "Hmm... There doesn't appear to be an image in the last message. Try specifying a message ID."
         );
       }
 
-      if (!isImageUrl(attachmentUrl)) {
+      if (!isImageUrl(imageUrl)) {
         return msg.say(
-          "Wat. I can't seem to recognize that attachment as an image :3"
+          "Wat. I can't seem to recognize that attachment as an image D:"
         );
       }
 
-      const res = await got(attachmentUrl);
-      const fileName = attachmentUrl.split(".").slice(-2).join(".");
+      const res = await got(imageUrl);
+      const fileName = imageUrl.split(".").slice(-2).join(".");
 
       const processed = await this.jpegify(res.rawBody);
 
@@ -95,6 +97,7 @@ export default class JpegCommand extends Command {
       return msg.say("", attachment);
     }
 
+    // If target param is a URL
     if (isImageUrl(target)) {
       const res = await got(target);
       const fileName = target.split(".").slice(-2).join(".");
@@ -104,6 +107,8 @@ export default class JpegCommand extends Command {
       const attachment = new MessageAttachment(processed, fileName);
 
       return msg.say("", attachment);
+
+      // If target param is not a URL
     } else {
       let message = await msg.channel.messages
         .fetch(target)
