@@ -17,12 +17,13 @@ export async function getConfig() {
     botToken: process.env.BOT_TOKEN!,
     tenorToken: process.env.TENOR_TOKEN!,
     config: process.env.CONFIG_URL!,
+    dbPath: process.env.DB_PATH!,
     prefix: process.env.PREFIX ?? "!",
   };
 
-  if (!env.botToken || !env.config) {
+  if (!env.botToken || !env.config || !env.dbPath) {
     throw new ConfigNotFoundError(
-      "BOT_TOKEN and/or CONFIG_URL are not defined."
+      "BOT_TOKEN || CONFIG_URL || DB_PATH are not defined."
     );
   }
 

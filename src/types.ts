@@ -5,6 +5,7 @@ export interface Environment {
   tenorToken: string;
   config: string;
   prefix: string;
+  dbPath: string;
 }
 
 export interface Configuration {

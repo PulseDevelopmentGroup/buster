@@ -1,5 +1,7 @@
-import { CommandoClient } from "discord.js-commando";
+import { CommandoClient, SQLiteProvider } from "discord.js-commando";
 import { env, config, getConfig } from "./config";
+import * as sqlite from "sqlite";
+import sqlite3 from "sqlite3";
 import path from "path";
 
 // getConfig is called before the main function to setup configurations
@@ -16,6 +18,19 @@ function main() {
     commandPrefix: env.prefix,
     owner: config.owners,
   });
+
+  sqlite
+    .open({
+      filename: path.join(__dirname, env.dbPath),
+      driver: sqlite3.Database,
+    })
+    .catch((e) => {
+      console.error(`Unable to create/open database. ${e}`);
+      process.exit();
+    })
+    .then((db) => {
+      client.setProvider(new SQLiteProvider(db));
+    });
 
   client.once("ready", () => {
     console.log("Rarin' to go!");

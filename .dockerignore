@@ -3,6 +3,7 @@ node_modules/
 .github/
 data/
 
+*.db
 .env
 LICENSE
 README.md
