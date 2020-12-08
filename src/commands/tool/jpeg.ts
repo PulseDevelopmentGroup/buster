@@ -2,8 +2,8 @@ import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { MessageAttachment } from "discord.js";
 import { config, setupCommand } from "../../config";
 import { isImageUrl, getImageUrl } from "../../util";
+import jimp from "jimp";
 import got from "got";
-import sharp from "sharp";
 
 export default class JpegCommand extends Command {
   constructor(client: CommandoClient) {
@@ -29,13 +29,19 @@ export default class JpegCommand extends Command {
   }
 
   async jpegify(image: Buffer): Promise<Buffer> {
-    return await sharp(image)
-      .resize(config.commands.jpeg.vars.resize)
-      .gamma(config.commands.jpeg.vars.gamma)
-      .jpeg({
-        quality: config.commands.jpeg.vars.jpeg,
-      })
-      .toBuffer();
+    jimp.read(image).then((image) => {
+      image
+        .resize(config.commands.jpeg.vars.resize, jimp.AUTO)
+        .dither565()
+        .quality(config.commands.jpeg.vars.jpeg)
+        .getBuffer(jimp.MIME_JPEG, (err, buf) => {
+          if (err) {
+            return Promise.reject(err);
+          }
+          return buf;
+        });
+    });
+    return Promise.reject(new Error("Unable to read image"));
   }
 
   async run(
@@ -46,7 +52,13 @@ export default class JpegCommand extends Command {
       target: string;
     }
   ) {
+    let rawImg: Buffer;
+    let fileName: string;
+
     if (!target) {
+      ////
+      //  If no target param exists
+      ////
       let messages = msg.channel.messages.cache
         .sort((a, b) => a.createdTimestamp - b.createdTimestamp)
         .array();
@@ -87,29 +99,18 @@ export default class JpegCommand extends Command {
         );
       }
 
-      const res = await got(imageUrl);
-      const fileName = imageUrl.split(".").slice(-2).join(".");
-
-      const processed = await this.jpegify(res.rawBody);
-
-      const attachment = new MessageAttachment(processed, fileName);
-
-      return msg.say("", attachment);
-    }
-
-    // If target param is a URL
-    if (isImageUrl(target)) {
-      const res = await got(target);
-      const fileName = target.split(".").slice(-2).join(".");
-
-      const processed = await this.jpegify(res.rawBody);
-
-      const attachment = new MessageAttachment(processed, fileName);
-
-      return msg.say("", attachment);
-
-      // If target param is not a URL
+      rawImg = (await got(imageUrl)).rawBody;
+      fileName = imageUrl.split(".").slice(-2).join(".");
+    } else if (isImageUrl(target)) {
+      ////
+      //  If target param is a URL
+      ////
+      rawImg = (await got(target)).rawBody;
+      fileName = target.split(".").slice(-2).join(".");
     } else {
+      ////
+      //  If target param is not a URL
+      ////
       let message = await msg.channel.messages
         .fetch(target)
         .catch(() => undefined);
@@ -130,14 +131,18 @@ export default class JpegCommand extends Command {
         );
       }
 
-      const imgBuffer = (await got(msgAttachment.url)).rawBody;
-      const fileName = msgAttachment.url.split(".").slice(-2).join(".");
+      rawImg = (await got(msgAttachment.url)).rawBody;
+      fileName = msgAttachment.url.split(".").slice(-2).join(".");
+    }
 
-      const processed = await this.jpegify(imgBuffer);
-
-      const attachment = new MessageAttachment(processed, fileName);
-
-      return msg.say("", attachment);
+    try {
+      return msg.say(
+        "",
+        new MessageAttachment(await this.jpegify(rawImg), fileName)
+      );
+    } catch (e) {
+      console.log(e);
+      return msg.say("Unable to process image :(");
     }
   }
 }
