@@ -36,7 +36,6 @@ export default class JpegCommand extends Command {
     }
   ) {
     let imgUrl: string;
-    let fileName: string;
 
     if (!target) {
       ////
@@ -83,13 +82,11 @@ export default class JpegCommand extends Command {
       }
 
       imgUrl = url;
-      fileName = url.split(".").slice(-2).join(".");
     } else if (isImageUrl(target)) {
       ////
       //  If target param is a URL
       ////
       imgUrl = target;
-      fileName = target.split(".").slice(-2).join(".");
     } else {
       ////
       //  If target param is not a URL
@@ -115,7 +112,6 @@ export default class JpegCommand extends Command {
       }
 
       imgUrl = msgAttachment.url;
-      fileName = msgAttachment.url.split(".").slice(-2).join(".");
     }
 
     try {
@@ -136,7 +132,7 @@ export default class JpegCommand extends Command {
       );
     } catch (e) {
       console.error(e);
-      return msg.say("Unable to JPEGify image D:");
+      return msg.say("Unable to JPEGify the image D:");
     }
   }
 }

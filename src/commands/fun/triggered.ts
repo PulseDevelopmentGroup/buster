@@ -20,8 +20,8 @@ export default class TriggeredCommand extends Command {
         guildOnly: true,
         args: [
           {
-            key: "message",
-            prompt: "gargledygook",
+            key: "avatar",
+            prompt: "Literally anything",
             type: "string",
             default: "",
           },
