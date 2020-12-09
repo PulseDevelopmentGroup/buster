@@ -3,7 +3,6 @@ import { MessageAttachment } from "discord.js";
 import { config, setupCommand } from "../../config";
 import { isImageUrl, getImageUrl } from "../../util";
 import jimp from "jimp";
-import got from "got";
 
 export default class JpegCommand extends Command {
   constructor(client: CommandoClient) {
@@ -28,22 +27,6 @@ export default class JpegCommand extends Command {
     );
   }
 
-  async jpegify(image: Buffer): Promise<Buffer> {
-    jimp.read(image).then((image) => {
-      image
-        .resize(config.commands.jpeg.vars.resize, jimp.AUTO)
-        .dither565()
-        .quality(config.commands.jpeg.vars.jpeg)
-        .getBuffer(jimp.MIME_JPEG, (err, buf) => {
-          if (err) {
-            return Promise.reject(err);
-          }
-          return buf;
-        });
-    });
-    return Promise.reject(new Error("Unable to read image"));
-  }
-
   async run(
     msg: CommandoMessage,
     {
@@ -52,7 +35,7 @@ export default class JpegCommand extends Command {
       target: string;
     }
   ) {
-    let rawImg: Buffer;
+    let imgUrl: string;
     let fileName: string;
 
     if (!target) {
@@ -83,29 +66,29 @@ export default class JpegCommand extends Command {
         }
       }
 
-      let imageUrl =
+      let url =
         lastMessage.attachments.first()?.url ??
         getImageUrl(lastMessage.content);
 
-      if (!imageUrl) {
+      if (!url) {
         return msg.say(
           "Hmm... There doesn't appear to be an image in the last message. Try specifying a message ID."
         );
       }
 
-      if (!isImageUrl(imageUrl)) {
+      if (!isImageUrl(url)) {
         return msg.say(
           "Wat. I can't seem to recognize that attachment as an image D:"
         );
       }
 
-      rawImg = (await got(imageUrl)).rawBody;
-      fileName = imageUrl.split(".").slice(-2).join(".");
+      imgUrl = url;
+      fileName = url.split(".").slice(-2).join(".");
     } else if (isImageUrl(target)) {
       ////
       //  If target param is a URL
       ////
-      rawImg = (await got(target)).rawBody;
+      imgUrl = target;
       fileName = target.split(".").slice(-2).join(".");
     } else {
       ////
@@ -131,18 +114,29 @@ export default class JpegCommand extends Command {
         );
       }
 
-      rawImg = (await got(msgAttachment.url)).rawBody;
+      imgUrl = msgAttachment.url;
       fileName = msgAttachment.url.split(".").slice(-2).join(".");
     }
 
     try {
       return msg.say(
         "",
-        new MessageAttachment(await this.jpegify(rawImg), fileName)
+        new MessageAttachment(
+          await jimp.read(imgUrl).then((i) => {
+            return i
+              .resize(config.commands.jpeg.vars.resize, jimp.AUTO)
+              .dither565()
+              .quality(config.commands.jpeg.vars.jpeg)
+              .getBufferAsync(jimp.MIME_JPEG)
+              .then((b) => {
+                return b;
+              });
+          })
+        )
       );
     } catch (e) {
-      console.log(e);
-      return msg.say("Unable to process image :(");
+      console.error(e);
+      return msg.say("Unable to JPEGify image D:");
     }
   }
 }

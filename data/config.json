@@ -1,14 +1,9 @@
 {
-  "owners": [
-    "217448431545745408",
-    "140599441328439297"
-  ],
+  "owners": ["217448431545745408", "140599441328439297"],
   "commands": {
     "corn": {
       "options": {
-        "aliases": [
-          "🌽"
-        ]
+        "aliases": ["🌽"]
       },
       "vars": {
         "cornURL": "https://dl.carsonseese.com/discord/corn.jpg",
@@ -26,37 +21,26 @@
     },
     "techtip": {
       "options": {
-        "aliases": [
-          "sup"
-        ]
+        "aliases": ["sup"]
       }
     },
     "jpeg": {
       "options": {
-        "aliases": [
-          "jpg"
-        ]
+        "aliases": ["jpg"]
       },
       "vars": {
         "resize": 512,
-        "gamma": 3,
         "jpeg": 1
       }
     },
     "botctl": {
       "options": {
-        "aliases": [
-          "ctl",
-          "debug"
-        ]
+        "aliases": ["ctl", "debug"]
       }
     },
     "no": {
       "options": {
-        "aliases": [
-          "bad",
-          "nope"
-        ]
+        "aliases": ["bad", "nope"]
       }
     },
     "triggered": {
@@ -69,11 +53,7 @@
     },
     "gif": {
       "options": {
-        "aliases": [
-          "gifs",
-          "jif",
-          "jifs"
-        ],
+        "aliases": ["gifs", "jif", "jifs"],
         "throttling": {
           "duration": 60,
           "usages": 5
