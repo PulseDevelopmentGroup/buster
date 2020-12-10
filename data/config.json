@@ -33,6 +33,17 @@
         "jpeg": 1
       }
     },
+    "fry": {
+      "options": {
+        "aliases": ["deepfry"]
+      },
+      "vars": {
+        "jpeg": 15,
+        "posterize": 50,
+        "contrast": 1,
+        "brightness": -0.1
+      }
+    },
     "botctl": {
       "options": {
         "aliases": ["ctl", "debug"]
