@@ -133,7 +133,7 @@ export default class TriggeredCommand extends Command {
                 .posterize(50)
                 .contrast(1)
                 .brightness(-0.1)
-                .color([{ apply: "", params: [50] }])
+                .color([{ apply: "saturate" as any, params: [100] }])
                 .getBufferAsync(jimp.MIME_JPEG)
                 .then((b) => {
                   return b;
