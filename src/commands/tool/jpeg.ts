@@ -35,6 +35,7 @@ export default class JpegCommand extends Command {
       target: string;
     }
   ) {
+    const mentioned = msg.mentions?.users?.first();
     let imgUrl: string;
 
     if (!target) {
@@ -87,6 +88,11 @@ export default class JpegCommand extends Command {
       //  If target param is a URL
       ////
       imgUrl = target;
+    } else if (mentioned) {
+      ////
+      //  If target param is a mention
+      ////
+      imgUrl = mentioned.displayAvatarURL().slice(0, -5);
     } else {
       ////
       //  If target param is not a URL
@@ -120,8 +126,7 @@ export default class JpegCommand extends Command {
         new MessageAttachment(
           await jimp.read(imgUrl).then((i) => {
             return i
-              .resize(config.commands.jpeg.vars.resize, jimp.AUTO)
-              .dither565()
+              .posterize(config.commands.jpeg.vars.posterize)
               .quality(config.commands.jpeg.vars.jpeg)
               .getBufferAsync(jimp.MIME_JPEG)
               .then((b) => {
