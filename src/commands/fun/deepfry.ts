@@ -1,10 +1,27 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
-import { isImageUrl, getImageUrl } from "../../util";
+import {
+  isImageUrl,
+  getImageUrl,
+  getRandomBool,
+  getRandomInt,
+} from "../../util";
 import { config, setupCommand } from "../../config";
 import { MessageAttachment } from "discord.js";
+import jimpConfig from "@jimp/custom";
+import jimpPlugins from "@jimp/plugins";
+import jimpTypes from "@jimp/types";
+import jimpFisheye from "@jimp/plugin-fisheye";
 import jimp from "jimp";
+import path from "path";
 
-export default class TriggeredCommand extends Command {
+// TODO: At this point, this custom config is not required.
+// It would be nice to get the fisheye function working however, so I'm leaving it here.
+const fryJimp = jimpConfig({
+  types: [jimpTypes],
+  plugins: [jimpPlugins, jimpFisheye],
+});
+
+export default class DeepfryCommand extends Command {
   constructor(client: CommandoClient) {
     super(
       client,
@@ -36,7 +53,7 @@ export default class TriggeredCommand extends Command {
   ) {
     const mentioned = msg.mentions?.users?.first();
     let imgUrl: string | undefined;
-    /*
+
     if (!target) {
       ////
       //  If no target param exists
@@ -91,7 +108,7 @@ export default class TriggeredCommand extends Command {
       ////
       //  If target param is a mention
       ////
-      imgUrl = mentioned.displayAvatarURL();
+      imgUrl = mentioned.displayAvatarURL().slice(0, -5);
     } else {
       ////
       //  If target param is not a URL
@@ -117,33 +134,86 @@ export default class TriggeredCommand extends Command {
       }
 
       imgUrl = msgAttachment.url;
-    }*/
+    }
 
     try {
+      msg.channel.startTyping();
+
+      const pixels = getRandomInt(3, 2);
+      const useOkHand = getRandomBool(config.commands.fry.vars.okHandProb);
+      const numHands = getRandomInt(config.commands.fry.vars.maxHands, 1);
+      const useWearyFace = getRandomBool(
+        config.commands.fry.vars.wearyFaceProb
+      );
+
+      let imgOkHand: jimp;
+      if (useOkHand) {
+        imgOkHand = await fryJimp.read(
+          path.join(__dirname, "../../assets/ok-hand.png")
+        );
+      }
+
+      let imgWearyFace: jimp;
+      if (useWearyFace) {
+        imgWearyFace = await fryJimp.read(
+          path.join(__dirname, "../../assets/weary-face.png")
+        );
+      }
+
       return msg.say(
         "",
         new MessageAttachment(
-          await jimp
-            .read(
-              "https://images.unsplash.com/photo-1606126210582-3a17753188b9?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=raja-sen-FrjdQhKSWb0-unsplash.jpg&w=1920"
-            )
-            .then((i) => {
-              return i
-                .quality(config.commands.fry.vars.jpeg)
-                .posterize(50)
-                .contrast(1)
-                .brightness(-0.1)
-                .color([{ apply: "saturate" as any, params: [100] }])
-                .getBufferAsync(jimp.MIME_JPEG)
-                .then((b) => {
-                  return b;
-                });
-            })
+          await fryJimp.read(imgUrl).then((i) => {
+            if (useOkHand) {
+              imgOkHand.scaleToFit(
+                i.getWidth() * config.commands.fry.vars.superimposeScale,
+                i.getHeight() * config.commands.fry.vars.superimposeScale
+              );
+
+              for (let q = 1; q <= numHands; q++) {
+                this.superimpose(i, imgOkHand);
+              }
+            }
+
+            if (useWearyFace) {
+              imgWearyFace.scaleToFit(
+                i.getWidth() * config.commands.fry.vars.superimposeScale,
+                i.getHeight() * config.commands.fry.vars.superimposeScale
+              );
+
+              this.superimpose(i, imgWearyFace);
+            }
+
+            return i
+              .pixelate(pixels)
+              .posterize(config.commands.fry.vars.posterize)
+              .contrast(config.commands.fry.vars.contrast)
+              .color([
+                {
+                  apply: "mix",
+                  params: ["#eb4034", config.commands.fry.vars.redMixOpacity],
+                },
+              ])
+              .quality(config.commands.fry.vars.jpeg)
+              .getBufferAsync(fryJimp.MIME_JPEG)
+              .then((b) => {
+                msg.channel.stopTyping();
+                return b;
+              });
+          })
         )
       );
     } catch (e) {
       console.error(e);
       return msg.say("Unable to fry the image D:");
     }
+  }
+
+  superimpose(baseImage: jimp, srcImage: jimp) {
+    baseImage.blit(
+      srcImage,
+      getRandomInt(baseImage.getWidth() - srcImage.getWidth()),
+      getRandomInt(baseImage.getHeight() - srcImage.getHeight())
+    );
   }
 }

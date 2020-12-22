@@ -39,9 +39,13 @@
       },
       "vars": {
         "jpeg": 15,
-        "posterize": 50,
-        "contrast": 1,
-        "brightness": -0.1
+        "posterize": 8,
+        "contrast": 0.95,
+        "redMixOpacity": 15,
+        "superimposeScale": 0.2,
+        "wearyFaceProb": 0.5,
+        "okHandProb": 0.75,
+        "maxHands": 3
       }
     },
     "botctl": {
