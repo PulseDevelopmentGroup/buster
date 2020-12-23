@@ -248,11 +248,17 @@ export default class DeepfryCommand extends Command {
       // Generate noise and apply to image
       const out = await this.gmToBuffer(gm(jimpOut).noise("laplacian"));
 
+      if (out.length <= 0) {
+        throw new Error(
+          "Buffer is empty, this probably means the image could not be read or GraphicsMagick died."
+        );
+      }
+
       msg.channel.stopTyping();
       return msg.say("", new MessageAttachment(out));
     } catch (e) {
       console.error(e);
-      return msg.say("Unable to fry the image D:");
+      return msg.say(`Unable to fry the image... "${e}"`);
     }
   }
 
