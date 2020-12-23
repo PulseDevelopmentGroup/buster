@@ -255,7 +255,7 @@ export default class DeepfryCommand extends Command {
       }
 
       msg.channel.stopTyping();
-      return msg.say("", new MessageAttachment(out));
+      return msg.say("", new MessageAttachment(out, "fried.jpg"));
     } catch (e) {
       console.error(e);
       return msg.say(`Unable to fry the image... "${e}"`);
@@ -277,7 +277,7 @@ export default class DeepfryCommand extends Command {
         if (err) {
           return reject(err);
         }
-        const chunks: any = []; //TODO: Give this a type
+        const chunks: any = []; //TODO: Give this the correct type
         stdout.on("data", (chunk) => {
           chunks.push(chunk);
         });
