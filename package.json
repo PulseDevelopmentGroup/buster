@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/PulseDevelopmentGroup/buster#readme",
   "devDependencies": {
+    "@types/gm": "^1.18.9",
     "@types/ws": "^7.4.0",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.11.0",
@@ -40,6 +41,7 @@
     "dotenv": "^8.2.0",
     "faker": "^5.1.0",
     "gifencoder": "^2.0.1",
+    "gm": "^1.23.1",
     "got": "^11.8.1",
     "jimp": "^0.16.1",
     "sharp": "^0.26.3",
