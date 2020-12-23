@@ -1,3 +1,4 @@
+import { MessageAttachment } from "discord.js";
 import { Command, CommandoMessage } from "discord.js-commando";
 import { config, getConfig, setupCommand } from "../../config";
 
@@ -42,7 +43,13 @@ export default class DebugCommand extends Command {
           });
         break;
       case "config":
-        return msg.say(`\`\`\`json\n${JSON.stringify(config, null, 2)}\`\`\``);
+        return msg.say(
+          "",
+          new MessageAttachment(
+            Buffer.from(JSON.stringify(config)),
+            "config.json"
+          )
+        );
       default:
         return msg.say("tHe CoDe MoNkEyS bRoKe It");
     }
