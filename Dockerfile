@@ -2,9 +2,7 @@
 FROM node:lts-alpine AS base
 
 # Install dependencies
-RUN apk --no-cache add git
-
-RUN apk --no-cache add g++ gcc libgcc libstdc++ linux-headers make python \
+RUN apk --no-cache add git g++ gcc libgcc libstdc++ linux-headers make python \
   pkgconfig pixman-dev cairo-dev pango-dev giflib-dev jpeg-dev
 
 ## Build Image
@@ -22,6 +20,9 @@ RUN npm run build
 
 ## Release Image
 FROM node:lts-alpine AS release
+
+# Install Graphicsmagick
+RUN apk --no-cache add graphicsmagick
 
 # Set workdir and copy build output
 WORKDIR /app
