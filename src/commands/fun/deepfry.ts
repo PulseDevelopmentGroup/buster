@@ -183,7 +183,7 @@ export default class DeepfryCommand extends Command {
       }
 
       // Start applying image effects
-      let out = await fryJimp.read(imgUrl).then((i) => {
+      const jimpOut = await fryJimp.read(imgUrl).then((i) => {
         i.pixelate(pixels)
           .posterize(config.commands.fry.vars.posterize)
           .contrast(config.commands.fry.vars.contrast)
@@ -245,19 +245,8 @@ export default class DeepfryCommand extends Command {
         });
       });
 
-      // Ideally, we will add some level of noise to the final image,
-      // but there doesn't seem to be a clear cut way to accomplish that (See below).
-      // If noise is to be added, this is where it would happen.
-
-      // gm(out)
-      //   .noise("g")
-      //   .toBuffer((e, b) => {
-      //     if (e) throw e;
-      //     out = b;
-      //     // Note: This does not work because this function is called async
-      //     // from the rest of the code (I think). If there is a way to change that,
-      //     // that would be ideal.
-      //   });
+      // Generate noise and apply to image
+      const out = await this.gmToBuffer(gm(jimpOut).noise("laplacian"));
 
       msg.channel.stopTyping();
       return msg.say("", new MessageAttachment(out));
@@ -274,5 +263,27 @@ export default class DeepfryCommand extends Command {
       getRandomInt(baseImage.getWidth() - srcImage.getWidth()),
       getRandomInt(baseImage.getHeight() - srcImage.getHeight())
     );
+  }
+
+  gmToBuffer(data: gm.State) {
+    return new Promise<Buffer>((resolve, reject) => {
+      data.stream((err, stdout, stderr) => {
+        if (err) {
+          return reject(err);
+        }
+        const chunks: any = []; //TODO: Give this a type
+        stdout.on("data", (chunk) => {
+          chunks.push(chunk);
+        });
+        // these are 'once' because they can and do fire multiple times for multiple errors,
+        // but this is a promise so you'll have to deal with them one at a time
+        stdout.once("end", () => {
+          resolve(Buffer.concat(chunks));
+        });
+        stderr.once("data", (data) => {
+          reject(String(data));
+        });
+      });
+    });
   }
 }
