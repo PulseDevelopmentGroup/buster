@@ -21,7 +21,7 @@ function main() {
 
   sqlite
     .open({
-      filename: path.join(__dirname, env.dbPath),
+      filename: path.join(env.dbPath),
       driver: sqlite3.Database,
     })
     .catch((e) => {

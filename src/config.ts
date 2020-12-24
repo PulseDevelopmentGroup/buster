@@ -31,9 +31,7 @@ export async function getConfig() {
     const response = await got.get(env.config);
     config = JSON.parse(response.body);
   } else {
-    config = JSON.parse(
-      fs.readFileSync(path.join(__dirname, env.config)).toString()
-    );
+    config = JSON.parse(fs.readFileSync(env.config).toString());
   }
 }
 
