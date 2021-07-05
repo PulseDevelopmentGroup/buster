@@ -23,29 +23,34 @@
   "devDependencies": {
     "@types/gm": "^1.18.9",
     "@types/ws": "^7.4.0",
-    "@typescript-eslint/eslint-plugin": "^4.11.0",
-    "@typescript-eslint/parser": "^4.11.0",
-    "eslint": "^7.16.0",
-    "nodemon": "^2.0.6",
+    "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/parser": "^4.15.1",
+    "eslint": "^7.20.0",
+    "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
     "ts-node": "^9.1.1",
-    "typescript": "^4.1.3"
+    "typescript": "^4.1.5"
   },
   "dependencies": {
-    "@types/faker": "^5.1.5",
+    "@types/faker": "^5.1.6",
     "@types/gifencoder": "^2.0.0",
-    "@types/node": "^14.14.14",
+    "@types/node": "^14.14.28",
     "@types/sharp": "^0.26.1",
+    "bufferutil": "^4.0.3",
+    "chrono-node": "^2.2.1",
     "discord.js": "^12.5.1",
     "discord.js-commando": "git+https://github.com/discordjs/Commando.git",
     "dotenv": "^8.2.0",
-    "faker": "^5.1.0",
+    "erlpack": "^0.1.3",
+    "faker": "^5.4.0",
     "gifencoder": "^2.0.1",
     "gm": "^1.23.1",
     "got": "^11.8.1",
     "jimp": "^0.16.1",
     "sharp": "^0.26.3",
-    "sqlite": "^4.0.18",
-    "sqlite3": "^5.0.0"
+    "sqlite": "^4.0.19",
+    "sqlite3": "^5.0.2",
+    "utf-8-validate": "^5.0.5",
+    "zlib-sync": "^0.1.7"
   }
 }
