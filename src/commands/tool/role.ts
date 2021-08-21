@@ -60,6 +60,12 @@ export default class RoleCommand extends Command {
       return msg.embed(embed);
     }
 
+    if (!msg.member) {
+      return msg.say(
+        `Hmm... I can't seem to figure out who sent that message :/`
+      );
+    }
+
     if (["g", "give", "gib"].includes(action)) {
       let guildRole: Role | undefined;
 
