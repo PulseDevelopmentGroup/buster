@@ -47,7 +47,15 @@ export default class IntentCommand extends Command {
       },
       requestedAttributes: {
         TOXICITY: {},
+        SEVERE_TOXICITY: {},
+        IDENTITY_ATTACK: {},
+        INSULT: {},
+        PROFANITY: {},
+        THREAT: {},
+        SEXUALLY_EXPLICIT: {},
+        FLIRTATION: {},
       },
+      doNotStore: true,
     };
 
     const res: any = await new Promise((resolve, reject) =>
