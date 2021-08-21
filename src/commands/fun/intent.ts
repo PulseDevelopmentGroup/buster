@@ -29,9 +29,21 @@ export default class IntentCommand extends Command {
   async run(msg: CommandoMessage, { messageId }: { messageId: string }) {
     const client = await google.discoverAPI(PERSPECTIVE_URL);
 
+    let targetMessage: Message | undefined;
+
+    if (messageId) {
+      targetMessage = await msg.channel.messages.fetch(messageId);
+    } else {
+      const channelMessages = msg.channel.messages.cache
+        .sort((a, b) => (a.createdTimestamp = b.createdTimestamp))
+        .array();
+
+      [targetMessage] = channelMessages.slice(-2, -1);
+    }
+
     const req = {
       comment: {
-        text: msg.content,
+        text: targetMessage.content,
       },
       requestedAttributes: {
         TOXICITY: {},
