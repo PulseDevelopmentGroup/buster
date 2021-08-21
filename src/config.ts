@@ -19,6 +19,7 @@ export async function getConfig() {
     config: process.env.CONFIG_URL!,
     dbPath: process.env.DB_PATH!,
     prefix: process.env.PREFIX ?? "!",
+    perspectiveApiKey: process.env.PERSPECTIVE_API_KEY!,
   };
 
   if (!env.botToken || !env.config || !env.dbPath) {

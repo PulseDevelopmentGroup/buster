@@ -6,6 +6,7 @@ export interface Environment {
   config: string;
   prefix: string;
   dbPath: string;
+  perspectiveApiKey: string;
 }
 
 export interface Configuration {
