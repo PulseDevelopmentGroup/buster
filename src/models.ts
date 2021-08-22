@@ -11,12 +11,12 @@ export class CommandConfigNotSpecifiedError extends Error {
 }
 
 export enum IntentAttributeNameLookup {
-  TOXICITY = "Toxicity",
-  SEVERE_TOXICITY = "Severe Toxicity",
-  IDENTITY_ATTACK = "Identity Attack",
-  INSULT = "Insult",
-  PROFANITY = "Profanity",
-  THREAT = "Threat",
-  SEXUALLY_EXPLICIT = "Sexually Explicit",
-  FLIRTATION = "Flirtation",
+  TOXICITY = ":skull: Toxicity",
+  SEVERE_TOXICITY = ":skull_crossbones: Severe Toxicity",
+  IDENTITY_ATTACK = ":point_right: Identity Attack",
+  INSULT = ":cold_face: Insult",
+  PROFANITY = ":face_with_symbols_over_mouth: Profanity",
+  THREAT = ":dagger: Threat",
+  SEXUALLY_EXPLICIT = ":eggplant: Sexually Explicit",
+  FLIRTATION = ":kissing_heart: Flirtation",
 }
