@@ -89,6 +89,7 @@ export default class IntentCommand extends Command {
     if (res.status === 200) {
       const embed = new MessageEmbed()
         .setTitle("Intent Summary")
+        .setColor("#f5b342")
         .setDescription(`Intent Analysis for \`${targetMessage.content}\``);
 
       const { attributeScores } = res.data;
