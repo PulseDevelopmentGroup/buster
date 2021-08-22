@@ -42,6 +42,9 @@ export default class IntentCommand extends Command {
     }
 
     if (!targetMessage) {
+      if (msg.channel.messages.cache.size === 0) {
+        await msg.channel.messages.fetch();
+      }
       const channelMessages = msg.channel.messages.cache
         .sort((a, b) => (a.createdTimestamp = b.createdTimestamp))
         .array();
