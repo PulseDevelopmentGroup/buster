@@ -3,6 +3,7 @@ import { env, setupCommand } from "../../config";
 import { google } from "googleapis";
 import { PERSPECTIVE_URL } from "../../constants";
 import { Message, MessageEmbed } from "discord.js";
+import { IntentAttributeNameLookup } from "../../models";
 
 export default class IntentCommand extends Command {
   constructor(client: CommandoClient) {
@@ -82,12 +83,22 @@ export default class IntentCommand extends Command {
 
       const { attributeScores } = res.data;
 
-      Object.entries(attributeScores).forEach(
-        ([attribute, scoreSummary]: [string, any]) => {
+      Object.entries(attributeScores)
+        .sort(([ka], [kb]) => (ka > kb ? 1 : kb > ka ? -1 : 0))
+        .forEach(([attribute, scoreSummary]: [string, any]) => {
           // This is jank and I take no responsibility
-          embed.addField(attribute, scoreSummary.spanScores[0].score.value);
-        }
-      );
+
+          const name: string =
+            IntentAttributeNameLookup[
+              attribute as keyof typeof IntentAttributeNameLookup
+            ];
+
+          const percent = Math.floor(
+            scoreSummary.spanScores[0].score.value * 100
+          );
+
+          embed.addField(name, `${percent}%`);
+        });
 
       return msg.embed(embed);
     }
