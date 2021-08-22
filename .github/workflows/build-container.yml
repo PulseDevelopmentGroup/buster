@@ -20,6 +20,18 @@ jobs:
         with:
           path: "package.json"
           prop_path: "version"
+          
+      - name: Create tag
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{steps.version.outputs.prop}}",
+              sha: context.sha
+            })
 
       - name: "Docker Build/Push"
         id: build
