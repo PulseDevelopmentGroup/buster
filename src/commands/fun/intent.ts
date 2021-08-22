@@ -34,13 +34,23 @@ export default class IntentCommand extends Command {
     let targetMessage: Message | undefined;
 
     if (messageId) {
-      targetMessage = await msg.channel.messages.fetch(messageId);
-    } else {
+      const specifiedMessage = await msg.channel.messages.fetch(messageId);
+
+      if (specifiedMessage?.content) {
+        targetMessage = specifiedMessage;
+      }
+    }
+
+    if (!targetMessage) {
       const channelMessages = msg.channel.messages.cache
         .sort((a, b) => (a.createdTimestamp = b.createdTimestamp))
         .array();
 
       [targetMessage] = channelMessages.slice(-2, -1);
+    }
+
+    if (!targetMessage?.content) {
+      return msg.say("Sorry, I couldn't figure out how to analyze that :/");
     }
 
     const req = {
