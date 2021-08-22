@@ -19,9 +19,9 @@ export default class IntentCommand extends Command {
         args: [
           {
             key: "messageId",
-            prompt: "What message should I figure out the intent for?",
+            prompt: "what message should I figure out the intent for?",
             type: "string",
-            error: "Hmm... I'm not seeing a message with that id :(",
+            error: "hmm... I'm not seeing a message with that id :(",
             default: "",
           },
         ],

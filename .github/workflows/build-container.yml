@@ -1,10 +1,9 @@
 name: Build Container
 
 on:
-  workflow_dispatch:
-  push:
-    tags:
-      - 'v*'
+  repository_dispatch:
+    types: ["build-container"]
+
 jobs:
   build:
     name: Build
@@ -17,14 +16,18 @@ jobs:
 
       - name: Get the version
         id: version
-        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: "package.json"
+          prop_path: "version"
 
       - name: "Docker Build/Push"
         id: build
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: pulsedevelopmentgroup/buster/buster
+          name: pulsedevelopmentgroup/buster/testing
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          tags: "latest,${{ steps.version.outputs.VERSION }}"
+          tags: "latest,v${{steps.version.outputs.prop}}"
+          buildargs: VERSION=${{steps.version.outputs.prop}}

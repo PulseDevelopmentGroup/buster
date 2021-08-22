@@ -11,7 +11,6 @@ export default class DebugCommand extends Command {
         group: "dev",
         memberName: "debug",
         description: "cOnTrOl ThE bOt",
-        guildOnly: true,
         ownerOnly: true,
         args: [
           {
