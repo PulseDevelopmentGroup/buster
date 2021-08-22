@@ -7,7 +7,7 @@ export default class TestCommand extends Command {
       client,
       setupCommand({
         name: "test",
-        group: "util",
+        group: "dev",
         memberName: "test",
         description: "Testing things (obviously)",
         guildOnly: true,

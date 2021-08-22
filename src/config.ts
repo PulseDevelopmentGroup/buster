@@ -16,10 +16,12 @@ export async function getConfig() {
   env = {
     botToken: process.env.BOT_TOKEN!,
     tenorToken: process.env.TENOR_TOKEN!,
+    perspectiveApiKey: process.env.PERSPECTIVE_API_KEY!,
+    githubApiKey: process.env.GITHUB_API_KEY!,
     config: process.env.CONFIG_URL!,
     dbPath: process.env.DB_PATH!,
     prefix: process.env.PREFIX ?? "!",
-    perspectiveApiKey: process.env.PERSPECTIVE_API_KEY!,
+    version: process.env.VERSION ?? "0.0.0",
   };
 
   if (!env.botToken || !env.config || !env.dbPath) {

@@ -51,14 +51,19 @@
         "maxHands": 3
       }
     },
-    "botctl": {
+    "debug": {
       "options": {
-        "aliases": ["ctl", "debug"]
+        "aliases": ["botctl", "ctl"]
       }
     },
     "no": {
       "options": {
         "aliases": ["bad", "nope"]
+      }
+    },
+    "intent": {
+      "options": {
+        "aliases": ["toxic"]
       }
     },
     "triggered": {

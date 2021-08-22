@@ -1,9 +1,8 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { setupCommand } from "../../config";
 import { MessageEmbed } from "discord.js";
+import { INSPIRE_URL } from "../../constants";
 import got from "got";
-
-const url = "http://inspirobot.me/api";
 
 export default class InspireCommand extends Command {
   constructor(client: CommandoClient) {
@@ -21,7 +20,9 @@ export default class InspireCommand extends Command {
   }
 
   async run(msg: CommandoMessage) {
-    const { body } = await got.get(url, { searchParams: { generate: true } });
+    const { body } = await got.get(INSPIRE_URL, {
+      searchParams: { generate: true },
+    });
 
     if (body) {
       return msg.embed(

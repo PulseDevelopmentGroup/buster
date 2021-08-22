@@ -15,6 +15,7 @@ export default class IntentCommand extends Command {
         memberName: "intent",
         description: "Figure out what the _actual_ intent of a message is",
         guildOnly: true,
+        ownerOnly: env.perspectiveApiKey ? false : true,
         args: [
           {
             key: "messageId",

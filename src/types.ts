@@ -7,6 +7,8 @@ export interface Environment {
   prefix: string;
   dbPath: string;
   perspectiveApiKey: string;
+  githubApiKey: string;
+  version: string;
 }
 
 export interface Configuration {

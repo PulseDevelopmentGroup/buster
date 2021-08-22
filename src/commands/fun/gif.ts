@@ -1,8 +1,7 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { setupCommand, config, env } from "../../config";
+import { TENOR_URL } from "../../constants";
 import got from "got";
-
-const url = "https://api.tenor.com/v1/random";
 
 export default class GifCommand extends Command {
   constructor(client: CommandoClient) {
@@ -14,6 +13,7 @@ export default class GifCommand extends Command {
         memberName: "gif",
         description: "Random gif getter, use at your own risk",
         guildOnly: true,
+        ownerOnly: env.tenorToken ? false : true,
         args: [
           {
             key: "search",
@@ -33,7 +33,7 @@ export default class GifCommand extends Command {
       search = terms[Math.floor(Math.random() * terms.length)];
     }
 
-    const { body } = await got.get(url, {
+    const { body } = await got.get(TENOR_URL, {
       searchParams: {
         key: env.tenorToken,
         q: search,

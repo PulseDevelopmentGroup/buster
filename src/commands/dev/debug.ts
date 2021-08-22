@@ -7,9 +7,9 @@ export default class DebugCommand extends Command {
     super(
       client,
       setupCommand({
-        name: "botctl",
-        group: "util",
-        memberName: "botctl",
+        name: "debug",
+        group: "dev",
+        memberName: "debug",
         description: "cOnTrOl ThE bOt",
         guildOnly: true,
         ownerOnly: true,
