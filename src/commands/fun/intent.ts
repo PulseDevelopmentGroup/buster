@@ -2,6 +2,7 @@ import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { env, setupCommand } from "../../config";
 import { google } from "googleapis";
 import { PERSPECTIVE_URL } from "../../constants";
+import { Message, MessageEmbed } from "discord.js";
 
 export default class IntentCommand extends Command {
   constructor(client: CommandoClient) {
@@ -74,10 +75,21 @@ export default class IntentCommand extends Command {
       )
     );
 
-    console.log(res);
-
     if (res.status === 200) {
-      return msg.say(JSON.stringify(res.data));
+      const embed = new MessageEmbed()
+        .setTitle("Intent Summary")
+        .setDescription(`Intent Analysis for \`${targetMessage.content}\``);
+
+      const { attributeScores } = res.data;
+
+      Object.entries(attributeScores).forEach(
+        ([attribute, scoreSummary]: [string, any]) => {
+          // This is jank and I take no responsibility
+          embed.addField(attribute, scoreSummary.spanScores[0].score.value);
+        }
+      );
+
+      return msg.embed(embed);
     }
 
     return msg.say("you see nothing...");
