@@ -1,4 +1,4 @@
-import { CommandOptions } from "@sapphire/framework";
+import type { CommandOptions } from "@sapphire/framework";
 
 export interface Environment {
   botToken: string;

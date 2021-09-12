@@ -1,3 +1,5 @@
+import { URL } from "url";
+
 export function isURL(url: string) {
   try {
     new URL(url);

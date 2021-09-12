@@ -1,6 +1,6 @@
-import { CommandOptions } from "@sapphire/framework";
+import type { CommandOptions } from "@sapphire/framework";
+import type { Environment, Configuration } from "./types";
 import { ConfigNotFoundError } from "./models";
-import { Environment, Configuration } from "./types";
 import { isURL } from "./util";
 import dotenv from "dotenv";
 import got from "got";

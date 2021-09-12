@@ -2,7 +2,7 @@
   "name": "buster",
   "version": "4.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "tsc",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "@types/gm": "^1.18.10",
     "@types/ws": "^7.4.7",
+    "@sapphire/ts-config": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
     "eslint": "^7.32.0",
@@ -32,6 +33,7 @@
     "typescript": "^4.4.3"
   },
   "dependencies": {
+    "@sapphire/decorators": "^2.2.0",
     "@sapphire/framework": "^2.0.0-next.852ee878.0",
     "@sapphire/pieces": "^3.0.0",
     "@sapphire/plugin-api": "^2.2.0",

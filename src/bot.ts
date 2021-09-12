@@ -1,5 +1,5 @@
 import { LogLevel, SapphireClient } from "@sapphire/framework";
-import { getConfig } from "./config";
+import { getConfig, env } from "./config";
 
 // Create the client
 const client = new SapphireClient({
@@ -34,7 +34,7 @@ const badStart = (e: Error | unknown) => {
 const main = async () => {
   try {
     client.logger.info("Starting bot...");
-    await client.login();
+    await client.login(env.botToken);
     client.logger.info("Bot started!");
   } catch (e) {
     badStart(e);
