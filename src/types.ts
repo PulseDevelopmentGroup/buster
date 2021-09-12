@@ -1,6 +1,7 @@
 import type { CommandOptions } from "@sapphire/framework";
 
 export interface Environment {
+  dev: boolean;
   botToken: string;
   config: string;
   prefix: string;

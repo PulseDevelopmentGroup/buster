@@ -36,6 +36,7 @@ COPY --from=build /app/node_modules ./node_modules
 # Set version
 ARG VERSION=0.0.0
 ENV VERSION ${VERSION}
+ENV NODE_ENV production
 
 CMD ["node", "bot.js"]
 

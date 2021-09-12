@@ -1,6 +1,11 @@
 import { LogLevel, SapphireClient } from "@sapphire/framework";
 import { getConfig, env } from "./config";
 
+//TODO: Should probably consider making a setup.ts file and consolidating all the config and loaders into that
+import "@sapphire/plugin-logger/register";
+import "@sapphire/plugin-editable-commands";
+//import "@sapphire/plugin-api/register";
+
 // Create the client
 const client = new SapphireClient({
   defaultPrefix: "!",

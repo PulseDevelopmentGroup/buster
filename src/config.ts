@@ -1,4 +1,5 @@
 import type { CommandOptions } from "@sapphire/framework";
+import { options as coloretteOptions } from "colorette";
 import type { Environment, Configuration } from "./types";
 import { ConfigNotFoundError } from "./models";
 import { isURL } from "./util";
@@ -10,9 +11,15 @@ export let env: Environment;
 export let config: Configuration;
 
 export async function getConfig() {
+  // Set NODE_ENV to development if undefined
+  process.env.NODE_ENV ??= "development";
+
+  // Load .env file
   dotenv.config();
 
+  // Setup env object
   env = {
+    dev: process.env.NODE_ENV === "development",
     botToken: process.env.BOT_TOKEN!,
     tenorApiKey: process.env.TENOR_TOKEN,
     perspectiveApiKey: process.env.PERSPECTIVE_API_KEY,
@@ -25,10 +32,17 @@ export async function getConfig() {
     version: process.env.VERSION ?? "0.0.0",
   };
 
+  // Set development settings
+  if (env.dev) {
+    coloretteOptions.enabled = true;
+  }
+
+  // Make sure BOT_TOKEN is set
   if (!env.botToken) {
     throw new ConfigNotFoundError("BOT_TOKEN is not defined");
   }
 
+  // Load config.json file
   if (isURL(env.config)) {
     const response = await got.get(env.config);
     config = JSON.parse(response.body);
