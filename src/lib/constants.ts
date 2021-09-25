@@ -40,3 +40,5 @@ export const CommandOptionsFields = [
   "separators",
   "typing",
 ] as (keyof CommandOptions)[];
+
+export const TENOR_URL = "https://api.tenor.com/v1/random";
