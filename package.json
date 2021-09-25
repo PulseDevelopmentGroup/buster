@@ -23,16 +23,20 @@
     "discord.js": "^13.1.0",
     "dotenv-cra": "^3.0.2",
     "faker": "^5.5.3",
+    "gifencoder": "^2.0.1",
     "gm": "^1.23.1",
     "googleapis": "^87.0.0",
     "got": "^11.8.2",
     "jimp": "^0.16.1",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "sharp": "^0.29.1"
   },
   "devDependencies": {
     "@types/faker": "^5.5.8",
+    "@types/gifencoder": "^2.0.1",
     "@types/gm": "^1.18.10",
     "@types/node": "^16.10.1",
+    "@types/sharp": "^0.29.2",
     "@types/ws": "^7.4.7",
     "prettier": "^2.3.2",
     "tsc-watch": "^4.5.0",
