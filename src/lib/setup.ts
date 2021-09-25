@@ -7,12 +7,10 @@ import "@sapphire/plugin-api/register";
 import "@sapphire/plugin-editable-commands";
 import { options as coloretteOptions } from "colorette";
 import { config } from "dotenv-cra";
-import { join } from "path";
 import { inspect } from "util";
-import { srcDir } from "./constants";
 
 // Read env var
-config({ path: join(srcDir, ".env") });
+config();
 
 // Set default inspection depth
 inspect.defaultOptions.depth = 1;
