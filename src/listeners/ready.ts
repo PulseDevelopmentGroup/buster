@@ -47,11 +47,11 @@ ${line02} ${pad}[${success}] Gateway
 ${line03}${
         dev
           ? ` ${pad}${blc("<")}${llc("/")}${blc(">")} ${llc(
-              "DEVELOPMENT MODE"
+              "DEVELOPMENT MODE",
             )}`
           : ""
       }
-		`.trim()
+		`.trim(),
     );
   }
 
@@ -67,8 +67,8 @@ ${line03}${
   private styleStore(store: Store<any>, last: boolean) {
     return gray(
       `${last ? "└─" : "├─"} Loaded ${this.style(
-        store.size.toString().padEnd(3, " ")
-      )} ${store.name}.`
+        store.size.toString().padEnd(3, " "),
+      )} ${store.name}.`,
     );
   }
 }

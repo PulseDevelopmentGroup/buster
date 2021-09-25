@@ -9,7 +9,7 @@ import { send } from "@sapphire/plugin-editable-commands";
 @ApplyOptions<CommandOptions>(
   applyConfig("jpeg", {
     description: "More JPEG. 'nuff said",
-  })
+  }),
 )
 export class JpegCommand extends Command {
   public async run(msg: Message, args: Args) {
@@ -37,14 +37,14 @@ export class JpegCommand extends Command {
       if (!url) {
         return send(
           msg,
-          "Hmm... There doesn't appear to be an image in the last message. Try specifying a message ID."
+          "Hmm... There doesn't appear to be an image in the last message. Try specifying a message ID.",
         );
       }
 
       if (!isImageURL(url)) {
         return send(
           msg,
-          "Wat. I can't seem to recognize that attachment as an image D:"
+          "Wat. I can't seem to recognize that attachment as an image D:",
         );
       }
 
@@ -80,7 +80,7 @@ export class JpegCommand extends Command {
       if (!isImageURL(msgAttachment.url)) {
         return send(
           msg,
-          "The specified message doesn't appear to have any JPEGifiable attachments."
+          "The specified message doesn't appear to have any JPEGifiable attachments.",
         );
       }
 

@@ -10,7 +10,7 @@ import { TENOR_URL } from "../../lib/constants";
 @ApplyOptions<CommandOptions>(
   applyConfig("gif", {
     description: "Random gif getter, use at your own risk",
-  })
+  }),
 )
 export default class GifCommand extends Command {
   async run(msg: Message, args: Args) {

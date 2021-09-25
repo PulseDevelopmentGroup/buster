@@ -11,7 +11,7 @@ export class UserCommand extends Command {
     const msg = await send(message, "Ping?");
 
     const content = `Pong! Bot Latency ${Math.round(
-      this.container.client.ws.ping
+      this.container.client.ws.ping,
     )}ms. API Latency ${
       (msg.editedTimestamp || msg.createdTimestamp) -
       (message.editedTimestamp || message.createdTimestamp)

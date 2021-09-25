@@ -7,7 +7,7 @@ import { applyConfig, config } from "../../lib/config";
 @ApplyOptions<CommandOptions>(
   applyConfig("corn", {
     description: "🌽",
-  })
+  }),
 )
 export default class CornCommand extends Command {
   async run(msg: Message, args: Args) {

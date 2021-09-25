@@ -86,7 +86,7 @@ export async function loadConfig(configPath: string) {
  */
 export function applyConfig(
   commandName: string,
-  opts?: CommandOptions
+  opts?: CommandOptions,
 ): CommandOptions {
   return {
     ...opts,
