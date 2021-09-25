@@ -102,7 +102,7 @@ export class JpegCommand extends Command {
         files: [new MessageAttachment(attachment)],
       });
     } catch (e) {
-      console.error(e);
+      msg.client.logger.error(e);
       return send(msg, "Unable to JPEGify the image D:");
     }
   }
