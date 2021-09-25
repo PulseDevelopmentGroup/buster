@@ -1,5 +1,4 @@
 import type { CommandOptions } from "@sapphire/framework";
-import { CommandOptionsFields } from "./constants";
 import { isURL } from "./utils";
 import got from "got";
 import fs from "fs";
@@ -81,34 +80,17 @@ export async function loadConfig(configPath: string) {
 /**
  * Builds CommandOptions object by merging the specified options and
  * those found in the configuration file
- * @param opts The hard-coded options to merge with the config file
+ * @param commandName The name of the command
+ * @param opts The default options for the command
  * @returns A merged CommandOptions object
  */
-export function setOpts(opts: CommandOptions): CommandOptions {
-  /* Make sure name is specified (In theory, we should never get this far) */
-  if (opts.name == undefined) {
-    return opts;
-  }
-
-  let name = opts.name;
-
-  /* Make sure the command object exists in JSON */
-  const options = config.commands[name];
-  if (!options || !Object.keys(options).length) {
-    return opts;
-  }
-
-  let commandOpts: Partial<CommandOptions> = {};
-
-  /* Iterate through CommandOptions fields and set values */
-  CommandOptionsFields.forEach((field) => {
-    const v: CommandOptions[typeof field] =
-      opts[field] ?? config.commands[name].options[field];
-
-    if (v) {
-      (commandOpts as any)[field] = v;
-    }
-  });
-
-  return commandOpts as CommandOptions;
+export function applyConfig(
+  commandName: string,
+  opts?: CommandOptions
+): CommandOptions {
+  return {
+    ...opts,
+    ...config.commands[commandName].options,
+    name: commandName,
+  };
 }

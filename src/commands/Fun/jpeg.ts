@@ -1,16 +1,16 @@
 import { Message, MessageAttachment } from "discord.js";
-import { config } from "../../lib/config";
+import { applyConfig, config } from "../../lib/config";
 import { isImageURL, getImageUrl } from "../../lib/utils";
 import jimp from "jimp";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
 import { send } from "@sapphire/plugin-editable-commands";
 
-@ApplyOptions<CommandOptions>({
-  name: "jpeg",
-  ...config.commands["jpeg"].options,
-  description: "More JPEG. 'nuff said",
-})
+@ApplyOptions<CommandOptions>(
+  applyConfig("jpeg", {
+    description: "More JPEG. 'nuff said",
+  })
+)
 export class JpegCommand extends Command {
   public async run(msg: Message, args: Args) {
     const target = !args.finished && (await args.rest("string"));
