@@ -20,16 +20,25 @@ The guides for D.js and Sapphire seem pretty sparse, but some of the better docs
 
 ### Getting started:
 1. `npm install`
-2. Set up `DISCORD_TOKEN` and `OWNERS` in `.env`, located in the project root
+2. Set up `BUSTER_BOT_CONFIG` path and `BUSTER_BOT_TOKEN` in `.env`, located in the project root
 3. `npm run watch:start`
 
 ### Enviornment
 Example .env file:
 ```
-# Bot owners (Discord user IDs)
-OWNERS=
-# Discord Bot Token (Vault)
-DISCORD_TOKEN=
+# Path (or URL) to config.json
+BUSTER_BOT_CONFIG=data/config.json
+
+# Bot Token (Vault)
+BUSTER_BOT_TOKEN=
+```
+
+### Config
+The bot is currently reliant on a `config.json` either hosted at a URL or on the filesystem. The minimum config looks something like:
+```json
+{
+  "owners": [123456...],
+}
 ```
 
 ## Project Structure
@@ -40,10 +49,11 @@ Should contain general configs, including:
 - `.env` file(s)
 - `Dockerfile` for container builds
 - `.dockerignore`
-- Any config files or DB's
+- `data/config.json` for bot config (unless a URL is specified)
+- Any other config files or DB's
 
 ### `src/`
-Where the code is located, with `index.ts` being the main file.  
+Where the code is located, with `index.ts` being the main file and `setup.ts` being any code that is ran _immediately_ upon launch.
 
 ### `src/commands/`
 _[Command Class](https://sapphiredev.github.io/framework/classes/Command.html)_
@@ -83,3 +93,6 @@ Precondition code. Once again, not entirely sure how this works, but it seems to
 _[Plugin-API](https://sapphiredev.github.io/plugins/modules/_sapphire_plugin_api.html)_
 
 Code for handling HTTP API requests. Although unused now, this could be a great way to write web integrations with CF Workers, Pages, and/or maybe some sort of file hosting?
+
+### `data/`
+Data folder for holding database files, configs, or static assets
