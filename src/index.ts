@@ -3,8 +3,8 @@ import { LogLevel, SapphireClient } from "@sapphire/framework";
 
 // Initialize the client
 const client = new SapphireClient({
-  defaultPrefix: "dr!",
-  regexPrefix: /^(hey +)?bot[,! ]/i,
+  defaultPrefix: "!",
+  regexPrefix: /^((hey|yo) +)?(bot|buster)[,! ]/i,
   caseInsensitiveCommands: true,
   logger: {
     level: LogLevel.Debug,
