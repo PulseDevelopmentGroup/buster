@@ -42,3 +42,5 @@ export const CommandOptionsFields = [
 ] as (keyof CommandOptions)[];
 
 export const TENOR_URL = "https://api.tenor.com/v1/random";
+
+export const INSPIRE_URL = "http://inspirobot.me/api";
