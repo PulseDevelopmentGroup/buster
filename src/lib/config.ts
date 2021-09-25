@@ -90,7 +90,7 @@ export function applyConfig(
 ): CommandOptions {
   return {
     ...opts,
-    ...config.commands[commandName].options,
+    ...config.commands[commandName]?.options,
     name: commandName,
   };
 }
