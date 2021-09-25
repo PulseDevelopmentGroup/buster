@@ -1,19 +1,24 @@
-// Unless explicitly defined, set NODE_ENV as development:
-process.env.NODE_ENV ??= "development";
+import { env, loadEnvironment } from "./lib/config";
 
+try {
+  loadEnvironment();
+} catch (e) {
+  console.error(e);
+  process.exit(1);
+}
+
+// Initialize application dependencies
 import "reflect-metadata";
 import "@sapphire/plugin-logger/register";
 import "@sapphire/plugin-api/register";
 import "@sapphire/plugin-editable-commands";
-import { options as coloretteOptions } from "colorette";
-import { config } from "dotenv-cra";
-import { inspect } from "util";
 
-// Read env var
-config();
+// Imports
+import { options as coloretteOptions } from "colorette";
+import { inspect } from "util";
 
 // Set default inspection depth
 inspect.defaultOptions.depth = 1;
 
-// Enable colorette
-coloretteOptions.enabled = true;
+// Enable colored logs
+coloretteOptions.enabled = env.development;

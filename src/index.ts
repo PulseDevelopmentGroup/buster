@@ -1,13 +1,17 @@
-import "./lib/setup";
+// Run initialization code first to set up the bot
+import "./setup";
+
+// Imports
+import { env } from "./lib/config";
 import { LogLevel, SapphireClient } from "@sapphire/framework";
 
 // Initialize the client
 const client = new SapphireClient({
-  defaultPrefix: "!",
+  defaultPrefix: env.prefix,
   regexPrefix: /^((hey|yo) +)?(bot|buster)[,! ]/i,
   caseInsensitiveCommands: true,
   logger: {
-    level: LogLevel.Debug,
+    level: env.development ? LogLevel.Debug : LogLevel.Info,
   },
   shards: "auto",
   intents: [
@@ -27,7 +31,7 @@ const client = new SapphireClient({
 const main = async () => {
   try {
     client.logger.info("Logging in");
-    await client.login();
+    await client.login(env.botToken);
     client.logger.info("logged in");
   } catch (error) {
     client.logger.fatal(error);
