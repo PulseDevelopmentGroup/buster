@@ -10,6 +10,66 @@
         "jpeg": 1,
         "posterize": 8
       }
+    },
+    "corn": {
+      "options": {
+        "aliases": ["🌽"]
+      },
+      "vars": {
+        "cornURL": "https://dl.carsonseese.com/discord/corn.jpg",
+        "cornCornURL": "https://dl.carsonseese.com/discord/corncorn.png",
+        "cubeURL": "https://media1.tenor.com/images/f2992828c6d4faeaced7aff0aa8d45ba/tenor.gif?itemid=19044521"
+      }
+    },
+    "gif": {
+      "options": {
+        "aliases": ["gifs", "jif", "jifs"],
+        "throttling": {
+          "duration": 60,
+          "usages": 5
+        }
+      },
+      "vars": {
+        "search": [
+          "tech",
+          "food",
+          "gaming",
+          "cars",
+          "programming",
+          "hacking",
+          "discord",
+          "music",
+          "dancing",
+          "eating",
+          "computers",
+          "drawing",
+          "game",
+          "siege",
+          "minecraft",
+          "beat saber",
+          "virtual reality",
+          "VR",
+          "gif"
+        ],
+        "contentfilter": "low"
+      }
+    },
+    "fry": {
+      "options": {
+        "aliases": ["deepfry"]
+      },
+      "vars": {
+        "jpeg": 15,
+        "posterize": 8,
+        "contrast": 0.95,
+        "redMixOpacity": 15,
+        "superimposeScale": 0.2,
+        "wearyFaceProb": 0.5,
+        "okHandProb": 0.75,
+        "hundredProb": 0.5,
+        "waterProb": 0.25,
+        "maxHands": 3
+      }
     }
   }
 }

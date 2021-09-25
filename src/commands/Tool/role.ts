@@ -8,7 +8,7 @@ import { send } from "@sapphire/plugin-editable-commands";
   applyConfig("role", {
     description: "Get, give, and remove roles & permissions",
     preconditions: ["GuildOnly"],
-  })
+  }),
 )
 export default class RoleCommand extends Command {
   async run(msg: Message, args: Args) {
@@ -42,7 +42,7 @@ export default class RoleCommand extends Command {
     if (!msg.member) {
       return send(
         msg,
-        `Hmm... I can't seem to figure out who sent that message :/`
+        `Hmm... I can't seem to figure out who sent that message :/`,
       );
     }
 
@@ -68,8 +68,8 @@ export default class RoleCommand extends Command {
         return send(
           msg,
           `Unable to find role ${role}. To see a list of available roles, use ${await msg.client.fetchPrefix(
-            msg
-          )}role.`
+            msg,
+          )}role.`,
         );
       }
 
@@ -78,8 +78,8 @@ export default class RoleCommand extends Command {
       return send(
         msg,
         `Congrats! You've been given the role ${guildRole.name.substring(
-          1
-        )}. Welcome to the team.`
+          1,
+        )}. Welcome to the team.`,
       );
     }
 
@@ -104,7 +104,7 @@ export default class RoleCommand extends Command {
       if (!userRole) {
         return send(
           msg,
-          `You don't seem to have the role ${role}. Make sure you have it, then try again.`
+          `You don't seem to have the role ${role}. Make sure you have it, then try again.`,
         );
       }
 
@@ -113,8 +113,8 @@ export default class RoleCommand extends Command {
       return send(
         msg,
         `I've just revoked the role ${userRole.name.substring(
-          1
-        )}. If you'd like it back again, just ask!`
+          1,
+        )}. If you'd like it back again, just ask!`,
       );
     }
 

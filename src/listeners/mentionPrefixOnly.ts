@@ -7,7 +7,7 @@ export class UserEvent extends Listener<"mentionPrefixOnly"> {
     return message.channel.send(
       prefix
         ? `My prefix in this guild is: \`${prefix}\``
-        : "You do not need a prefix in DMs."
+        : "You do not need a prefix in DMs.",
     );
   }
 }
