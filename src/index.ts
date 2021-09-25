@@ -1,6 +1,7 @@
 import "./lib/setup";
 import { LogLevel, SapphireClient } from "@sapphire/framework";
 
+// Initialize the client
 const client = new SapphireClient({
   defaultPrefix: "dr!",
   regexPrefix: /^(hey +)?bot[,! ]/i,
@@ -22,6 +23,7 @@ const client = new SapphireClient({
   ],
 });
 
+// Main async routine that connects to Discord and offically starts the bot
 const main = async () => {
   try {
     client.logger.info("Logging in");
