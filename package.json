@@ -22,6 +22,7 @@
     "@skyra/editable-commands": "^2.1.0",
     "discord.js": "^13.1.0",
     "dotenv-cra": "^3.0.2",
+    "faker": "^5.5.3",
     "gm": "^1.23.1",
     "googleapis": "^87.0.0",
     "got": "^11.8.2",
@@ -29,6 +30,7 @@
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
+    "@types/faker": "^5.5.8",
     "@types/gm": "^1.18.10",
     "@types/node": "^16.10.1",
     "@types/ws": "^7.4.7",
