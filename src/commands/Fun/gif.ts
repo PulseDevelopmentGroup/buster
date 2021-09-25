@@ -13,11 +13,7 @@ import { TENOR_URL } from "../../lib/constants";
   })
 )
 export default class GifCommand extends Command {
-  async run(
-    msg: Message,
-    args: Args
-    // { search }: { search: string }
-  ) {
+  async run(msg: Message, args: Args) {
     let search = args.nextMaybe().value;
 
     if (!search) {
