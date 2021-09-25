@@ -23,6 +23,7 @@
     "discord.js": "^13.1.0",
     "dotenv-cra": "^3.0.2",
     "got": "^11.8.2",
+    "jimp": "^0.16.1",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {

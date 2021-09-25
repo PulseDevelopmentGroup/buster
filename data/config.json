@@ -1,4 +1,15 @@
 {
   "owners": [217448431545745408, 140599441328439297],
-  "commands": {}
+  "commands": {
+    "jpeg": {
+      "options": {
+        "aliases": ["jpg"]
+      },
+      "vars": {
+        "resize": 512,
+        "jpeg": 1,
+        "posterize": 8
+      }
+    }
+  }
 }
