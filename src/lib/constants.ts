@@ -47,3 +47,5 @@ export const INSPIRE_URL = "http://inspirobot.me/api";
 
 export const PERSPECTIVE_URL =
   "https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1";
+
+export const EMBED_COLOR = "#DBC12F";
