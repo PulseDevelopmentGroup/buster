@@ -1,10 +1,16 @@
-node_modules/
 .vscode/
 .github/
+.git/
+
+node_modules/
 data/
 
-*.db
 .env
+.gitignore
+.dockerignore
+.prettierrc
+.eslintignore
+.eslintrc.js
+
 LICENSE
 README.md
-.gitignore
