@@ -3,16 +3,14 @@ import "./setup";
 
 // Imports
 import { env } from "./lib/config";
-import { LogLevel, SapphireClient } from "@sapphire/framework";
+import { SapphireClient } from "@sapphire/framework";
+import { logger } from "./lib/logger";
 
 // Initialize the client
 const client = new SapphireClient({
   defaultPrefix: env.prefix,
   regexPrefix: /^((hey|yo) +)?(bot|buster)[,! ]/i,
   caseInsensitiveCommands: true,
-  logger: {
-    level: env.development ? LogLevel.Debug : LogLevel.Info,
-  },
   shards: "auto",
   intents: [
     "GUILDS",
@@ -30,13 +28,12 @@ const client = new SapphireClient({
 // Main async routine that connects to Discord and offically starts the bot
 const main = async () => {
   try {
-    client.logger.info("Logging in");
+    logger.info("Logging in");
     await client.login(env.botToken);
-    client.logger.info("logged in");
+    logger.info("Logged in");
   } catch (error) {
-    client.logger.fatal(error);
     client.destroy();
-    process.exit(1);
+    logger.error(error);
   }
 };
 
