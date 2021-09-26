@@ -2,6 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "bot: dev",
       "type": "npm",
       "script": "dev",
       "isBackground": true,
@@ -9,12 +10,20 @@
         "cwd": "${workspaceFolder}/packages/bot"
       },
       "problemMatcher": "$tsc-watch",
-      "label": "npm: dev"
     },
     {
+      "label": "web: dev",
+      "type": "npm",
+      "script": "dev",
+      "isBackground": true,
+      "options": {
+        "cwd": "${workspaceFolder}/packages/web"
+      }
+    },
+    {
+      "label": "bot: build",
       "type": "npm",
       "script": "build",
-      "label": "npm: build",
       "options": {
         "cwd": "${workspaceFolder}/packages/bot"
       },
