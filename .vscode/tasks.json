@@ -9,16 +9,7 @@
       "options": {
         "cwd": "${workspaceFolder}/packages/bot"
       },
-      "problemMatcher": "$tsc-watch",
-    },
-    {
-      "label": "web: dev",
-      "type": "npm",
-      "script": "dev",
-      "isBackground": true,
-      "options": {
-        "cwd": "${workspaceFolder}/packages/web"
-      }
+      "problemMatcher": "$tsc-watch"
     },
     {
       "label": "bot: build",
@@ -26,7 +17,7 @@
       "script": "build",
       "options": {
         "cwd": "${workspaceFolder}/packages/bot"
-      },
+      }
     }
   ]
 }

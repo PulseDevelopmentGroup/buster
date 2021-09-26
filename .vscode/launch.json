@@ -18,21 +18,6 @@
       },
       "cwd": "${workspaceFolder}/packages/bot",
       "skipFiles": ["<node_internals>/**"]
-    },
-    {
-      "name": "Web Debugging",
-      "type": "node",
-      "request": "attach",
-      "preLaunchTask": "web: dev",
-      "port": 9239,
-      "restart": true,
-      "smartStep": true,
-      "env": {
-        "NODE_ENV": "development",
-        "NODE_OPTIONS": "--inspect 9239"
-      },
-      "cwd":"${workspaceFolder}/packages/web",
-      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }
