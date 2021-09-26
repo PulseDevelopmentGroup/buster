@@ -13,6 +13,6 @@ Your friendly neighborhood Discord bot.
 
 ## Releasing
 
-1. Do a version bump with `npx lerna version [major | minor | patch]`
+1. Do a version bump with `npx lerna version`
    - See the [semver docs](https://semver.org/#summary) for more information on how to bump the version.
 2. TBD
