@@ -5,14 +5,33 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "TS Debugging",
+      "name": "Bot Debugging",
       "type": "node",
-      "preLaunchTask": "npm: dev",
       "request": "attach",
+      "preLaunchTask": "bot: dev",
       "port": 9229,
       "restart": true,
       "smartStep": true,
+      "env": {
+        "NODE_ENV": "development",
+        "NODE_OPTIONS": "--inspect 9229"
+      },
       "cwd": "${workspaceFolder}/packages/bot",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Web Debugging",
+      "type": "node",
+      "request": "attach",
+      "preLaunchTask": "web: dev",
+      "port": 9239,
+      "restart": true,
+      "smartStep": true,
+      "env": {
+        "NODE_ENV": "development",
+        "NODE_OPTIONS": "--inspect 9239"
+      },
+      "cwd":"${workspaceFolder}/packages/web",
       "skipFiles": ["<node_internals>/**"]
     }
   ]
