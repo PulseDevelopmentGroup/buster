@@ -14,7 +14,10 @@
     {
       "type": "npm",
       "script": "build",
-      "label": "npm: build"
+      "label": "npm: build",
+      "options": {
+        "cwd": "${workspaceFolder}/packages/bot"
+      },
     }
   ]
 }
