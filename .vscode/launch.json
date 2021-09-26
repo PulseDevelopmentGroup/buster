@@ -5,22 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Start & Attach",
-      "port": 9229,
+      "name": "TS Debugging",
+      "type": "node",
+      "preLaunchTask": "npm: dev",
       "request": "attach",
-      "skipFiles": ["<node_internals>/**"],
-      "type": "pwa-node",
+      "port": 9229,
       "restart": true,
-      "preLaunchTask": "npm: watch:start"
-    },
-    {
-      "type": "pwa-node",
-      "request": "launch",
-      "name": "Launch Program",
+      "smartStep": true,
       "skipFiles": ["<node_internals>/**"],
-      "preLaunchTask": "npm: build",
-      "program": "${workspaceFolder}/dist/index.js",
-      "outFiles": ["${workspaceFolder}/**/*.js"]
     }
   ]
 }
