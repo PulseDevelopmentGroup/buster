@@ -12,7 +12,8 @@
       "port": 9229,
       "restart": true,
       "smartStep": true,
-      "skipFiles": ["<node_internals>/**"],
+      "cwd": "${workspaceFolder}/packages/bot",
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

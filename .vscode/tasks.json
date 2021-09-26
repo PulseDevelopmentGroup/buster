@@ -5,6 +5,9 @@
       "type": "npm",
       "script": "dev",
       "isBackground": true,
+      "options": {
+        "cwd": "${workspaceFolder}/packages/bot"
+      },
       "problemMatcher": "$tsc-watch",
       "label": "npm: dev"
     },
