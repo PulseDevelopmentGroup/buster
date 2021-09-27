@@ -15,9 +15,7 @@ export class UserEvent extends Listener<typeof Events.CommandRun> {
 
   // Fires on every command ran by a user
   public run(message: Message, command: Command) {
-    //TODO Currently this doesn't print anything in dev mode. The prettyFormat winston format
-    // needs to be updated to include metadata.
-    commandLogger.info("", {
+    commandLogger.info(message.content, {
       shard: (message.guild?.shardId ?? 0).toString(),
       name: command.name,
       author: `${message.author.username}#${message.author.id}`,

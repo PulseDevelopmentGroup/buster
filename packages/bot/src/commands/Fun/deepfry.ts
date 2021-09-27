@@ -50,7 +50,7 @@ export class DeepfryCommand extends Command {
         return send(msg, "Unable to find the last message :(");
       }
 
-      let url =
+      const url =
         lastMessage.attachments.first()?.url ??
         getImageUrl(lastMessage.content);
 
@@ -83,7 +83,7 @@ export class DeepfryCommand extends Command {
       ////
       //  If target param is not a URL
       ////
-      let message = await msg.channel.messages
+      const message = await msg.channel.messages
         .fetch(target)
         .catch(() => undefined);
 

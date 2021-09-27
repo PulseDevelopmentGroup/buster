@@ -5,10 +5,13 @@ import { env } from "./config";
 const prettyFormat = winston.format.combine(
   winston.format.colorize(),
   winston.format.timestamp(),
-  winston.format.printf(
-    (info) =>
-      `${info.timestamp} [${info.level}] [${info.service}] ${info.message}`
-  )
+  winston.format.printf(({ timestamp, level, service, message, ...rest }) => {
+    const extraParams = Object.entries(rest)
+      .map(([key, value]) => `${key}=${value}`)
+      .join(" ");
+
+    return `${timestamp} [${level}] [${service}] ${message} ${extraParams}`;
+  }),
 );
 
 // Default logging options, primarily handling logic depending on the environment
@@ -32,14 +35,14 @@ function applyOptions(opts?: winston.LoggerOptions): winston.LoggerOptions {
 export const logger = winston.createLogger(
   applyOptions({
     defaultMeta: { service: "bot" },
-  })
+  }),
 );
 
 // Used for command logging
 export const commandLogger = winston.createLogger(
   applyOptions({
     defaultMeta: { service: "command" },
-  })
+  }),
 );
 
 // TODO: Message logger for export to Loki/Elastic/Other
