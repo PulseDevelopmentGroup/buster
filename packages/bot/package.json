@@ -33,10 +33,10 @@
     "winston": "^3.3.3"
   },
   "scripts": {
-    "build": "tsc && cp -r src/assets dist",
+    "build": "tsc && cp -r src/assets dist/assets",
     "start": "node dist/index.js",
-    "dev": "tsc-watch --onSuccess \"node ./dist/index.js\"",
-    "vsc:dev": "rm -r dist && tsc-watch --onSuccess \"node --inspect ./dist/index.js\"",
+    "dev": "cp -r src/assets dist/assets && tsc-watch --onSuccess \"node ./dist/index.js\"",
+    "vsc:dev": "rm -rf dist && mkdir dist && cp -r src/assets dist/assets && tsc-watch --onSuccess \"node --inspect ./dist/index.js\"",
     "format": "prettier --write \"src/**/*.ts\""
   }
 }
