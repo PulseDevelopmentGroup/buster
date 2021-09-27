@@ -26,5 +26,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
+          workdir: packages/bot
           tags: "latest,v${{ steps.version.outputs.VERSION }}"
           buildargs: VERSION=${{ steps.version.outputs.VERSION }}
