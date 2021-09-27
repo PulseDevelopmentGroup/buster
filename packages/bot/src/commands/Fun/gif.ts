@@ -40,9 +40,7 @@ export default class GifCommand extends Command {
         return send(msg, "I can't seem to find any gifs :(");
       }
 
-      const paginatedMessage = new PaginatedMessage({
-        template: {},
-      });
+      const paginatedMessage = new PaginatedMessage();
 
       (
         json.results as {
