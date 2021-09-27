@@ -6,6 +6,7 @@ import { applyConfig } from "../../lib/config";
 import type { Message } from "discord.js";
 import { send } from "@sapphire/plugin-editable-commands";
 import { TENOR_URL } from "../../lib/constants";
+import { PaginatedMessage } from "@sapphire/discord.js-utilities";
 
 @ApplyOptions<CommandOptions>(
   applyConfig("gif", {
@@ -17,7 +18,7 @@ export default class GifCommand extends Command {
     let search = args.nextMaybe().value;
 
     if (!search) {
-      let terms: string[] = config.commands.gif.vars.search;
+      const terms: string[] = config.commands.gif.vars.search;
       search = terms[Math.floor(Math.random() * terms.length)];
     }
 
@@ -28,17 +29,34 @@ export default class GifCommand extends Command {
         locale: "en_US",
         contentfilter: config.commands.gif.vars.contentfilter,
         media_filter: "minimal",
-        limit: 1,
+        limit: 5,
         ar_range: "standard",
       },
     });
 
     if (body) {
-      let json = JSON.parse(body);
+      const json = JSON.parse(body);
       if (!json.results[0]) {
         return send(msg, "I can't seem to find any gifs :(");
       }
-      return send(msg, json.results[0].url);
+
+      const paginatedMessage = new PaginatedMessage({
+        template: {},
+      });
+
+      (
+        json.results as {
+          // this is only a partial type
+          url: string;
+        }[]
+      ).forEach((gif, i) => {
+        paginatedMessage.addPageBuilder((builder) =>
+          builder.setContent(`${i + 1} of ${json.results.length}
+${gif.url}`),
+        );
+      });
+
+      return await paginatedMessage.run(msg, msg.author);
     }
 
     return send(msg, "It seems something went wrong, try again later?");
