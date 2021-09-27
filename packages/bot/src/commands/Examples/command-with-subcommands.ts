@@ -16,6 +16,7 @@ import type { Message } from "discord.js";
     "reset",
     { input: "show", default: true },
   ],
+  preconditions: ["OwnerOnly"],
 })
 export class UserCommand extends SubCommandPluginCommand {
   // Anyone should be able to view the result, but not modify
