@@ -9,6 +9,7 @@ import { sendLoadingMessage } from "../../lib/utils";
   aliases: ["pm"],
   description: "A command that uses paginated messages.",
   generateDashLessAliases: true,
+  preconditions: ["OwnerOnly"],
 })
 export class UserCommand extends Command {
   public async run(message: Message) {
@@ -25,12 +26,12 @@ export class UserCommand extends Command {
       .addPageEmbed((embed) =>
         embed //
           .setDescription("This is the first page")
-          .setTitle("Page 1"),
+          .setTitle("Page 1")
       )
       .addPageBuilder((builder) =>
         builder //
           .setContent("This is the second page")
-          .setEmbeds([new MessageEmbed().setTimestamp()]),
+          .setEmbeds([new MessageEmbed().setTimestamp()])
       );
 
     await paginatedMessage.run(response, message.author);

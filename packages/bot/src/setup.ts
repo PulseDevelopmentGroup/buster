@@ -10,7 +10,7 @@ try {
 // Initialize application dependencies
 import "reflect-metadata";
 import "@sapphire/plugin-api/register";
-import "@sapphire/plugin-editable-commands";
+import "@sapphire/plugin-editable-commands/register";
 
 // Imports
 import { inspect } from "util";
