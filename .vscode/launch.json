@@ -12,10 +12,6 @@
       "port": 9229,
       "restart": true,
       "smartStep": true,
-      "env": {
-        "NODE_ENV": "development",
-        "NODE_OPTIONS": "--inspect 9229"
-      },
       "cwd": "${workspaceFolder}/packages/bot",
       "skipFiles": ["<node_internals>/**"]
     }
