@@ -1,0 +1,15 @@
+name: Build Bot
+
+on:
+  push:
+    tags:        
+      - '*' # Push events to every tag not containing /
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy Stage
+      uses: fjogeleit/http-request-action@master
+      with:
+        url: ${{ secrets.CF_PAGES_HOOK }}
+        method: 'POST'
