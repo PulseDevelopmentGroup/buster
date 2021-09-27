@@ -21,6 +21,7 @@ import { Message, MessageEmbed } from "discord.js";
     "reset",
     { input: "show", default: true },
   ],
+  preconditions: ["OwnerOnly"],
 })
 export class UserCommand extends SubCommandPluginCommand {
   // Anyone should be able to view the result, but not modify
@@ -40,14 +41,14 @@ export class UserCommand extends SubCommandPluginCommand {
   }
 
   @RequiresGuildContext((message: Message) =>
-    send(message, "This sub-command can only be used in servers"),
+    send(message, "This sub-command can only be used in servers")
   )
   public async remove(message: Message) {
     return send(message, "Removing!");
   }
 
   @RequiresDMContext((message: Message) =>
-    send(message, "This sub-command can only be used in DMs"),
+    send(message, "This sub-command can only be used in DMs")
   )
   public async reset(message: Message) {
     return send(message, "Resetting!");

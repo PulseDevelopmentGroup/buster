@@ -67,11 +67,12 @@ export function loadEnvironment() {
     throw new Error("Missing bot token or config URL");
   }
 
+  loadConfig(env.config);
+
   if (env.development) {
     console.log(JSON.stringify(env, null, 2));
+    console.log(JSON.stringify(config, null, 2));
   }
-
-  loadConfig(env.config);
 }
 
 /**
