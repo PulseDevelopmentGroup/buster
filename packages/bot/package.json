@@ -36,7 +36,7 @@
     "build": "tsc && cp -r src/assets dist",
     "start": "node dist/index.js",
     "dev": "tsc-watch --onSuccess \"node ./dist/index.js\"",
-    "vsc:dev": "tsc-watch --onSuccess \"node --inspect-brk ./dist/index.js\"",
+    "vsc:dev": "rm -r dist && tsc-watch --onSuccess \"node --inspect ./dist/index.js\"",
     "format": "prettier --write \"src/**/*.ts\""
   }
 }

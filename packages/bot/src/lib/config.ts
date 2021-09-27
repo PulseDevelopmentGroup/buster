@@ -12,6 +12,10 @@ export interface Environment {
   botToken: string;
   prefix: string;
   config: string;
+
+  logCommands: boolean;
+  logMessages: boolean;
+
   tenorToken?: string;
   perspectiveApiKey?: string;
   githubApiKey?: string;
@@ -50,6 +54,10 @@ export function loadEnvironment() {
     config: process.env.BUSTER_BOT_CONFIG!,
     development: process.env.NODE_ENV === "development",
     prefix: process.env.BUSTER_BOT_PREFIX ?? "!",
+
+    logCommands: process.env.BUSTER_LOG_COMMANDS === "true",
+    logMessages: process.env.BUSTER_LOG_MESSAGES === "true",
+
     tenorToken: process.env.BUSTER_WEB_TENOR_TOKEN,
     perspectiveApiKey: process.env.BUSTER_WEB_PERSPECTIVE_API_KEY,
     githubApiKey: process.env.BUSTER_WEB_GITHUB_API_KEY,
@@ -57,6 +65,10 @@ export function loadEnvironment() {
 
   if (!env.botToken || !env.config) {
     throw new Error("Missing bot token or config URL");
+  }
+
+  if (env.development) {
+    console.log(JSON.stringify(env, null, 2));
   }
 
   loadConfig(env.config);
@@ -86,7 +98,7 @@ export async function loadConfig(configPath: string) {
  */
 export function applyConfig(
   commandName: string,
-  opts?: CommandOptions,
+  opts?: CommandOptions
 ): CommandOptions {
   return {
     ...opts,
