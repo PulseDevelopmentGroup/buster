@@ -29,6 +29,7 @@ export interface Environment {
 // Configuration
 export interface Configuration {
   owners: string[];
+  listeners: string[];
   commands: Record<string, Command>;
 }
 

@@ -28,6 +28,7 @@
     "googleapis": "^87.0.0",
     "got": "^11.8.2",
     "jimp": "^0.16.1",
+    "puppeteer": "^10.4.0",
     "reflect-metadata": "^0.1.13",
     "sharp": "^0.29.1",
     "winston": "^3.3.3"
@@ -37,6 +38,7 @@
     "@types/gifencoder": "^2.0.1",
     "@types/gm": "^1.18.10",
     "@types/node": "^16.10.1",
+    "@types/puppeteer": "^5.4.4",
     "@types/react": "17.0.24",
     "@types/sharp": "^0.29.2",
     "@types/ws": "^7.4.7",
@@ -47,7 +49,7 @@
   "scripts": {
     "build": "tsc && cp -r src/assets dist/assets",
     "start": "node dist/index.js",
-    "dev": "cp -r src/assets dist/assets && tsc-watch --onSuccess \"node ./dist/index.js\"",
+    "dev": "cp -r src/assets dist/ && tsc-watch --onSuccess \"node ./dist/index.js\"",
     "vsc:dev": "rm -rf dist && mkdir dist && cp -r src/assets dist/assets && tsc-watch --onSuccess \"node --inspect ./dist/index.js\"",
     "format": "prettier --write \"src/**/*.ts\""
   }

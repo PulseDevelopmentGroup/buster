@@ -1,5 +1,6 @@
 {
   "owners": ["217448431545745408", "140599441328439297"],
+  "listeners": ["uselessConversions", "ifunnyFixer"],
   "commands": {
     "jpeg": {
       "options": {

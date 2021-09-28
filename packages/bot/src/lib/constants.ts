@@ -12,6 +12,9 @@ export const RandomLoadingMessage = [
   "Loading...",
 ];
 
+export const IfunnyURLRegex =
+  /https:\/\/(?:www\.)?ifunny\.co\/(picture|video)\/(\w*){9}/;
+
 export const ImageURLRegex =
   /https?:\/\/\S*?\.(?:png|jpe?g)(?:\?(?:(?:(?:[\w_-]+=[\w_-]+)(?:&[\w_-]+=[\w_-]+)*)|(?:[\w_-]+)))?/;
 
