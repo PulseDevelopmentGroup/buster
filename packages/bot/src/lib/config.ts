@@ -16,6 +16,11 @@ export interface Environment {
   logCommands: boolean;
   logMessages: boolean;
 
+  httpAuthId: string;
+  httpAuthSecret: string;
+  httpFrontendUrl: string;
+  httpPort: number;
+
   tenorToken?: string;
   perspectiveApiKey?: string;
   githubApiKey?: string;
@@ -50,13 +55,19 @@ export function loadEnvironment() {
   dotenv.config({ prefix: "BUSTER_" });
 
   env = {
-    botToken: process.env.BUSTER_BOT_TOKEN!,
-    config: process.env.BUSTER_BOT_CONFIG!,
+    botToken: process.env.BUSTER_BOT_TOKEN ?? "",
+    config: process.env.BUSTER_BOT_CONFIG ?? "",
     development: process.env.NODE_ENV === "development",
     prefix: process.env.BUSTER_BOT_PREFIX ?? "!",
 
     logCommands: process.env.BUSTER_LOG_COMMANDS === "true",
     logMessages: process.env.BUSTER_LOG_MESSAGES === "true",
+
+    httpAuthId: process.env.BUSTER_HTTP_AUTH_ID ?? "",
+    httpAuthSecret: process.env.BUSTER_HTTP_AUTH_SECRET ?? "",
+    httpFrontendUrl:
+      process.env.BUSTER_HTTP_FRONTEND_URL ?? "http://localhost:4000",
+    httpPort: parseInt(process.env.BUSTER_HTTP_PORT ?? "4000"),
 
     tenorToken: process.env.BUSTER_WEB_TENOR_TOKEN,
     perspectiveApiKey: process.env.BUSTER_WEB_PERSPECTIVE_API_KEY,
@@ -99,7 +110,7 @@ export async function loadConfig(configPath: string) {
  */
 export function applyConfig(
   commandName: string,
-  opts?: CommandOptions
+  opts?: CommandOptions,
 ): CommandOptions {
   return {
     ...opts,

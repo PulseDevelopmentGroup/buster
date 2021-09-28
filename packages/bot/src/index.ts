@@ -23,6 +23,23 @@ const client = new SapphireClient({
     "DIRECT_MESSAGES",
     "DIRECT_MESSAGE_REACTIONS",
   ],
+  // API should be accessible at /api/oauth/callback but it doesn't seem to work
+  // Probably something to work on in the future
+  api: {
+    auth: {
+      id: env.httpAuthId,
+      secret: env.httpAuthSecret,
+      cookie: "SAPPHIRE_AUTH",
+      redirect: env.httpFrontendUrl,
+      scopes: ["identify"],
+      transformers: [],
+    },
+    prefix: "api/",
+    origin: "*",
+    listenOptions: {
+      port: env.httpPort,
+    },
+  },
 });
 
 // Main async routine that connects to Discord and offically starts the bot

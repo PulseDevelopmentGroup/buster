@@ -11,7 +11,7 @@ export class HelpRoute extends Route {
   public constructor(context: PieceContext, options?: RouteOptions) {
     super(context, {
       ...options,
-      route: "help",
+      route: "commands/help",
     });
   }
 
