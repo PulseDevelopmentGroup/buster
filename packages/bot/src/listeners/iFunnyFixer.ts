@@ -48,19 +48,17 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
   }
 
   public async getDirect(type: string, url: string): Promise<string | null> {
-    return new Promise<string | null>((res) => {
-      if (!this.page) return res(null);
+    if (!this.page) {
+      return null;
+    }
 
-      if (type === "picture") type = "image";
-      if (type === "video") type = "video:url";
+    if (type === "picture") type = "image";
+    if (type === "video") type = "video:url";
 
-      this.page.goto(url);
-      return res(
-        this.page.$eval(`head > meta[property='og:${type}']`, (meta) =>
-          meta.getAttribute("content"),
-        ),
-      );
-    });
+    await this.page.goto(url);
+    return this.page.$eval(`head > meta[property='og:${type}']`, (meta) =>
+      meta.getAttribute("content"),
+    );
   }
 
   public async reset() {
