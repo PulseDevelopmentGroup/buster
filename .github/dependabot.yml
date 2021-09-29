@@ -4,4 +4,4 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily" # Will probably set to weekly or monthly after testing
+      interval: "weekly" # Will probably set to weekly or monthly after testing
