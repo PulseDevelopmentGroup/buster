@@ -31,7 +31,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     }
 
     const notification = await message.channel.send(
-      "That looks like an iFunny link, I'll try and grab the image for you...."
+      "That looks like an iFunny link, I'll try and grab the image for you....",
     );
 
     const url = await this.getDirect(ifunny[1], ifunny[0]);
@@ -40,7 +40,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
 
     if (!url) {
       return notification.edit(
-        "Unfortunately I can't find an image/video associated with that link."
+        "Unfortunately I can't find an image/video associated with that link.",
       );
     }
 
@@ -57,8 +57,8 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
       this.page.goto(url);
       return res(
         this.page.$eval(`head > meta[property='og:${type}']`, (meta) =>
-          meta.getAttribute("content")
-        )
+          meta.getAttribute("content"),
+        ),
       );
     });
   }

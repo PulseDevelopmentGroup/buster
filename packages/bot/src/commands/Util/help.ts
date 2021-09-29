@@ -21,7 +21,7 @@ export class clientCommand extends Command {
       const embed = new MessageEmbed()
         .addField(
           "Description",
-          `${command.description ? command.description : "No description"}`
+          `${command.description ? command.description : "No description"}`,
         )
         .addField(
           "Detailed Description",
@@ -29,14 +29,14 @@ export class clientCommand extends Command {
             command.detailedDescription
               ? command.detailedDescription
               : "No detailed description"
-          }`
+          }`,
         )
         .addField(
           "Aliases",
           command.aliases.length > 1
             ? `\`${command.aliases.join("` `")}\``
             : "No aliases",
-          true
+          true,
         )
         .setColor(EMBED_COLOR);
       return message.channel.send({ embeds: [embed] });
@@ -46,13 +46,13 @@ export class clientCommand extends Command {
       ...new Set(
         this.container.stores
           .get("commands")
-          .map((x) => x.fullCategory[x.fullCategory.length - 1])
+          .map((x) => x.fullCategory[x.fullCategory.length - 1]),
       ),
     ];
     const embed = new MessageEmbed()
       .setAuthor(
         `❯ ${this.container.client.user?.username} command(s) list`,
-        this.container.client.user?.displayAvatarURL()
+        this.container.client.user?.displayAvatarURL(),
       )
       .setDescription("A list of available commands.")
       .setColor(EMBED_COLOR);

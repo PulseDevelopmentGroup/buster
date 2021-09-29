@@ -26,12 +26,12 @@ export class UserCommand extends Command {
       .addPageEmbed((embed) =>
         embed //
           .setDescription("This is the first page")
-          .setTitle("Page 1")
+          .setTitle("Page 1"),
       )
       .addPageBuilder((builder) =>
         builder //
           .setContent("This is the second page")
-          .setEmbeds([new MessageEmbed().setTimestamp()])
+          .setEmbeds([new MessageEmbed().setTimestamp()]),
       );
 
     await paginatedMessage.run(response, message.author);
