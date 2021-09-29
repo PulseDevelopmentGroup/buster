@@ -1,19 +1,19 @@
-name: Build Bot
+name: Build Application
 
 on:
   push:
-    tags:        
-      - '*' # Push events to every tag not containing /
+    tags:
+      - "*" # Push events to every tag not containing /
 jobs:
-  build:
-    name: Build
+  build-bot:
+    name: Build Bot
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v2
-        
+
       - name: Get the version
         id: version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
@@ -27,5 +27,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
           workdir: packages/bot
-          tags: "latest,v${{ steps.version.outputs.VERSION }}"
+          tags: "latest,${{ steps.version.outputs.VERSION }}"
           buildargs: VERSION=${{ steps.version.outputs.VERSION }}
+
+  deploy-web:
+    name: Deploy Web
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy Stage
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: ${{ secrets.CF_PAGES_HOOK }}
+          method: "POST"
