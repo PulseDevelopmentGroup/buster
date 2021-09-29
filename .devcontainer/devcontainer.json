@@ -1,11 +1,12 @@
 {
-    "build": { "dockerfile": "Dockerfile" },
-    "extensions": [
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        "bradlc.vscode-tailwindcss",
-        "ms-azuretools.vscode-docker"
-    ],
-    "forwardPorts": [3000, 4000], // Defaults: Port 3000 for web and 4000 for bot
-    "containerUser": "node"
+  "name": "PulseDev/Buster",
+  "build": { "dockerfile": "Dockerfile" },
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "ms-azuretools.vscode-docker"
+  ],
+  "forwardPorts": [3000, 4000], // Defaults: Port 3000 for web and 4000 for bot
+  "containerUser": "node"
 }

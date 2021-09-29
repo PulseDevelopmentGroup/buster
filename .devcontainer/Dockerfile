@@ -20,6 +20,3 @@ RUN apt-get install -y wget gnupg \
     && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
       --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
-
-# Install puppeteer since it's a big boi
-#RUN su node -c "npm install -g puppeteer" && npm cache clean --force
