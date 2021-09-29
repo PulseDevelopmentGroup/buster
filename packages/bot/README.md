@@ -23,17 +23,16 @@ The guides for D.js and Sapphire seem pretty sparse, but some of the better docs
 ### Getting started:
 
 1. `npm install`
-2. Set up `BUSTER_BOT_CONFIG` path and `BUSTER_BOT_TOKEN` in `.env`, located in the project root
+2. Set up your `.env.local` file (see below)
 3. In VS Code, hit F5 to start up with debugging & hot reloading. Alternatively, you can use `npm run watch:start` to run it via CLI.
 
 ### Enviornment
 
-Example .env file:
+At a _minimum_ `.env.local` must include `BUSTER_BOT_TOKEN`. Optionally, it can include other fields overriding things in `.env.development` or where necessary as documented in `.env.example`.
+
+Minimum `.env.local`:
 
 ```
-# Path (or URL) to config.json
-BUSTER_BOT_CONFIG=data/config.json
-
 # Bot Token (Vault)
 BUSTER_BOT_TOKEN=
 ```
