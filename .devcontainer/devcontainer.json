@@ -1,12 +1,16 @@
 {
   "name": "PulseDev/Buster",
-  "build": { "dockerfile": "Dockerfile" },
+  //"build": { "dockerfile": "Dockerfile" },
+  //"containerUser": "node"
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "bot",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "forwardPorts": [3000, 4000], // Defaults: Port 3000 for web and 4000 for bot
   "extensions": [
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "bradlc.vscode-tailwindcss",
     "ms-azuretools.vscode-docker"
-  ],
-  "forwardPorts": [3000, 4000], // Defaults: Port 3000 for web and 4000 for bot
-  "containerUser": "node"
+  ]
 }
