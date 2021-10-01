@@ -114,6 +114,7 @@ export function applyConfig(
   opts?: CommandOptions,
 ): CommandOptions {
   return {
+    cooldownFilteredUsers: config.owners,
     ...opts,
     ...config.commands[commandName]?.options,
     name: commandName,
