@@ -12,7 +12,10 @@ FROM base AS build
 WORKDIR /app
 COPY package.json .
 
-RUN npm install --quiet node-gyp -g && npm install --quiet
+# Tell puppeteer to not download chromium, since it's being installed below
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+
+RUN npm install node-gyp -g && npm install
 
 # Copy source files
 COPY . .
@@ -22,7 +25,16 @@ RUN npm run build
 FROM node:current-alpine AS release
 
 # Install Graphicsmagick
-RUN apk --no-cache add graphicsmagick
+RUN apk --no-cache add graphicsmagick \
+      chromium \
+      nss \
+      freetype \
+      harfbuzz \
+      ca-certificates \
+      ttf-freefont
+
+ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
+ENV NODE_ENV production
 
 # Set workdir and copy build output
 WORKDIR /app

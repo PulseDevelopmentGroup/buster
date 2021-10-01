@@ -7,6 +7,7 @@ RUN apt-get update
 ENV DEBIAN_FRONTEND noninteractive
 
 # Fix permission issues with NPM globals
+# TODO: This may be unnecessary
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 
 # Tell puppeteer to not download chromium, since it's being installed below
@@ -20,3 +21,5 @@ RUN apt-get install -y wget gnupg \
     && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
       --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
+
+ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/google-chrome-stable

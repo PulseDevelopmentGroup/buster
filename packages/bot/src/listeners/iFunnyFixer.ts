@@ -132,7 +132,6 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
       this.browser = await puppeteer.use(StealthPlugin()).launch({
         headless: true,
         ignoreHTTPSErrors: true,
-        executablePath: "google-chrome-stable",
         args: [
           "--no-sandbox",
           "--disable-setuid-sandbox",
@@ -146,6 +145,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
           "--no-first-run",
           "--ignore-certificate-errors",
           "--ignore-ssl-errors",
+          "--disable-dev-shm-usage",
           "--ignore-certificate-errors-spki-list",
           "--safebrowsing-disable-auto-update",
           '--user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3312.0 Safari/537.36"',
