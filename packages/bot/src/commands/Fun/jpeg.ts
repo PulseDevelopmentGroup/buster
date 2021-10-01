@@ -4,12 +4,10 @@ import jimp from "jimp";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
 import { send } from "@sapphire/plugin-editable-commands";
-import { botConfig } from "../../lib/config";
-
-const config = botConfig.configFile;
+import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  botConfig.apply("jpeg", {
+  config.apply("jpeg", {
     description: "More JPEG. 'nuff said",
   }),
 )
@@ -92,8 +90,8 @@ export class JpegCommand extends Command {
     try {
       const attachment = await jimp.read(imgUrl).then((i) => {
         return i
-          .posterize(config.commands.jpeg.vars.posterize)
-          .quality(config.commands.jpeg.vars.jpeg)
+          .posterize(config.json.commands.jpeg.vars.posterize)
+          .quality(config.json.commands.jpeg.vars.jpeg)
           .getBufferAsync(jimp.MIME_JPEG)
           .then((b) => {
             return b;

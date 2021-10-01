@@ -7,10 +7,10 @@ import path from "path";
 import { Command, CommandOptions } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
 import { send } from "@sapphire/plugin-editable-commands";
-import { botConfig } from "../../lib/config";
+import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  botConfig.apply("triggered", {
+  config.apply("triggered", {
     name: "triggered",
     description: "Trigger people",
     preconditions: ["GuildOnly"],

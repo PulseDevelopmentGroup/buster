@@ -5,12 +5,10 @@ import type { Message } from "discord.js";
 import { send } from "@sapphire/plugin-editable-commands";
 import { TENOR_URL } from "../../lib/constants";
 import { PaginatedMessage } from "@sapphire/discord.js-utilities";
-import { botConfig } from "../../lib/config";
-
-const config = botConfig.configFile;
+import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  botConfig.apply("gif", {
+  config.apply("gif", {
     description: "Random gif getter, use at your own risk",
   }),
 )
@@ -19,16 +17,16 @@ export default class GifCommand extends Command {
     let search = args.nextMaybe().value;
 
     if (!search) {
-      const terms: string[] = config.commands.gif.vars.search;
+      const terms: string[] = config.json.commands.gif.vars.search;
       search = terms[Math.floor(Math.random() * terms.length)];
     }
 
     const { body } = await got.get(TENOR_URL, {
       searchParams: {
-        key: botConfig.env.tenorToken,
+        key: config.env.tenorToken,
         q: search,
         locale: "en_US",
-        contentfilter: config.commands.gif.vars.contentfilter,
+        contentfilter: config.json.commands.gif.vars.contentfilter,
         media_filter: "minimal",
         limit: 5,
         ar_range: "standard",

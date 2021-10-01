@@ -3,10 +3,10 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { Command } from "@sapphire/framework";
 import type { Message } from "discord.js";
 import { send } from "@sapphire/plugin-editable-commands";
-import { botConfig } from "../../lib/config";
+import { config } from "../../lib/config";
 
 @ApplyOptions(
-  botConfig.apply("techtip", {
+  config.apply("techtip", {
     name: "techtip",
     description: "How to computer",
     preconditions: ["GuildOnly"],

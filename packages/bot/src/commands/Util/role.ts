@@ -2,10 +2,10 @@ import { MessageEmbed, Role, Message } from "discord.js";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
-import { botConfig } from "../../lib/config";
+import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  botConfig.apply("role", {
+  config.apply("role", {
     description: "Get, give, and remove roles & permissions",
     preconditions: ["GuildOnly"],
   }),

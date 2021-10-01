@@ -1,7 +1,7 @@
 import type { ListenerOptions, PieceContext } from "@sapphire/framework";
 import { Events, Listener } from "@sapphire/framework";
 //import type { Message } from "discord.js";
-import { botConfig } from "../../lib/config";
+import { config } from "../../lib/config";
 
 export class UserEvent extends Listener<typeof Events.MessageCreate> {
   public constructor(context: PieceContext, options?: ListenerOptions) {
@@ -18,7 +18,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
 
   // Only enable if logCommands is true or we are in a dev enviornment
   public onLoad() {
-    this.enabled = botConfig.configFile.listeners.includes(this.name);
+    this.enabled = config.json.listeners.includes(this.name);
     return super.onLoad();
   }
 }
