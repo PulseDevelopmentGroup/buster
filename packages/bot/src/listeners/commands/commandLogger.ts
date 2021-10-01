@@ -18,10 +18,8 @@ export class UserEvent extends Listener<typeof Events.CommandRun> {
     commandLogger.info(message.content, {
       shard: (message.guild?.shardId ?? 0).toString(),
       name: command.name,
-      author: `${message.author.username}#${message.author.id}`,
-      sentAt: message.guild
-        ? `${message.guild.name}[${message.guild.id}]`
-        : "Direct Messages",
+      author: `${message.author.tag}`,
+      sentAt: message.guild ? `${message.guild.name}` : "Direct Messages",
     });
   }
 
