@@ -4,8 +4,8 @@ import { send } from "@sapphire/plugin-editable-commands";
 import { MessageEmbed } from "discord.js";
 
 export class UserEvent extends Listener<typeof Events.CommandError> {
-  public async run(e: Error, payload: CommandErrorPayload) {
-    await payload.message.guild?.channels
+  public async run(e: Error, { message }: CommandErrorPayload) {
+    await message.guild?.channels
       .fetch("893296394478182450")
       .then((channel) => {
         if (channel?.isText()) {
@@ -14,8 +14,25 @@ export class UserEvent extends Listener<typeof Events.CommandError> {
           });
           embed.setColor("RED");
 
-          embed.addField("Message", e.message);
-          embed.addField("Error Type", e.name);
+          embed.addField("Error Message", e.message, true);
+          embed.addField("Error Type", e.name, true);
+
+          if (message.member) {
+            const pfp = message.member.user.avatarURL();
+
+            if (pfp) {
+              embed.setThumbnail(pfp);
+            }
+
+            embed.addField("Message Author", message.member?.user.username);
+          }
+
+          if (message.content) {
+            embed.addField("Message Content", message.content);
+          }
+
+          embed.setTimestamp(new Date());
+          embed.setURL(message.url);
 
           if (e.stack) {
             embed.addField("Stack", `\`${e.stack}\``);
@@ -27,6 +44,6 @@ export class UserEvent extends Listener<typeof Events.CommandError> {
         }
       });
 
-    await send(payload.message, "Sorry, something went wrong :(");
+    await send(message, "Sorry, something went wrong :(");
   }
 }
