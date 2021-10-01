@@ -25,7 +25,7 @@ export interface Environment {
 }
 
 // Configuration
-export interface ConfigurationFile {
+export interface JSONConfiguration {
   owners: string[];
   listeners: string[];
   commands: Record<string, Command>;
@@ -37,10 +37,12 @@ interface Command {
   vars: Record<string, any>;
 }
 
-export class Config {
+export class BotConfiguration {
   env: Environment;
+
   // I'm sure using ! here is bad practice, but if config is null/undefined the both should crash
-  configFile!: ConfigurationFile;
+  // TODO: Need a better name than json
+  json!: JSONConfiguration;
 
   public constructor() {
     // Set NODE_ENV to development if not already set
@@ -75,21 +77,6 @@ export class Config {
       console.error("Missing bot token or config URL");
       process.exit(1);
     }
-
-    // Attempt to load config
-    this.loadConfig()
-      .then((config) => {
-        this.configFile = config;
-
-        if (this.env.development) {
-          console.log(JSON.stringify(this.env, null, 2));
-          console.log(JSON.stringify(this.configFile, null, 2));
-        }
-      })
-      .catch((e) => {
-        console.error(`Config was unable to be loaded: ${e}`);
-        process.exit(1);
-      });
   }
 
   /**
@@ -101,9 +88,9 @@ export class Config {
    */
   public apply(commandName: string, opts?: CommandOptions): CommandOptions {
     return {
-      cooldownFilteredUsers: this.configFile.owners,
+      cooldownFilteredUsers: this.json.owners,
       ...opts,
-      ...this.configFile.commands[commandName]?.options,
+      ...this.json.commands[commandName]?.options,
       name: commandName,
     };
   }
@@ -111,8 +98,9 @@ export class Config {
   /**
    * Reload the config globally
    */
-  public async reloadConfig() {
-    this.configFile = await this.loadConfig();
+  public async reload(): Promise<JSONConfiguration> {
+    this.json = await this.load();
+    return this.json;
   }
 
   /**
@@ -120,14 +108,17 @@ export class Config {
    * Note: This is called automaticlly by loadEnvironment,
    * it should only be called again if the config file has changed.
    */
-  private async loadConfig(): Promise<ConfigurationFile> {
+  public async load(): Promise<JSONConfiguration> {
     if (isURL(this.env.config)) {
       const response = await got.get(this.env.config);
-      return JSON.parse(response.body);
+      this.json = JSON.parse(response.body);
     } else {
-      return JSON.parse(fs.readFileSync(this.env.config).toString());
+      this.json = JSON.parse(fs.readFileSync(this.env.config).toString());
     }
+
+    return this.json;
   }
 }
 
-export const botConfig = new Config();
+// Creating an instance of config here to be accessed globally
+export const config = new BotConfiguration();
