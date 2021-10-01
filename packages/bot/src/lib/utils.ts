@@ -57,7 +57,7 @@ export function isImageURL(url: string) {
  * @returns The image URL if one exists, otherwise undefined
  */
 export function getImageUrl(message: string) {
-  let urls = message.match(ImageURLRegex);
+  const urls = message.match(ImageURLRegex);
 
   if (urls) return urls[0];
 

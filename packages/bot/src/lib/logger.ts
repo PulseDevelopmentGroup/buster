@@ -1,5 +1,5 @@
 import winston from "winston";
-import { env } from "./config";
+import { botConfig } from "./config";
 
 // prettyFormat is the log formatter used when in a development scenario
 const prettyFormat = winston.format.combine(
@@ -16,8 +16,8 @@ const prettyFormat = winston.format.combine(
 
 // Default logging options, primarily handling logic depending on the environment
 const defaultOptions: winston.LoggerOptions = {
-  level: env.development ? "debug" : "info",
-  format: env.development
+  level: botConfig.env.development ? "debug" : "info",
+  format: botConfig.env.development
     ? prettyFormat
     : winston.format.combine(winston.format.timestamp(), winston.format.json()),
   transports: [new winston.transports.Console()],

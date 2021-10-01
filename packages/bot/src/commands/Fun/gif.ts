@@ -1,15 +1,16 @@
-import { config, env } from "../../lib/config";
 import got from "got";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
-import { applyConfig } from "../../lib/config";
 import type { Message } from "discord.js";
 import { send } from "@sapphire/plugin-editable-commands";
 import { TENOR_URL } from "../../lib/constants";
 import { PaginatedMessage } from "@sapphire/discord.js-utilities";
+import { botConfig } from "../../lib/config";
+
+const config = botConfig.configFile;
 
 @ApplyOptions<CommandOptions>(
-  applyConfig("gif", {
+  botConfig.apply("gif", {
     description: "Random gif getter, use at your own risk",
   }),
 )
@@ -24,7 +25,7 @@ export default class GifCommand extends Command {
 
     const { body } = await got.get(TENOR_URL, {
       searchParams: {
-        key: env.tenorToken,
+        key: botConfig.env.tenorToken,
         q: search,
         locale: "en_US",
         contentfilter: config.commands.gif.vars.contentfilter,

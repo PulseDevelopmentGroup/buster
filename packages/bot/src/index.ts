@@ -1,10 +1,20 @@
-// Run initialization code first to set up the bot
-import "./setup";
+// Initialize application dependencies
+import "reflect-metadata";
+import "@sapphire/plugin-api/register";
+import "@sapphire/plugin-editable-commands/register";
 
 // Imports
-import { env } from "./lib/config";
+import { inspect } from "util";
+
+// Set default inspection depth
+inspect.defaultOptions.depth = 1;
+
+// Imports
+import { botConfig } from "./lib/config";
 import { SapphireClient } from "@sapphire/framework";
 import { logger } from "./lib/logger";
+
+const env = botConfig.env;
 
 // Initialize the client
 const client = new SapphireClient({

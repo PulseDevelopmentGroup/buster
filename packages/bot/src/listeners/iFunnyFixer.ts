@@ -1,4 +1,4 @@
-import { config } from "../lib/config";
+import { botConfig } from "../lib/config";
 import { IfunnyURLRegex } from "../lib/constants";
 import { isURL } from "../lib/utils";
 
@@ -123,7 +123,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
 
   // Only enable if listener is enabled
   public async onLoad() {
-    this.enabled = config.listeners.includes(this.name);
+    this.enabled = botConfig.configFile.listeners.includes(this.name);
 
     if (this.enabled) {
       // May need to disable/configure these (outside of defaults) if not working

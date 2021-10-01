@@ -4,7 +4,6 @@ import {
   getRandomBool,
   getRandomInt,
 } from "../../lib/utils";
-import { applyConfig, config } from "../../lib/config";
 import { Message, MessageAttachment } from "discord.js";
 import jimpConfig from "@jimp/custom";
 import jimpPlugins from "@jimp/plugins";
@@ -16,6 +15,9 @@ import gm from "gm";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
+import { botConfig } from "../../lib/config";
+
+const config = botConfig.configFile;
 
 // TODO: At this point, this custom config is not required.
 // It would be nice to get the fisheye function working however, so I'm leaving it here.
@@ -25,7 +27,7 @@ const fryJimp = jimpConfig({
 });
 
 @ApplyOptions<CommandOptions>(
-  applyConfig("fry", {
+  botConfig.apply("fry", {
     description: "Deepfry your friends",
     preconditions: ["GuildOnly"],
   }),

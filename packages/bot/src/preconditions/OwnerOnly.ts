@@ -1,10 +1,10 @@
 import { Precondition } from "@sapphire/framework";
 import type { Message } from "discord.js";
-import { config } from "../lib/config";
+import { botConfig } from "../lib/config";
 
 export class UserPrecondition extends Precondition {
   public async run(message: Message) {
-    return config.owners.includes(message.author.id)
+    return botConfig.configFile.owners.includes(message.author.id)
       ? this.ok()
       : this.error({ message: "This command can only be used by the owner." });
   }

@@ -1,13 +1,15 @@
 import { Message, MessageAttachment } from "discord.js";
-import { applyConfig, config } from "../../lib/config";
 import { isImageURL, getImageUrl } from "../../lib/utils";
 import jimp from "jimp";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
 import { send } from "@sapphire/plugin-editable-commands";
+import { botConfig } from "../../lib/config";
+
+const config = botConfig.configFile;
 
 @ApplyOptions<CommandOptions>(
-  applyConfig("jpeg", {
+  botConfig.apply("jpeg", {
     description: "More JPEG. 'nuff said",
   }),
 )
@@ -30,7 +32,7 @@ export class JpegCommand extends Command {
         return send(msg, "Sorry, I can't find the last message :(");
       }
 
-      let url =
+      const url =
         lastMessage[1].attachments.first()?.url ??
         getImageUrl(lastMessage[1].content);
 
@@ -63,7 +65,7 @@ export class JpegCommand extends Command {
       ////
       //  If target param is not a URL
       ////
-      let message = await msg.channel.messages
+      const message = await msg.channel.messages
         .fetch(target)
         .catch(() => undefined);
 
