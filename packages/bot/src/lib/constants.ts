@@ -1,22 +1,15 @@
 import type { CommandOptions } from "@sapphire/framework";
-import { join } from "path";
-
-export const RootDir = join(__dirname, "..", "..");
-export const SrcDir = join(RootDir, "src");
-
-export const RandomLoadingMessage = [
-  "Computing...",
-  "Thinking...",
-  "Cooking some food",
-  "Give me a moment",
-  "Loading...",
-];
 
 export const IfunnyURLRegex =
-  /https:\/\/(?:www\.)?ifunny\.co\/(picture|video)\/(\w*){9}/;
+  /https:\/\/(?:www\.)?ifunny\.co\/(picture|video)\/(\w*){9}/gim;
 
 export const ImageURLRegex =
-  /https?:\/\/\S*?\.(?:png|jpe?g)(?:\?(?:(?:(?:[\w_-]+=[\w_-]+)(?:&[\w_-]+=[\w_-]+)*)|(?:[\w_-]+)))?/;
+  /https?:\/\/\S*?\.(?:png|jpe?g)(?:\?(?:(?:(?:[\w_-]+=[\w_-]+)(?:&[\w_-]+=[\w_-]+)*)|(?:[\w_-]+)))?/gim;
+
+export const NumberRegex = /\d+/;
+
+export const UnitRegex =
+  /((?:\d|\.)+) ?((?:milli|m|centi|c|kilo|k)?(?:meter|m|gram|g|liter|l|inche|inch|in|"|feet|foot|ft|'|yard|yd|mile|mi|cup|pint|pt|quart|qt|gallon|gal|ounce|oz|pound|lb|second|s|minute|min|hour|hr|day|week|month|year)s?)(?:\W|$)/gim;
 
 // See https://sapphiredev.github.io/framework/interfaces/CommandOptions.html for more info
 export const CommandOptionsFields = [
