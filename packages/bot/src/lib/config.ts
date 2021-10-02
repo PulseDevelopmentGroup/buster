@@ -86,7 +86,10 @@ export class BotConfiguration {
    * @param opts The default options for the command
    * @returns A merged CommandOptions object
    */
-  public apply(commandName: string, opts?: CommandOptions): CommandOptions {
+  public applyConfig(
+    commandName: string,
+    opts?: CommandOptions,
+  ): CommandOptions {
     return {
       cooldownFilteredUsers: this.json.owners,
       ...opts,

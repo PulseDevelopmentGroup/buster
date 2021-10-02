@@ -8,7 +8,7 @@ import { PaginatedMessage } from "@sapphire/discord.js-utilities";
 import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  config.apply("gif", {
+  config.applyConfig("gif", {
     description: "Random gif getter, use at your own risk",
   }),
 )

@@ -7,7 +7,7 @@ import { send } from "@sapphire/plugin-editable-commands";
 import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  config.apply("jpeg", {
+  config.applyConfig("jpeg", {
     description: "More JPEG. 'nuff said",
   }),
 )

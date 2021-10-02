@@ -8,7 +8,7 @@ import { send } from "@sapphire/plugin-editable-commands";
 import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  config.apply("intent", {
+  config.applyConfig("intent", {
     name: "intent",
     description: "Figure out what the _actual_ intent of a message is",
     preconditions: ["GuildOnly"],

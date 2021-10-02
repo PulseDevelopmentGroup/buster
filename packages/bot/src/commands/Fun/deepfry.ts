@@ -25,7 +25,7 @@ const fryJimp = jimpConfig({
 });
 
 @ApplyOptions<CommandOptions>(
-  config.apply("fry", {
+  config.applyConfig("fry", {
     description: "Deepfry your friends",
     preconditions: ["GuildOnly"],
   }),

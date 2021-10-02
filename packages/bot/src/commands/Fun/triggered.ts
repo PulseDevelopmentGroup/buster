@@ -10,7 +10,7 @@ import { send } from "@sapphire/plugin-editable-commands";
 import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  config.apply("triggered", {
+  config.applyConfig("triggered", {
     name: "triggered",
     description: "Trigger people",
     preconditions: ["GuildOnly"],

@@ -5,7 +5,7 @@ import { send } from "@sapphire/plugin-editable-commands";
 import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  config.apply("role", {
+  config.applyConfig("role", {
     description: "Get, give, and remove roles & permissions",
     preconditions: ["GuildOnly"],
   }),

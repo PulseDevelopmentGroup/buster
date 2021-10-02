@@ -6,7 +6,7 @@ import { send } from "@sapphire/plugin-editable-commands";
 import { config } from "../../lib/config";
 
 @ApplyOptions(
-  config.apply("techtip", {
+  config.applyConfig("techtip", {
     name: "techtip",
     description: "How to computer",
     preconditions: ["GuildOnly"],

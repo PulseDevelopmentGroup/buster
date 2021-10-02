@@ -5,7 +5,7 @@ import type { Message } from "discord.js";
 import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  config.apply("corn", {
+  config.applyConfig("corn", {
     description: "🌽",
   }),
 )
