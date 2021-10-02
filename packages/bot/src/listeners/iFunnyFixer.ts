@@ -26,21 +26,17 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     if (!this.browser) return;
 
     // Hopefully ignore as much as we can to reduce load on the bot
-    if (message.author.bot || message.content === "") {
-      return;
-    }
+    if (message.author.bot || message.content === "") return;
 
     // Get the URL from the message
     const ifunny = IfunnyURLRegex.exec(message.content);
 
     // If the regex returned nothing or what it returned isn't a URL, exit
-    if (!ifunny || !isURL(ifunny[0])) {
-      return;
-    }
+    if (!ifunny || !isURL(ifunny[0])) return;
 
     // Let the user know what's going on
     const notification = await message.reply(
-      `That looks like an iFunny link, I'll try and grab the ${ifunny[1]} for you....`,
+      `That looks like an iFunny link, I'll try and grab the ${ifunny[1]} for you....`
     );
 
     // Create a new page
@@ -56,7 +52,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     // If either the URL or page are empty, error
     if (!url) {
       return notification.edit(
-        `Unfortunately I can't find an ${ifunny[1]} associated with that link.`,
+        `Unfortunately I can't find an ${ifunny[1]} associated with that link.`
       );
     }
 
@@ -106,7 +102,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
   public async getDirect(
     page: Page,
     type: string,
-    url: string,
+    url: string
   ): Promise<string> {
     if (type === "picture") type = "image";
     if (type === "video") type = "video:url";
@@ -114,7 +110,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     await page.goto(url);
     const directUrl = await page.$eval(
       `head > meta[property='og:${type}']`,
-      (meta) => meta.getAttribute("content"),
+      (meta) => meta.getAttribute("content")
     );
     page.close();
 
