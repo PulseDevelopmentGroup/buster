@@ -96,14 +96,6 @@ export class BotConfiguration {
   }
 
   /**
-   * Reload the config globally
-   */
-  public async reload(): Promise<JSONConfiguration> {
-    this.json = await this.load();
-    return this.json;
-  }
-
-  /**
    * Build the Configuration object from the config file
    * Note: This is called automaticlly by loadEnvironment,
    * it should only be called again if the config file has changed.
