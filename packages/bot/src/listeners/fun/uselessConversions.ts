@@ -18,6 +18,8 @@ type Unit = {
   measurement: Measurement;
 };
 
+const numberFormatter = new Intl.NumberFormat("en-US");
+
 export class UserEvent extends Listener<typeof Events.MessageCreate> {
   public constructor(context: PieceContext, options?: ListenerOptions) {
     super(context, {
@@ -48,9 +50,9 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     // Build return message
     let result = "";
     for (const unit of units) {
-      result += `\`${unit.input}\` is equal to \`${
-        unit.value
-      } ${this.measureToName(unit.measurement)}s\`\n`;
+      result += `\`${unit.input}\` is equal to \`${numberFormatter.format(
+        unit.value,
+      )} ${this.measureToName(unit.measurement)}s\`\n`;
     }
 
     return message.reply(result);
