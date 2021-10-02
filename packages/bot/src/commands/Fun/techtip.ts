@@ -1,12 +1,12 @@
-import { applyConfig } from "../../lib/config";
 import faker from "faker";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Command } from "@sapphire/framework";
 import type { Message } from "discord.js";
 import { send } from "@sapphire/plugin-editable-commands";
+import { config } from "../../lib/config";
 
 @ApplyOptions(
-  applyConfig("techtip", {
+  config.applyConfig("techtip", {
     name: "techtip",
     description: "How to computer",
     preconditions: ["GuildOnly"],

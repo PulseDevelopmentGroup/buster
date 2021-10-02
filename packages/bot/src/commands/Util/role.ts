@@ -1,11 +1,11 @@
 import { MessageEmbed, Role, Message } from "discord.js";
-import { applyConfig } from "../../lib/config";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
+import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  applyConfig("role", {
+  config.applyConfig("role", {
     description: "Get, give, and remove roles & permissions",
     preconditions: ["GuildOnly"],
   }),
@@ -49,7 +49,7 @@ export default class RoleCommand extends Command {
     if (["g", "give", "gib"].includes(action)) {
       let guildRole: Role | undefined;
 
-      for (let r of msg.guild.roles.cache.values()) {
+      for (const r of msg.guild.roles.cache.values()) {
         let name = r.name.toLowerCase();
         if (!name.startsWith(":")) {
           continue;
@@ -86,7 +86,7 @@ export default class RoleCommand extends Command {
     if (["t", "take"].includes(action)) {
       let userRole: Role | undefined;
 
-      for (let r of msg.member.roles.cache.values()) {
+      for (const r of msg.member.roles.cache.values()) {
         let name = r.name.toLowerCase();
         if (!name.startsWith(":")) {
           continue;

@@ -123,7 +123,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
 
   // Only enable if listener is enabled
   public async onLoad() {
-    this.enabled = config.listeners.includes(this.name);
+    this.enabled = config.json.listeners.includes(this.name);
 
     if (this.enabled) {
       // May need to disable/configure these (outside of defaults) if not working

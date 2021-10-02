@@ -4,7 +4,6 @@ import {
   getRandomBool,
   getRandomInt,
 } from "../../lib/utils";
-import { applyConfig, config } from "../../lib/config";
 import { Message, MessageAttachment } from "discord.js";
 import jimpConfig from "@jimp/custom";
 import jimpPlugins from "@jimp/plugins";
@@ -16,6 +15,7 @@ import gm from "gm";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
+import { config } from "../../lib/config";
 
 // TODO: At this point, this custom config is not required.
 // It would be nice to get the fisheye function working however, so I'm leaving it here.
@@ -25,7 +25,7 @@ const fryJimp = jimpConfig({
 });
 
 @ApplyOptions<CommandOptions>(
-  applyConfig("fry", {
+  config.applyConfig("fry", {
     description: "Deepfry your friends",
     preconditions: ["GuildOnly"],
   }),
@@ -114,12 +114,14 @@ export class DeepfryCommand extends Command {
       // Define some constants for the level of pixelation, and use of emojis
       // All values are randomly generated
       const pixels = getRandomInt(3, 2);
-      const useOkHand = getRandomBool(config.commands.fry.vars.okHandProb);
+      const useOkHand = getRandomBool(config.json.commands.fry.vars.okHandProb);
       const useWearyFace = getRandomBool(
-        config.commands.fry.vars.wearyFaceProb,
+        config.json.commands.fry.vars.wearyFaceProb,
       );
-      const useHundred = getRandomBool(config.commands.fry.vars.hundredProb);
-      const useWater = getRandomBool(config.commands.fry.vars.waterProb);
+      const useHundred = getRandomBool(
+        config.json.commands.fry.vars.hundredProb,
+      );
+      const useWater = getRandomBool(config.json.commands.fry.vars.waterProb);
 
       // Load images based on the random generation
       // TODO: Possible to load these a single time, rather than when the command is called, or is that a bad idea?
@@ -155,21 +157,23 @@ export class DeepfryCommand extends Command {
       // Start applying image effects
       const jimpOut = await fryJimp.read(imgUrl).then((i) => {
         i.pixelate(pixels)
-          .posterize(config.commands.fry.vars.posterize)
-          .contrast(config.commands.fry.vars.contrast)
+          .posterize(config.json.commands.fry.vars.posterize)
+          .contrast(config.json.commands.fry.vars.contrast)
           .color([
             {
               apply: "mix",
-              params: ["#eb4034", config.commands.fry.vars.redMixOpacity],
+              params: ["#eb4034", config.json.commands.fry.vars.redMixOpacity],
             },
           ])
-          .quality(config.commands.fry.vars.jpeg);
+          .quality(config.json.commands.fry.vars.jpeg);
+
+        const superimposeScale = config.json.commands.fry.vars.superimposeScale;
 
         // Add emojis
         if (useHundred) {
           imgHundred.scaleToFit(
-            i.getWidth() * config.commands.fry.vars.superimposeScale,
-            i.getHeight() * config.commands.fry.vars.superimposeScale,
+            i.getWidth() * superimposeScale,
+            i.getHeight() * superimposeScale,
           );
 
           this.superimpose(i, imgHundred);
@@ -177,8 +181,8 @@ export class DeepfryCommand extends Command {
 
         if (useWater) {
           imgWater.scaleToFit(
-            i.getWidth() * config.commands.fry.vars.superimposeScale,
-            i.getHeight() * config.commands.fry.vars.superimposeScale,
+            i.getWidth() * superimposeScale,
+            i.getHeight() * superimposeScale,
           );
 
           this.superimpose(i, imgWater);
@@ -186,14 +190,14 @@ export class DeepfryCommand extends Command {
 
         if (useOkHand) {
           imgOkHand.scaleToFit(
-            i.getWidth() * config.commands.fry.vars.superimposeScale,
-            i.getHeight() * config.commands.fry.vars.superimposeScale,
+            i.getWidth() * superimposeScale,
+            i.getHeight() * superimposeScale,
           );
 
           // Randomly select number of ok_hand to place
           for (
             let q = 1;
-            q <= getRandomInt(config.commands.fry.vars.maxHands, 1);
+            q <= getRandomInt(config.json.commands.fry.vars.maxHands, 1);
             q++
           ) {
             this.superimpose(i, imgOkHand);
@@ -202,8 +206,8 @@ export class DeepfryCommand extends Command {
 
         if (useWearyFace) {
           imgWearyFace.scaleToFit(
-            i.getWidth() * config.commands.fry.vars.superimposeScale,
-            i.getHeight() * config.commands.fry.vars.superimposeScale,
+            i.getWidth() * superimposeScale,
+            i.getHeight() * superimposeScale,
           );
 
           this.superimpose(i, imgWearyFace);
