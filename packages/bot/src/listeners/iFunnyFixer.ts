@@ -36,7 +36,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
 
     // Let the user know what's going on
     const notification = await message.reply(
-      `That looks like an iFunny link, I'll try and grab the ${ifunny[1]} for you....`
+      `That looks like an iFunny link, I'll try and grab the ${ifunny[1]} for you....`,
     );
 
     // Create a new page
@@ -52,7 +52,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     // If either the URL or page are empty, error
     if (!url) {
       return notification.edit(
-        `Unfortunately I can't find an ${ifunny[1]} associated with that link.`
+        `Unfortunately I can't find an ${ifunny[1]} associated with that link.`,
       );
     }
 
@@ -102,7 +102,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
   public async getDirect(
     page: Page,
     type: string,
-    url: string
+    url: string,
   ): Promise<string> {
     if (type === "picture") type = "image";
     if (type === "video") type = "video:url";
@@ -110,7 +110,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     await page.goto(url);
     const directUrl = await page.$eval(
       `head > meta[property='og:${type}']`,
-      (meta) => meta.getAttribute("content")
+      (meta) => meta.getAttribute("content"),
     );
     page.close();
 
@@ -119,7 +119,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
 
   // Only enable if listener is enabled
   public async onLoad() {
-    this.enabled = config.json.listeners.includes(this.name);
+    this.enabled = config.json.listeners[this.name].enabled;
 
     if (this.enabled) {
       // May need to disable/configure these (outside of defaults) if not working

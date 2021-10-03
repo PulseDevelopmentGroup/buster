@@ -254,7 +254,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     if (measurement == Measurement.unknown) return null;
 
     return {
-      input: unit[0],
+      input: unit[0].trim(),
       measurement,
       value,
     };
@@ -262,7 +262,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
 
   // Only enable if logCommands is true or we are in a dev enviornment
   public onLoad() {
-    this.enabled = config.json.listeners.includes(this.name);
+    this.enabled = config.json.listeners[this.name].enabled;
     return super.onLoad();
   }
 }

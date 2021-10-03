@@ -1,7 +1,14 @@
 {
   "owners": ["217448431545745408", "140599441328439297"],
   "errorChannel": "893296394478182450",
-  "listeners": ["iFunnyFixer", "uselessConversions"],
+  "listeners": {
+    "iFunnyFixer": {
+      "enabled": true
+    },
+    "uselessConversions": {
+      "enabled": true
+    }
+  },
   "commands": {
     "jpeg": {
       "options": {
