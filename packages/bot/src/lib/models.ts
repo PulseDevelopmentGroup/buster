@@ -8,3 +8,26 @@ export enum IntentAttributeNameLookup {
   SEXUALLY_EXPLICIT = ":eggplant: Sexually Explicit",
   FLIRTATION = ":kissing_heart: Flirtation",
 }
+
+/* Useless Conversions */
+
+export enum Measurement {
+  length = "length", // meter
+  volume = "volume", // liter
+  mass = "mass", // gram
+  time = "time", // second
+  unknown = "unknown",
+}
+
+export interface Unit {
+  value: number;
+  measurement: Measurement;
+}
+
+export interface InputUnit extends Unit {
+  input: string;
+}
+
+export interface StandardUnit extends Unit {
+  name: string;
+}

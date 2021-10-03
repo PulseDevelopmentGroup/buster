@@ -26,17 +26,13 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     if (!this.browser) return;
 
     // Hopefully ignore as much as we can to reduce load on the bot
-    if (message.author.bot || message.content === "") {
-      return;
-    }
+    if (message.author.bot || message.content === "") return;
 
     // Get the URL from the message
     const ifunny = IfunnyURLRegex.exec(message.content);
 
     // If the regex returned nothing or what it returned isn't a URL, exit
-    if (!ifunny || !isURL(ifunny[0])) {
-      return;
-    }
+    if (!ifunny || !isURL(ifunny[0])) return;
 
     // Let the user know what's going on
     const notification = await message.reply(
@@ -123,7 +119,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
 
   // Only enable if listener is enabled
   public async onLoad() {
-    this.enabled = config.json.listeners.includes(this.name);
+    this.enabled = config.json.listeners[this.name].enabled;
 
     if (this.enabled) {
       // May need to disable/configure these (outside of defaults) if not working

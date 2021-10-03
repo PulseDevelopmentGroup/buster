@@ -27,13 +27,19 @@ export interface Environment {
 // Configuration
 export interface JSONConfiguration {
   owners: string[];
-  listeners: string[];
+  listeners: Record<string, Listener>;
   commands: Record<string, Command>;
 }
 
 // Command
 interface Command {
   options: CommandOptions;
+  vars: Record<string, any>;
+}
+
+// Listener
+interface Listener {
+  enabled: boolean;
   vars: Record<string, any>;
 }
 
