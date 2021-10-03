@@ -126,11 +126,13 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
       // Volume
       case "ml":
       case "milliliter":
+      case "milliliters":
         measurement = Measurement.length;
         value /= 1000;
         break;
       case "l":
       case "liter":
+      case "liters":
         measurement = Measurement.length;
         // Liter is our standard measure of volume
         break;
