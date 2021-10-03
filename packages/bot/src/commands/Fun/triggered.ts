@@ -1,5 +1,4 @@
 import { Message, MessageAttachment } from "discord.js";
-import { applyConfig } from "../../lib/config";
 import GifEncoder from "gifencoder";
 import got from "got/dist/source";
 import { Readable } from "stream";
@@ -8,9 +7,10 @@ import path from "path";
 import { Command, CommandOptions } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
 import { send } from "@sapphire/plugin-editable-commands";
+import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  applyConfig("triggered", {
+  config.applyConfig("triggered", {
     name: "triggered",
     description: "Trigger people",
     preconditions: ["GuildOnly"],
@@ -31,7 +31,7 @@ export default class TriggeredCommand extends Command {
 
     const pfp = (await got(pfpUrl)).rawBody;
 
-    let basePfp = await sharp(pfp)
+    const basePfp = await sharp(pfp)
       .blur(2)
       .sharpen(3)
       .rotate(3)
@@ -71,7 +71,7 @@ export default class TriggeredCommand extends Command {
         .resize(128, 128)
         .toBuffer();
 
-      let trimmedPfp = basePfp
+      const trimmedPfp = basePfp
         .clone()
         .extract({
           left: offsetX,
@@ -105,7 +105,7 @@ export default class TriggeredCommand extends Command {
     });
 
     const chunks = [];
-    for await (let chunk of encoder.createReadStream()) {
+    for await (const chunk of encoder.createReadStream()) {
       chunks.push(chunk);
     }
 

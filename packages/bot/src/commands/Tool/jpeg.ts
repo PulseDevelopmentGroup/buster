@@ -1,13 +1,13 @@
 import { Message, MessageAttachment } from "discord.js";
-import { applyConfig, config } from "../../lib/config";
 import { isImageURL, getImageUrl } from "../../lib/utils";
 import jimp from "jimp";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
 import { send } from "@sapphire/plugin-editable-commands";
+import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  applyConfig("jpeg", {
+  config.applyConfig("jpeg", {
     description: "More JPEG. 'nuff said",
   }),
 )
@@ -30,7 +30,7 @@ export class JpegCommand extends Command {
         return send(msg, "Sorry, I can't find the last message :(");
       }
 
-      let url =
+      const url =
         lastMessage[1].attachments.first()?.url ??
         getImageUrl(lastMessage[1].content);
 
@@ -63,7 +63,7 @@ export class JpegCommand extends Command {
       ////
       //  If target param is not a URL
       ////
-      let message = await msg.channel.messages
+      const message = await msg.channel.messages
         .fetch(target)
         .catch(() => undefined);
 
@@ -90,8 +90,8 @@ export class JpegCommand extends Command {
     try {
       const attachment = await jimp.read(imgUrl).then((i) => {
         return i
-          .posterize(config.commands.jpeg.vars.posterize)
-          .quality(config.commands.jpeg.vars.jpeg)
+          .posterize(config.json.commands.jpeg.vars.posterize)
+          .quality(config.json.commands.jpeg.vars.jpeg)
           .getBufferAsync(jimp.MIME_JPEG)
           .then((b) => {
             return b;

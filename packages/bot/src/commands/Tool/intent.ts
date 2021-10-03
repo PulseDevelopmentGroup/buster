@@ -1,4 +1,3 @@
-import { applyConfig, env } from "../../lib/config";
 import { google } from "googleapis";
 import { PERSPECTIVE_URL } from "../../lib/constants";
 import { Message, MessageEmbed } from "discord.js";
@@ -6,9 +5,10 @@ import { IntentAttributeNameLookup } from "../../lib/models";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
 import { send } from "@sapphire/plugin-editable-commands";
+import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
-  applyConfig("intent", {
+  config.applyConfig("intent", {
     name: "intent",
     description: "Figure out what the _actual_ intent of a message is",
     preconditions: ["GuildOnly"],
@@ -20,6 +20,7 @@ export default class IntentCommand extends Command {
     const client = await google.discoverAPI(PERSPECTIVE_URL);
 
     if (!targetMessage) {
+      // eslint-disable-next-line no-sparse-arrays
       [[, targetMessage] = [, undefined]] = await msg.channel.messages.fetch({
         before: msg.id,
         limit: 1,
@@ -50,7 +51,7 @@ export default class IntentCommand extends Command {
     const res: any = await new Promise((resolve, reject) =>
       (client.comments as any).analyze(
         {
-          key: env.perspectiveApiKey,
+          key: config.env.perspectiveApiKey,
           resource: req,
         },
         (err: Error, response: any) => {
