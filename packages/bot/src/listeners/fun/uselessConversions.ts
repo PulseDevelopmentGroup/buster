@@ -2,23 +2,16 @@ import type { ListenerOptions, PieceContext } from "@sapphire/framework";
 import { Events, Listener } from "@sapphire/framework";
 import type { Message } from "discord.js";
 import { config } from "../../lib/config";
-import { NumberRegex, UnitRegex } from "../../lib/constants";
+import {
+  NumberRegex,
+  UnitRegex,
+  StandardMeasurements,
+} from "../../lib/constants";
+import { InputUnit, Measurement } from "../../lib/models";
 
-enum Measurement {
-  length = "length", // meter
-  volume = "volume", // liter
-  mass = "mass", // gram
-  time = "time", // second
-  unknown = "unknown",
-}
-
-type Unit = {
-  input: string;
-  value: number;
-  measurement: Measurement;
-};
-
-const numberFormatter = new Intl.NumberFormat("en-US");
+const numberFormatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 10,
+});
 
 export class UserEvent extends Listener<typeof Events.MessageCreate> {
   public constructor(context: PieceContext, options?: ListenerOptions) {
@@ -39,8 +32,8 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
       return;
 
     // Get all units from the message
-    let parsedUnit: Unit | null;
-    const units: Unit[] = [];
+    let parsedUnit: InputUnit | null;
+    const units: InputUnit[] = [];
     do {
       // Iterate through array and convert the regex result to a Unit
       parsedUnit = this.convert(UnitRegex.exec(message.content));
@@ -50,32 +43,25 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     // Build return message
     let result = "";
     for (const unit of units) {
-      result += `\`${unit.input}\` is equal to \`${numberFormatter.format(
-        unit.value,
-      )} ${this.measureToName(unit.measurement)}s\`\n`;
+      const standard =
+        StandardMeasurements[unit.measurement][
+          Math.floor(
+            Math.random() * StandardMeasurements[unit.measurement].length,
+          )
+        ];
+
+      result += `\`${unit.input}\` is equal to about \`${numberFormatter.format(
+        unit.value / standard.value,
+      )} ${standard.name}\`\n`;
     }
+
+    if (!result) return;
 
     return message.reply(result);
   }
 
-  // Convert measure to a readable string name
-  private measureToName(measurement: Measurement): string {
-    switch (measurement) {
-      case Measurement.length:
-        return "meter";
-      case Measurement.volume:
-        return "liter";
-      case Measurement.mass:
-        return "gram";
-      case Measurement.time:
-        return "second";
-      case Measurement.unknown:
-        return "unknown";
-    }
-  }
-
   // Convert regex input into a Unit
-  private convert(unit: RegExpExecArray | null): Unit | null {
+  private convert(unit: RegExpExecArray | null): InputUnit | null {
     if (!unit) return null;
 
     // Get the value and convert it
@@ -198,6 +184,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
         value *= 28.35;
         break;
       case "lb":
+      case "lbs":
       case "pound":
       case "pounds":
         measurement = Measurement.mass;
@@ -211,6 +198,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
         value /= 1000;
         break;
       case "s":
+      case "sec":
       case "second":
       case "seconds":
         measurement = Measurement.time;
