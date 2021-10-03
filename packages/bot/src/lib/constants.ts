@@ -12,6 +12,11 @@ export const NumberRegex = /\d+/;
 export const UnitRegex =
   /((?:\d|\.)+) ?((?:milli|m|centi|c|kilo|k)?(?:meter|m|gram|g|liter|l|inche|inch|in|"|feet|foot|ft|'|yard|yd|mile|mi|cup|pint|pt|quart|qt|gallon|gal|ounce|oz|pound|lb|second|sec|s|minute|min|hour|hr|day|week|month|year)s?)(?:\W|$)/gim;
 
+export const base64_reg = /^(?=(.{4})*$)[A-Za-z0-9+/]*={0,2}$/;
+export const hex_reg = /^[a-f0-9]+$/;
+export const octal_reg = /^[0-7]+$/;
+export const binary_reg = /^[01]+$/;
+
 // See https://sapphiredev.github.io/framework/interfaces/CommandOptions.html for more info
 export const CommandOptionsFields = [
   "aliases",

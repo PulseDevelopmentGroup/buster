@@ -2,11 +2,13 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
 import type { Message } from "discord.js";
+import {
+  binary_reg,
+  octal_reg,
+  hex_reg,
+  base64_reg,
+} from "../../lib/constants";
 
-const base64_reg = new RegExp("^(?=(.{4})*$)[A-Za-z0-9+/]*={0,2}$");
-const hex_reg = new RegExp("^[a-f0-9]+$");
-const octal_reg = new RegExp("^[0-7]+$");
-const binary_reg = new RegExp("^[01]+$");
 const reg_arr = [binary_reg, octal_reg, hex_reg, base64_reg];
 
 @ApplyOptions<CommandOptions>({
