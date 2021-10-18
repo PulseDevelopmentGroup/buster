@@ -10,7 +10,7 @@ import { config } from "../../lib/config";
   }),
 )
 export default class CornCommand extends Command {
-  async run(msg: Message, args: Args) {
+  async messageRun(msg: Message, args: Args) {
     const type = args.nextMaybe().value;
 
     if (type) {

@@ -11,7 +11,7 @@ import { EMBED_COLOR } from "../../lib/constants";
 
 // Code influenced by https://github.com/NezuChan/kamado-tanjiro
 export class clientCommand extends Command {
-  async run(message: Message, args: Args) {
+  async messageRun(message: Message, args: Args) {
     const userArgument = await args.restResult("string");
     if (userArgument.success) {
       const command = this.container.stores

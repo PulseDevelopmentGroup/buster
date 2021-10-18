@@ -27,20 +27,12 @@
     "web": "file:packages/web"
   },
   "devDependencies": {
-    "@types/faker": "^5.5.8",
-    "@types/gifencoder": "^2.0.1",
-    "@types/gm": "^1.18.10",
-    "@types/node": "^16.10.1",
-    "@types/react": "17.0.27",
-    "@types/sharp": "^0.29.2",
-    "@types/ws": "^8.2.0",
-    "@typescript-eslint/eslint-plugin": "^4.31.2",
-    "eslint": "8.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "eslint": "^7.32.0",
     "eslint-config-next": "11.1.2",
     "eslint-config-prettier": "^8.3.0",
     "lerna": "^4.0.0",
     "prettier": "^2.3.2",
-    "tsc-watch": "^4.5.0",
-    "typescript": "4.4.3"
+    "typescript": "^4.4.4"
   }
 }

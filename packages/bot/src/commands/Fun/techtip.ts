@@ -13,7 +13,7 @@ import { config } from "../../lib/config";
   }),
 )
 export default class SupCommand extends Command {
-  async run(msg: Message) {
+  async messageRun(msg: Message) {
     return send(msg, faker.hacker.phrase());
   }
 }

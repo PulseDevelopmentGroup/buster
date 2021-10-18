@@ -13,7 +13,7 @@ import { config } from "../../lib/config";
   }),
 )
 export default class GifCommand extends Command {
-  async run(msg: Message, args: Args) {
+  async messageRun(msg: Message, args: Args) {
     let search = args.nextMaybe().value;
 
     if (!search) {

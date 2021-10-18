@@ -17,7 +17,7 @@ import { config } from "../../lib/config";
   }),
 )
 export default class TriggeredCommand extends Command {
-  async run(msg: Message) {
+  async messageRun(msg: Message) {
     const scale = 20;
     let pfpUrl: string | undefined;
     const mentioned = msg.mentions?.users?.first();

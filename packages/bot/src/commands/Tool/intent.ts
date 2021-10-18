@@ -15,7 +15,7 @@ import { config } from "../../lib/config";
   }),
 )
 export default class IntentCommand extends Command {
-  async run(msg: Message, args: Args) {
+  async messageRun(msg: Message, args: Args) {
     let targetMessage = (await args.pickResult("message")).value;
     const client = await google.discoverAPI(PERSPECTIVE_URL);
 
@@ -48,12 +48,15 @@ export default class IntentCommand extends Command {
       doNotStore: true,
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res: any = await new Promise((resolve, reject) =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (client.comments as any).analyze(
         {
           key: config.env.perspectiveApiKey,
           resource: req,
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (err: Error, response: any) => {
           if (err) {
             reject(err);
@@ -74,6 +77,7 @@ export default class IntentCommand extends Command {
 
       Object.entries(attributeScores)
         .sort(([ka], [kb]) => (ka > kb ? 1 : kb > ka ? -1 : 0))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .forEach(([attribute, scoreSummary]: [string, any]) => {
           // This is jank and I take no responsibility
 
