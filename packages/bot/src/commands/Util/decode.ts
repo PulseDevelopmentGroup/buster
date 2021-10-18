@@ -18,7 +18,7 @@ const RegexArr = [BinaryRegex, OctalRegex, HexRegex, BaseSixtyFourRegex];
   }),
 )
 export class UserCommand extends Command {
-  public async run(message: Message, args: Args) {
+  public async messageRun(message: Message, args: Args) {
     const encoded = await args.rest("string");
     for (const reg of RegexArr) {
       if (reg.test(encoded)) {

@@ -14,7 +14,7 @@ import { config } from "../../lib/config";
   }),
 )
 export class InspireCommand extends Command {
-  async run(msg: Message) {
+  async messageRun(msg: Message) {
     const { body } = await got.get(INSPIRE_URL, {
       searchParams: { generate: true },
     });

@@ -11,7 +11,7 @@ import { config } from "../../lib/config";
   }),
 )
 export default class RoleCommand extends Command {
-  async run(msg: Message, args: Args) {
+  async messageRun(msg: Message, args: Args) {
     const action = await args.nextMaybe().value;
     const role = await args.nextMaybe().value;
 

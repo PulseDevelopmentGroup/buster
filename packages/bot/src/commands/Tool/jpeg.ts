@@ -12,7 +12,7 @@ import { config } from "../../lib/config";
   }),
 )
 export class JpegCommand extends Command {
-  public async run(msg: Message, args: Args) {
+  public async messageRun(msg: Message, args: Args) {
     const target = !args.finished && (await args.rest("string"));
     const mentioned = msg.mentions?.users?.first();
     let imgUrl: string;
