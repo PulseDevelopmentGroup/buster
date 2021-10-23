@@ -1,5 +1,5 @@
 {
-  "name": "buster",
+  "name": "@pulsedev/buster-bot",
   "version": "4.2.0",
   "private": true,
   "main": "dist/index.js",
@@ -45,7 +45,6 @@
     "@types/react": "17.0.30",
     "@types/sharp": "^0.29.2",
     "@types/ws": "^8.2.0",
-    "eslint": "^7.32.0",
     "typescript": "^4.4.4"
   },
   "scripts": {

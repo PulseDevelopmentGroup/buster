@@ -8,7 +8,7 @@ Your friendly neighborhood Discord bot.
 
 ## Getting Started
 
-1. Install the dependencies: `npx lerna bootstrap`
+1. Install the dependencies: `npm install`
 2. Take a look at the README in the project you would like to edit ( [bot](./packages/bot/README.md) | [web](./packages/web/README.md) ) for further details on how to work on that project.
 
 ## Releasing
