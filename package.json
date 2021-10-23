@@ -1,37 +1,15 @@
 {
-  "version": "4.0.0",
-  "npmClient": "npm",
+  "name": "@pulsedev/buster",
+  "version": "4.2.0",
   "private": true,
-  "command": {
-    "publish": {
-      "ignoreChanges": [
-        "ignored-file",
-        "*.md"
-      ],
-      "message": "chore(release): publish",
-      "registry": "https://npm.pkg.github.com"
-    },
-    "bootstrap": {
-      "ignore": "component-*",
-      "npmClientArgs": [
-        "--no-package-lock"
-      ]
-    }
-  },
-  "packages": [
-    "packages/*"
+  "workspaces": [
+    "./packages/*"
   ],
-  "name": "buster",
-  "dependencies": {
-    "buster": "file:packages/bot",
-    "web": "file:packages/web"
-  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "eslint": "^7.32.0",
     "eslint-config-next": "11.1.2",
     "eslint-config-prettier": "^8.3.0",
-    "lerna": "^4.0.0",
     "prettier": "^2.3.2",
     "typescript": "^4.4.4"
   }
