@@ -40,7 +40,7 @@
     "@types/faker": "^5.5.8",
     "@types/gifencoder": "^2.0.1",
     "@types/gm": "^1.18.10",
-    "@types/node": "^16.10.1",
+    "@types/node": "^16.11.5",
     "@types/puppeteer": "^5.4.4",
     "@types/react": "17.0.30",
     "@types/sharp": "^0.29.2",
