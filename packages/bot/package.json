@@ -12,7 +12,7 @@
     "@sapphire/framework": "^2.1.4",
     "@sapphire/plugin-api": "^3.0.2",
     "@sapphire/plugin-editable-commands": "^1.1.1",
-    "@sapphire/plugin-subcommands": "^2.0.2",
+    "@sapphire/plugin-subcommands": "^2.1.2",
     "@sapphire/time-utilities": "^1.4.8",
     "@sapphire/type": "^2.1.2",
     "@sapphire/utilities": "^3.1.0",
