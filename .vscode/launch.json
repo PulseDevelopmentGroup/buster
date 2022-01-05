@@ -5,10 +5,20 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Bot Debugging",
+      "name": "Start & Attach",
       "type": "node",
       "request": "attach",
-      "preLaunchTask": "bot: dev",
+      "preLaunchTask": "dev:debug",
+      "port": 9229,
+      "restart": true,
+      "smartStep": true,
+      "cwd": "${workspaceFolder}/packages/bot",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Attach",
+      "type": "node",
+      "request": "attach",
       "port": 9229,
       "restart": true,
       "smartStep": true,

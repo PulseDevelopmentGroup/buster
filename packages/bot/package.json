@@ -46,10 +46,11 @@
     "typescript": "^4.5.3"
   },
   "scripts": {
-    "build": "tsc && cp -r src/assets dist/assets",
+    "prep": "rm -r dist/assets/* && cp -r src/assets/* dist/assets/",
+    "build": "npm run prep && tsc",
     "start": "node dist/index.js",
-    "dev": "cp -r src/assets dist/ && tsc-watch --onSuccess \"node ./dist/index.js\"",
-    "vsc:dev": "rm -rf dist && mkdir dist && cp -r src/assets dist/assets && tsc-watch --onSuccess \"node --inspect ./dist/index.js\"",
+    "dev": "npm run prep && tsc-watch --onSuccess \"npm run start\"",
+    "dev:debug": "npm run prep && tsc-watch --onSuccess \"node --inspect dist/index.js\"",
     "format": "prettier --write \"src/**/*.ts\""
   }
 }
