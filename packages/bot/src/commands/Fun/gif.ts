@@ -1,4 +1,4 @@
-import got from "got";
+import got from "got-cjs";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
 import type { Message } from "discord.js";

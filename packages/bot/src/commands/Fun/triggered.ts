@@ -1,6 +1,6 @@
 import { Message, MessageAttachment } from "discord.js";
 import GifEncoder from "gifencoder";
-import got from "got/dist/source";
+import got from "got-cjs";
 import { Readable } from "stream";
 import sharp from "sharp";
 import path from "path";

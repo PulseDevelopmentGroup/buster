@@ -3,7 +3,7 @@
   "errorChannel": "893296394478182450",
   "listeners": {
     "iFunnyFixer": {
-      "enabled": true
+      "enabled": false
     },
     "uselessConversions": {
       "enabled": true

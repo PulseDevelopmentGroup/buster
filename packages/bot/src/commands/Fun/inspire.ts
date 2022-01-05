@@ -1,6 +1,6 @@
 import { Message, MessageEmbed } from "discord.js";
 import { INSPIRE_URL } from "../../lib/constants";
-import got from "got";
+import got from "got-cjs";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Command, CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";

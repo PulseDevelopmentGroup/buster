@@ -1,6 +1,6 @@
 import type { CommandOptions } from "@sapphire/framework";
 import { isURL } from "./utils";
-import got from "got";
+import got from "got-cjs";
 import fs from "fs";
 import * as dotenv from "dotenv-cra";
 

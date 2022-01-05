@@ -27,11 +27,11 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
-    "target": "ES2020",
+    "target": "esnext",
     "useDefineForClassFields": true,
     "rootDir": "src",
     "outDir": "dist",
     "tsBuildInfoFile": "dist/.tsbuildinfo"
   },
-  "include": ["src"]
+  "include": ["src/**/*"]
 }
