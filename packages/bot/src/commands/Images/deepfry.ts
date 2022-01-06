@@ -16,6 +16,7 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
 import { config } from "../../lib/config";
+import { logger } from "../../lib/logger";
 
 // TODO: At this point, this custom config is not required.
 // It would be nice to get the fisheye function working however, so I'm leaving it here.
@@ -40,14 +41,13 @@ export class DeepfryCommand extends Command {
       ////
       //  If no target param exists
       ////
-
       const [[, lastMessage] = []] = await msg.channel.messages.fetch({
         before: msg.id,
         limit: 1,
       });
 
       if (!lastMessage) {
-        return send(msg, "Unable to find the last message :(");
+        return send(msg, "Unable to fetch previous message.");
       }
 
       const url =
@@ -57,7 +57,7 @@ export class DeepfryCommand extends Command {
       if (!url) {
         return send(
           msg,
-          "Hmm... There doesn't appear to be an image in the last message. Try specifying a message ID.",
+          "There doesn't appear to be an image in the last message. Try specifying a message ID.",
         );
       }
 
@@ -88,7 +88,7 @@ export class DeepfryCommand extends Command {
         .catch(() => undefined);
 
       if (!message) {
-        return send(msg, "I couldn't find a message with that ID.");
+        return send(msg, `Unable to find message with the ID: \`${target}\`.`);
       }
 
       const msgAttachment = message.attachments.first();
@@ -232,8 +232,9 @@ export class DeepfryCommand extends Command {
         files: [new MessageAttachment(out, "fried.jpg")],
       });
     } catch (e) {
-      console.error(e);
-      return send(msg, `Unable to fry the image... "${e}"`);
+      const error = `Unable to fry the image. \`${e}\``;
+      logger.command.error(error);
+      return send(msg, error);
     }
   }
 
