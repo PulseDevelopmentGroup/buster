@@ -4,7 +4,6 @@ import { isURL } from "../lib/utils";
 
 import type { ListenerOptions, PieceContext } from "@sapphire/framework";
 import { Events, Listener } from "@sapphire/framework";
-import { send } from "@sapphire/plugin-editable-commands";
 import { Message, MessageEmbed } from "discord.js";
 
 import type { Browser, Page } from "puppeteer";
@@ -34,11 +33,6 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     // If the regex returned nothing or what it returned isn't a URL, exit
     if (!ifunny || !isURL(ifunny[0])) return;
 
-    // Let the user know what's going on
-    const notification = await message.reply(
-      `That looks like an iFunny link, I'll try and grab the ${ifunny[1]} for you....`,
-    );
-
     // Create a new page
     const page = await this.newPage();
 
@@ -49,21 +43,12 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
       await this.closePage(page);
     }
 
-    // If either the URL or page are empty, error
-    if (!url) {
-      return notification.edit(
-        `Unfortunately I can't find an ${ifunny[1]} associated with that link.`,
-      );
-    }
-
     // Change the response depending on the type of content
     if (ifunny[1] === "video") {
-      return notification.edit(`Here it is! ${url}`);
+      return await message.reply(url);
     }
 
-    notification.delete();
-
-    return send(notification, {
+    return await message.reply({
       embeds: [new MessageEmbed().setImage(url).setColor("#FFCC00")],
     });
   }
