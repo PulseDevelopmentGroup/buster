@@ -15,7 +15,7 @@ export class UserEvent extends Listener<typeof Events.CommandRun> {
 
   // Fires on every command ran by a user
   public run(message: Message, command: Command) {
-    logger.command.info(message.content, {
+    logger.command.info(`"${message.content}"`, {
       shard: (message.guild?.shardId ?? 0).toString(),
       name: command.name,
       author: `${message.author.tag}`,
