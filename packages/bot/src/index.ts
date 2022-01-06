@@ -30,6 +30,7 @@ const main = async () => {
     defaultPrefix: env.prefix,
     regexPrefix: /^((hey|yo) +)?(bot|buster)[,! ]/i,
     caseInsensitiveCommands: true,
+    loadDefaultErrorListeners: false,
     shards: "auto",
     intents: [
       "GUILDS",
