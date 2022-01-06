@@ -28,14 +28,18 @@ export class UserEvent extends Listener<typeof Events.CommandError> {
           }
 
           if (message.content) {
-            embed.addField("Message Content", message.content);
+            embed.addField(
+              "Message Content",
+              message.content.substring(0, 1024),
+            );
           }
 
           embed.setTimestamp(new Date());
           embed.setURL(message.url);
+          embed.setFooter("Fields may be trimmed (<= 1024 characters)");
 
           if (e.stack) {
-            embed.addField("Stack", `\`${e.stack}\``);
+            embed.addField("Stack", `\`${e.stack.substring(0, 1019)}\``);
           }
 
           channel.send({
