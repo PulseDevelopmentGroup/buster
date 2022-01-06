@@ -1,7 +1,0 @@
-# In theory this works with lerna?
-version: 2
-updates:
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly" # Will probably set to weekly or monthly after testing
