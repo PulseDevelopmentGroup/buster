@@ -1,12 +1,12 @@
+import { Command, CommandOptions } from "@sapphire/framework";
+import { send } from "@sapphire/plugin-editable-commands";
+import { ApplyOptions } from "@sapphire/decorators";
+import { fetch, FetchResultTypes } from "@sapphire/fetch";
 import { Message, MessageAttachment } from "discord.js";
 import GifEncoder from "gifencoder";
-import got from "got-cjs";
 import { Readable } from "stream";
 import sharp from "sharp";
 import path from "path";
-import { Command, CommandOptions } from "@sapphire/framework";
-import { ApplyOptions } from "@sapphire/decorators";
-import { send } from "@sapphire/plugin-editable-commands";
 import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
@@ -29,7 +29,7 @@ export default class TriggeredCommand extends Command {
 
     msg.channel.sendTyping();
 
-    const pfp = (await got(pfpUrl)).rawBody;
+    const pfp = await fetch(pfpUrl, FetchResultTypes.Buffer);
 
     const basePfp = await sharp(pfp)
       .blur(2)

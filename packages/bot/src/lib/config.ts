@@ -1,6 +1,6 @@
 import type { CommandOptions } from "@sapphire/framework";
+import { fetch, FetchResultTypes } from "@sapphire/fetch";
 import { isURL } from "./utils";
-import got from "got-cjs";
 import fs from "fs";
 import * as dotenv from "dotenv-cra";
 
@@ -111,8 +111,10 @@ export class BotConfiguration {
    */
   public async load(): Promise<JSONConfiguration> {
     if (isURL(this.env.config)) {
-      const response = await got.get(this.env.config);
-      this.json = JSON.parse(response.body);
+      this.json = await fetch<JSONConfiguration>(
+        this.env.config,
+        FetchResultTypes.JSON,
+      );
     } else {
       this.json = JSON.parse(fs.readFileSync(this.env.config).toString());
     }
