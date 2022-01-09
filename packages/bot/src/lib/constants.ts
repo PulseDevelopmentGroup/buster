@@ -43,12 +43,13 @@ export const CommandOptionsFields = [
   "typing",
 ] as (keyof CommandOptions)[];
 
-export const TENOR_URL = "https://api.tenor.com/v1/random";
+export const TENOR_URL = new URL("https://api.tenor.com/v1/random");
 
-export const INSPIRE_URL = "http://inspirobot.me/api";
+export const INSPIRE_URL = new URL("http://inspirobot.me/api");
 
-export const PERSPECTIVE_URL =
-  "https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1";
+export const PERSPECTIVE_URL = new URL(
+  "https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
+);
 
 export const EMBED_COLOR = "#DBC12F";
 

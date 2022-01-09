@@ -17,7 +17,7 @@ import { config } from "../../lib/config";
 export default class IntentCommand extends Command {
   async messageRun(msg: Message, args: Args) {
     let targetMessage = (await args.pickResult("message")).value;
-    const client = await google.discoverAPI(PERSPECTIVE_URL);
+    const client = await google.discoverAPI(PERSPECTIVE_URL.toString());
 
     if (!targetMessage) {
       // eslint-disable-next-line no-sparse-arrays

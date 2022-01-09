@@ -1,8 +1,8 @@
-import got from "got-cjs";
 import { Args, Command, CommandOptions } from "@sapphire/framework";
+import { send } from "@sapphire/plugin-editable-commands";
+import { fetch, FetchResultTypes } from "@sapphire/fetch";
 import { ApplyOptions } from "@sapphire/decorators";
 import type { Message } from "discord.js";
-import { send } from "@sapphire/plugin-editable-commands";
 import { TENOR_URL } from "../../lib/constants";
 import { config } from "../../lib/config";
 
@@ -20,8 +20,8 @@ export default class GifCommand extends Command {
       search = terms[Math.floor(Math.random() * terms.length)];
     }
 
-    const { body } = await got.get(TENOR_URL, {
-      searchParams: {
+    TENOR_URL.search = new URLSearchParams(
+      Object.entries({
         key: config.env.tenorToken,
         q: search,
         locale: "en_US",
@@ -29,11 +29,13 @@ export default class GifCommand extends Command {
         media_filter: "minimal",
         limit: 1,
         ar_range: "standard",
-      },
-    });
+      }),
+    ).toString();
 
-    if (body) {
-      const json = JSON.parse(body);
+    const res = await fetch(TENOR_URL, FetchResultTypes.Text);
+
+    if (res) {
+      const json = JSON.parse(res);
       if (!json.results[0] || json.results[0].url.length == 0) {
         return send(msg, "Unable to find gifs by that search term.");
       }
