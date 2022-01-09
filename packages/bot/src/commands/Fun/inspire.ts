@@ -1,10 +1,10 @@
 import { Message, MessageEmbed } from "discord.js";
 import { INSPIRE_URL } from "../../lib/constants";
-import got from "got-cjs";
 import { ApplyOptions } from "@sapphire/decorators";
 import { Command, CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
 import { config } from "../../lib/config";
+import { fetch, FetchResultTypes } from "@sapphire/fetch";
 
 @ApplyOptions<CommandOptions>(
   config.applyConfig("inspire", {
@@ -15,16 +15,16 @@ import { config } from "../../lib/config";
 )
 export class InspireCommand extends Command {
   async messageRun(msg: Message) {
-    const { body } = await got.get(INSPIRE_URL.toString(), {
-      searchParams: { generate: true },
-    });
+    INSPIRE_URL.search = new URLSearchParams({ generate: "true" }).toString();
 
-    if (body) {
+    const res = await fetch(INSPIRE_URL, FetchResultTypes.Text);
+
+    if (res) {
       return send(msg, {
         embeds: [
           new MessageEmbed()
             .setURL("https://inspirobot.me")
-            .setImage(body)
+            .setImage(res)
             .setColor("#6dd3ff"),
         ],
       });
