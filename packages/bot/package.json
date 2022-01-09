@@ -43,7 +43,7 @@
     "@types/sharp": "^0.29.5",
     "@types/ws": "^8.2.2",
     "tsc-watch": "^4.5.0",
-    "typescript": "^4.5.4"
+    "typescript": "^4.6.0-dev.20220109"
   },
   "scripts": {
     "prep": "rm -rf dist/assets/* && mkdir -p dist/assets && cp -r src/assets/* dist/assets/",

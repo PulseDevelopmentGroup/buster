@@ -13,7 +13,7 @@
     "importsNotUsedAsValues": "error",
     "incremental": true,
     "lib": ["esnext", "dom"],
-    "module": "CommonJS",
+    "module": "NodeNext",
     "moduleResolution": "Node",
     "newLine": "lf",
     "noEmitHelpers": true,
