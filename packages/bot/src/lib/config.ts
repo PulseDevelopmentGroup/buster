@@ -10,6 +10,7 @@ export interface Environment {
   botToken: string;
   prefix: string;
   config: string;
+  dataPath: string;
 
   logCommands: boolean;
   logMessages: boolean;
@@ -62,6 +63,7 @@ export class BotConfiguration {
     this.env = {
       botToken: process.env.BUSTER_BOT_TOKEN ?? "",
       config: process.env.BUSTER_BOT_CONFIG ?? "",
+      dataPath: process.env.BUSTER_DATA_PATH ?? "/data",
       development: process.env.NODE_ENV === "development",
       prefix: process.env.BUSTER_BOT_PREFIX ?? "!",
 
