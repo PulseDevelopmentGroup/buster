@@ -15,6 +15,11 @@ export interface Environment {
   logCommands: boolean;
   logMessages: boolean;
 
+  dbRedisHost?: string;
+  dbRedisPort?: number;
+  dbRedisDB?: number;
+  dbRedisPass?: string;
+
   httpAuthId: string;
   httpAuthSecret: string;
   httpFrontendUrl: string;
@@ -66,6 +71,11 @@ export class BotConfiguration {
       dataPath: process.env.BUSTER_DATA_PATH ?? "/data",
       development: process.env.NODE_ENV === "development",
       prefix: process.env.BUSTER_BOT_PREFIX ?? "!",
+
+      dbRedisHost: process.env.BUSTER_DB_REDIS_HOST,
+      dbRedisPort: parseInt(process.env.BUSTER_DB_REDIS_PORT ?? "6379"),
+      dbRedisDB: parseInt(process.env.BUSTER_DB_REDIS_DB ?? "0"),
+      dbRedisPass: process.env.BUSTER_DB_REDIS_PASS,
 
       logCommands: process.env.BUSTER_LOG_COMMANDS === "true",
       logMessages: process.env.BUSTER_LOG_MESSAGES === "true",

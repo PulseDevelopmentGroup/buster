@@ -8,8 +8,6 @@ export class BotLogger {
   // Used for command logging
   public command = winston.createLogger();
 
-  public db = winston.createLogger();
-
   // TODO: Message logger for export to Loki/Elastic/Other
 
   public constructor(debug: boolean) {
@@ -46,11 +44,6 @@ export class BotLogger {
     this.command.configure({
       ...defaultOptions,
       defaultMeta: { service: "command" },
-    });
-
-    this.db.configure({
-      ...defaultOptions,
-      defaultMeta: { service: "database" },
     });
   }
 }

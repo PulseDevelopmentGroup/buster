@@ -12,6 +12,8 @@ inspect.defaultOptions.depth = 1;
 import { config } from "./lib/config";
 import { logger } from "./lib/logger";
 import { SapphireClient } from "@sapphire/framework";
+import type { ScheduledTasksOptions } from "@sapphire/plugin-scheduled-tasks";
+import { ScheduledTaskRedisStrategy } from "@sapphire/plugin-scheduled-tasks/register-redis";
 
 const main = async () => {
   const env = config.env;
@@ -24,6 +26,22 @@ const main = async () => {
       "Unable to load JSON file. It may not be in the right location, have the right permissions set, or the URL returned a 404",
     );
     process.exit(1);
+  }
+
+  let tasks: ScheduledTasksOptions | undefined;
+  if (env.dbRedisHost) {
+    tasks = {
+      strategy: new ScheduledTaskRedisStrategy({
+        bull: {
+          redis: {
+            host: env.dbRedisHost,
+            port: env.dbRedisPort,
+            pass: env.dbRedisPass,
+            db: env.dbRedisDB,
+          },
+        },
+      }),
+    };
   }
 
   const client = new SapphireClient({
@@ -60,6 +78,7 @@ const main = async () => {
         port: env.httpPort,
       },
     },
+    tasks,
   });
 
   try {
