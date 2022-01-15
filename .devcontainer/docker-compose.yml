@@ -2,7 +2,6 @@ version: "3"
 
 services:
   bot:
-    network_mode: host
     build:
       context: .
       dockerfile: Dockerfile
@@ -11,13 +10,16 @@ services:
         USER_UID: 1000
         USER_GID: 1000
     volumes:
-      - ..:/workspace:cached
+      - ..:/buster:cached
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
     user: node
   redis:
     image: redis:latest
     command: redis-server --save 60 1 --loglevel warning
+    ports:
+      - 6379:6379
+    restart: unless-stopped
     volumes:
       - redis-data:/data
 
