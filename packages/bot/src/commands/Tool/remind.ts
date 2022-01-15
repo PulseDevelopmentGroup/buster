@@ -1,48 +1,60 @@
 import { Args, Command, CommandOptions } from "@sapphire/framework";
-import { send } from "@sapphire/plugin-editable-commands";
-import { fetch, FetchResultTypes } from "@sapphire/fetch";
 import { ApplyOptions } from "@sapphire/decorators";
 import type { Message } from "discord.js";
-import { TENOR_URL } from "../../lib/constants";
 import { config } from "../../lib/config";
+import * as chrono from "chrono-node";
+import type { Reminder } from "../../lib/models";
 
 @ApplyOptions<CommandOptions>(
   config.applyConfig("remind", {
     description: "Remind me.. or you... or someone else",
+    preconditions: ["NoThreads"],
+    enabled: config.env.dbRedisHost != undefined,
   }),
 )
 export default class RemindCommand extends Command {
   async messageRun(msg: Message, args: Args) {
-    let search = args.nextMaybe().value;
+    const now = new Date();
 
-    if (!search) {
-      const terms: string[] = config.json.commands.gif.vars.search;
-      search = terms[Math.floor(Math.random() * terms.length)];
-    }
-
-    TENOR_URL.search = new URLSearchParams(
-      Object.entries({
-        key: config.env.tenorToken,
-        q: search,
-        locale: "en_US",
-        contentfilter: config.json.commands.gif.vars.contentfilter,
-        media_filter: "minimal",
-        limit: 1,
-        ar_range: "standard",
+    const payload: Reminder = {
+      reminder: msg.author.id,
+      remindee: await (await args.pick("extendedUser")).id,
+      what: await args.pick("string").catch(() => ""),
+      when: chrono.parseDate(await args.rest("string"), now, {
+        forwardDate: true,
       }),
-    ).toString();
+      where: msg.channel.id,
+    };
 
-    const res = await fetch(TENOR_URL, FetchResultTypes.Text);
-
-    if (res) {
-      const json = JSON.parse(res);
-      if (!json.results[0] || json.results[0].url.length == 0) {
-        return send(msg, "Unable to find gifs by that search term.");
-      }
-
-      return send(msg, json.results[0].url);
+    if (payload.when < now) {
+      return msg.reply(
+        "The date/time you asked to be reminded on is in the past.",
+      );
     }
 
-    return send(msg, "Something went wrong, please try again later.");
+    this.container.tasks.create(
+      "reminder",
+      payload,
+      payload.when.getTime() - now.getTime(),
+    );
+
+    const isToday = this.isToday(payload.when);
+
+    return msg.reply(
+      `Reminder set for ${payload.when.toLocaleString("en-US", {
+        timeZone: "America/New_York",
+        dateStyle: isToday ? undefined : "full",
+        timeStyle: "short",
+      })}`,
+    );
+  }
+
+  isToday(date: Date): boolean {
+    const now = new Date();
+    return (
+      date.getDate() == now.getDate() &&
+      date.getMonth() == now.getMonth() &&
+      date.getFullYear() == now.getFullYear()
+    );
   }
 }

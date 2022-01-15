@@ -18,7 +18,6 @@ export interface Environment {
   dbRedisHost?: string;
   dbRedisPort?: number;
   dbRedisDB?: number;
-  dbRedisPass?: string;
 
   httpAuthId: string;
   httpAuthSecret: string;
@@ -75,7 +74,6 @@ export class BotConfiguration {
       dbRedisHost: process.env.BUSTER_DB_REDIS_HOST,
       dbRedisPort: parseInt(process.env.BUSTER_DB_REDIS_PORT ?? "6379"),
       dbRedisDB: parseInt(process.env.BUSTER_DB_REDIS_DB ?? "0"),
-      dbRedisPass: process.env.BUSTER_DB_REDIS_PASS,
 
       logCommands: process.env.BUSTER_LOG_COMMANDS === "true",
       logMessages: process.env.BUSTER_LOG_MESSAGES === "true",
