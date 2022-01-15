@@ -11,7 +11,7 @@ export enum IntentAttributeNameLookup {
 
 export interface Reminder {
   reminder: string;
-  remindee: string;
+  who: string;
   what: string;
   when: Date;
   where: string;

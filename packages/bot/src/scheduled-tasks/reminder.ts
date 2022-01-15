@@ -3,7 +3,7 @@ import type { TextChannel } from "discord.js";
 import type { Reminder } from "../lib/models";
 
 export class RemindTask extends ScheduledTask {
-  public async run({ what, where, reminder, remindee }: Reminder) {
+  public async run({ who, what, where, reminder }: Reminder) {
     const channel = this.container.client.channels.cache.find(
       (c) => c.id === where,
     ) as TextChannel | undefined;
@@ -12,7 +12,7 @@ export class RemindTask extends ScheduledTask {
       (u) => u.id === reminder,
     );
     const _remindee = this.container.client.users.cache.find(
-      (u) => u.id === remindee,
+      (u) => u.id === who,
     );
 
     if (!channel || !_remindee) return;
