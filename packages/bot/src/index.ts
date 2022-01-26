@@ -33,10 +33,10 @@ const main = async () => {
     tasks = {
       strategy: new ScheduledTaskRedisStrategy({
         bull: {
+          prefix: "buster",
           redis: {
             host: env.dbRedisHost,
             port: env.dbRedisPort,
-            pass: env.dbRedisPass,
             db: env.dbRedisDB,
           },
         },
@@ -48,7 +48,7 @@ const main = async () => {
     defaultPrefix: env.prefix,
     regexPrefix: /^((hey|yo) +)?(bot|buster)[,! ]/i,
     caseInsensitiveCommands: true,
-    loadDefaultErrorListeners: false,
+    loadDefaultErrorListeners: env.development,
     shards: "auto",
     intents: [
       "GUILDS",

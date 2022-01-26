@@ -9,6 +9,14 @@ export enum IntentAttributeNameLookup {
   FLIRTATION = ":kissing_heart: Flirtation",
 }
 
+export interface Reminder {
+  reminder: string;
+  who: string;
+  what: string;
+  when: Date;
+  where: string;
+}
+
 /* Useless Conversions */
 
 export enum Measurement {

@@ -27,6 +27,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     if (
       message.author.bot ||
       message.content === "" ||
+      this.container.client.fetchPrefix(message) ||
       !NumberRegex.test(message.content)
     )
       return;

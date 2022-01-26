@@ -1,48 +1,70 @@
 import { Args, Command, CommandOptions } from "@sapphire/framework";
-import { send } from "@sapphire/plugin-editable-commands";
-import { fetch, FetchResultTypes } from "@sapphire/fetch";
 import { ApplyOptions } from "@sapphire/decorators";
 import type { Message } from "discord.js";
-import { TENOR_URL } from "../../lib/constants";
 import { config } from "../../lib/config";
+import * as chrono from "chrono-node";
+import type { Reminder } from "../../lib/models";
 
+// Configure the command to only work in regular text channels, if Redis is enabled.
 @ApplyOptions<CommandOptions>(
   config.applyConfig("remind", {
     description: "Remind me.. or you... or someone else",
+    preconditions: ["NoThreads"],
+    enabled: config.env.dbRedisHost != undefined,
   }),
 )
 export default class RemindCommand extends Command {
   async messageRun(msg: Message, args: Args) {
-    let search = args.nextMaybe().value;
+    const now = new Date();
 
-    if (!search) {
-      const terms: string[] = config.json.commands.gif.vars.search;
-      search = terms[Math.floor(Math.random() * terms.length)];
+    /* Error handling! */
+    const who = await args.pick("user").catch(() => undefined);
+    if (!who) return msg.reply("You must specify who to remind.");
+
+    const what = await args.pick("string").catch(() => undefined);
+    if (!what) return msg.reply("You must specify what to remind.");
+
+    const when = await args.rest("string");
+    if (!when) return msg.reply("You must specify when to remind.");
+
+    /* Build payload and perform final checks */
+    const payload: Reminder = {
+      reminder: msg.author.id,
+      who: who.id,
+      what: what,
+      when: chrono.parseDate(when, now, { forwardDate: true }),
+      where: msg.channel.id,
+    };
+
+    if (payload.when < now) {
+      return msg.reply(
+        "The date/time you asked to be reminded on is in the past.",
+      );
     }
 
-    TENOR_URL.search = new URLSearchParams(
-      Object.entries({
-        key: config.env.tenorToken,
-        q: search,
-        locale: "en_US",
-        contentfilter: config.json.commands.gif.vars.contentfilter,
-        media_filter: "minimal",
-        limit: 1,
-        ar_range: "standard",
-      }),
-    ).toString();
+    /* Create reminder and inform user */
+    this.container.tasks.create(
+      "reminder",
+      payload,
+      payload.when.getTime() - now.getTime(),
+    );
 
-    const res = await fetch(TENOR_URL, FetchResultTypes.Text);
+    return msg.reply(
+      `Reminder set for ${payload.when.toLocaleString("en-US", {
+        timeZone: "America/New_York",
+        dateStyle: this.isToday(payload.when) ? undefined : "full",
+        timeStyle: "short",
+      })}`,
+    );
+  }
 
-    if (res) {
-      const json = JSON.parse(res);
-      if (!json.results[0] || json.results[0].url.length == 0) {
-        return send(msg, "Unable to find gifs by that search term.");
-      }
-
-      return send(msg, json.results[0].url);
-    }
-
-    return send(msg, "Something went wrong, please try again later.");
+  // Checks supplied date against current date to see if the day is the same
+  isToday(date: Date): boolean {
+    const now = new Date();
+    return (
+      date.getDate() == now.getDate() &&
+      date.getMonth() == now.getMonth() &&
+      date.getFullYear() == now.getFullYear()
+    );
   }
 }
