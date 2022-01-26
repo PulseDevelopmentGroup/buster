@@ -11,7 +11,10 @@ inspect.defaultOptions.depth = 1;
 // Bot initialization
 import { config } from "./lib/config";
 import { logger } from "./lib/logger";
+import {db} from "./lib/db";
 import { SapphireClient } from "@sapphire/framework";
+import type { ScheduledTasksOptions } from "@sapphire/plugin-scheduled-tasks";
+import { ScheduledTaskRedisStrategy } from "@sapphire/plugin-scheduled-tasks/register-redis";
 
 const main = async () => {
   const env = config.env;
@@ -26,11 +29,20 @@ const main = async () => {
     process.exit(1);
   }
 
+  let tasks: ScheduledTasksOptions | undefined;
+  if (db.enabled) {
+    tasks = {
+      strategy: new ScheduledTaskRedisStrategy({
+        bull: db.bullOptions
+      }),
+    };
+  }
+
   const client = new SapphireClient({
     defaultPrefix: env.prefix,
     regexPrefix: /^((hey|yo) +)?(bot|buster)[,! ]/i,
     caseInsensitiveCommands: true,
-    loadDefaultErrorListeners: false,
+    loadDefaultErrorListeners: env.development,
     shards: "auto",
     intents: [
       "GUILDS",
@@ -60,6 +72,7 @@ const main = async () => {
         port: env.httpPort,
       },
     },
+    tasks,
   });
 
   try {
