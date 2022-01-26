@@ -1,7 +1,6 @@
 import Redis, { RedisOptions } from "ioredis";
 import Bull, { QueueOptions } from "bull";
 import { config } from "./config";
-import type { Reminder } from "./models";
 
 export interface dbOpts {
   redis?: RedisOptions;
