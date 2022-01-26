@@ -11,6 +11,7 @@ inspect.defaultOptions.depth = 1;
 // Bot initialization
 import { config } from "./lib/config";
 import { logger } from "./lib/logger";
+import {db} from "./lib/db";
 import { SapphireClient } from "@sapphire/framework";
 import type { ScheduledTasksOptions } from "@sapphire/plugin-scheduled-tasks";
 import { ScheduledTaskRedisStrategy } from "@sapphire/plugin-scheduled-tasks/register-redis";
@@ -29,17 +30,10 @@ const main = async () => {
   }
 
   let tasks: ScheduledTasksOptions | undefined;
-  if (env.dbRedisHost) {
+  if (db.enabled) {
     tasks = {
       strategy: new ScheduledTaskRedisStrategy({
-        bull: {
-          prefix: "buster",
-          redis: {
-            host: env.dbRedisHost,
-            port: env.dbRedisPort,
-            db: env.dbRedisDB,
-          },
-        },
+        bull: db.bullOptions
       }),
     };
   }
