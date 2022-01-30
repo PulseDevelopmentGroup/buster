@@ -46,7 +46,7 @@ COPY --from=build /app/dist .
 COPY --from=build /app/node_modules ./node_modules
 
 # Set version
-ARG VERSION=0.0.0
-ENV VERSION ${VERSION}
+ARG BUSTER_VERSION=0.0.0
+ENV BUSTER_VERSION ${VERSION}
 
 CMD ["node", "index.js"]
