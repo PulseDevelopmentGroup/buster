@@ -24,7 +24,7 @@ RUN npm run build
 ## Release Image
 FROM node:current-alpine AS release
 
-# Install Graphicsmagick
+# Install Graphicsmagick and Puppeteer deps
 RUN apk --no-cache add graphicsmagick \
       chromium \
       nss \
