@@ -25,7 +25,7 @@ export class BotLogger {
       ),
     );
 
-    const defaultOptions = {
+    const defaultOptions: winston.LoggerOptions = {
       level: debug ? "debug" : "info",
       format: debug
         ? prettyFormat
