@@ -1,0 +1,29 @@
+version: "3.8"
+
+# Note: Template variables intended for use in Portainer stack
+services:
+  bot:
+    image: ghcr.io/pulsedevelopmentgroup/buster/buster-ng:latest
+    restart: unless-stopped
+    volumes:
+      - bot-data:/data
+    environment:
+      - BUSTER_BOT_CONFIG=${BUSTER_BOT_CONFIG}
+      - BUSTER_BOT_TOKEN=${BUSTER_BOT_TOKEN}
+      - BUSTER_LOG_COMMANDS=${BUSTER_LOG_COMMANDS}
+      - BUSTER_WEB_PERSPECTIVE_API_KEY=${BUSTER_WEB_PERSPECTIVE_API_KEY}
+      - BUSTER_WEB_TENOR_TOKEN=${BUSTER_WEB_TENOR_TOKEN}
+      - BUSTER_DB_REDIS_HOST=${BUSTER_DB_REDIS_HOST}
+
+  redis:
+    image: redis:latest
+    command: redis-server --save 60 1 --loglevel warning
+    expose:
+      - 6379
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+
+volumes:
+  bot-data:
+  redis-data:
