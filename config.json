@@ -3,10 +3,10 @@
   "errorChannel": "893296394478182450",
   "listeners": {
     "iFunnyFixer": {
-      "enabled": false
+      "enabled": true
     },
     "uselessConversions": {
-      "enabled": false
+      "enabled": true
     }
   },
   "commands": {
@@ -68,7 +68,11 @@
           "beat saber",
           "virtual reality",
           "VR",
-          "gif"
+          "gif",
+          "code",
+          "deep sea",
+          "metaverse",
+          "nft"
         ],
         "contentfilter": "low"
       }
