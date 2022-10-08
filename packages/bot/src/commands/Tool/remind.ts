@@ -2,7 +2,6 @@ import { Args, Command, CommandOptions } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
 import type { Message } from "discord.js";
 import { config } from "../../lib/config";
-import { db } from "../../lib/db";
 import * as chrono from "chrono-node";
 import type { Reminder } from "../../lib/models";
 
@@ -11,7 +10,6 @@ import type { Reminder } from "../../lib/models";
   config.applyConfig("remind", {
     description: "Remind me.. or you... or someone else",
     preconditions: ["NoThreads"],
-    enabled: db.enabled,
   }),
 )
 export default class RemindCommand extends Command {

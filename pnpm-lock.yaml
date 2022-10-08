@@ -20,39 +20,37 @@ importers:
 
   packages/bot:
     specifiers:
-      '@discordjs/collection': ^0.5.0
       '@jimp/custom': ^0.16.2
       '@jimp/plugin-fisheye': ^0.16.2
       '@jimp/plugins': ^0.16.2
       '@jimp/types': ^0.16.2
-      '@sapphire/cli': ^1.0.2
-      '@sapphire/decorators': ^4.0.2
-      '@sapphire/discord-utilities': ^2.6.0
-      '@sapphire/discord.js-utilities': ^4.4.0
-      '@sapphire/fetch': ^2.0.4
-      '@sapphire/framework': ^2.3.0
+      '@sapphire/cli': ^1.3.1
+      '@sapphire/decorators': ^5.0.0
+      '@sapphire/discord-utilities': ^2.11.6
+      '@sapphire/discord.js-utilities': ^5.0.1
+      '@sapphire/fetch': ^2.4.1
+      '@sapphire/framework': ^3.1.3
       '@sapphire/pieces': ^3.5.2
-      '@sapphire/plugin-api': ^3.1.4
-      '@sapphire/plugin-editable-commands': ^1.1.3
-      '@sapphire/plugin-scheduled-tasks': ^2.2.0
-      '@sapphire/plugin-subcommands': ^2.1.3
-      '@sapphire/stopwatch': ^1.2.5
-      '@sapphire/time-utilities': ^1.5.2
-      '@sapphire/type': ^2.1.2
-      '@sapphire/utilities': ^3.2.1
+      '@sapphire/plugin-api': ^4.0.1
+      '@sapphire/plugin-editable-commands': ^2.0.1
+      '@sapphire/plugin-scheduled-tasks': ^5.0.1
+      '@sapphire/plugin-subcommands': ^3.2.2
+      '@sapphire/stopwatch': ^1.5.0
+      '@sapphire/time-utilities': ^1.7.8
+      '@sapphire/type': ^2.2.4
+      '@sapphire/utilities': ^3.11.0
       '@skyra/editable-commands': ^2.1.2
-      '@types/bull': ^3.15.7
       '@types/faker': ^5.5.9
       '@types/gifencoder': ^2.0.1
       '@types/gm': ^1.18.11
-      '@types/ioredis': ^4.28.10
-      '@types/node': ^17.0.12
+      '@types/node': 18.8.3
       '@types/puppeteer': ^5.4.4
       '@types/sharp': ^0.29.5
       '@types/ws': ^8.2.2
-      bull: ^4.3.0
+      bullmq: ^2.1.3
       chrono-node: ^2.3.5
-      discord.js: ^13.6.0
+      discord-api-types: 0.36.3
+      discord.js: ^13.11.0
       dotenv-cra: ^3.0.2
       faker: 5.5.3
       gifencoder: ^2.0.1
@@ -71,29 +69,28 @@ importers:
       typescript: ^4.8.4
       winston: ^3.4.0
     dependencies:
-      '@discordjs/collection': 0.5.0
       '@jimp/custom': 0.16.2
       '@jimp/plugin-fisheye': 0.16.2_@jimp+custom@0.16.2
       '@jimp/plugins': 0.16.2_@jimp+custom@0.16.2
       '@jimp/types': 0.16.2_@jimp+custom@0.16.2
-      '@sapphire/decorators': 4.3.8
+      '@sapphire/decorators': 5.0.0
       '@sapphire/discord-utilities': 2.11.6
-      '@sapphire/discord.js-utilities': 4.12.0
+      '@sapphire/discord.js-utilities': 5.0.1
       '@sapphire/fetch': 2.4.1
-      '@sapphire/framework': 2.5.1
+      '@sapphire/framework': 3.1.3
       '@sapphire/pieces': 3.5.2
-      '@sapphire/plugin-api': 3.2.4
-      '@sapphire/plugin-editable-commands': 1.2.2
-      '@sapphire/plugin-scheduled-tasks': 2.3.5
-      '@sapphire/plugin-subcommands': 2.2.2
+      '@sapphire/plugin-api': 4.0.1
+      '@sapphire/plugin-editable-commands': 2.0.1
+      '@sapphire/plugin-scheduled-tasks': 5.0.1
+      '@sapphire/plugin-subcommands': 3.2.3
       '@sapphire/stopwatch': 1.5.0
       '@sapphire/time-utilities': 1.7.8
       '@sapphire/type': 2.2.4
-      '@sapphire/utilities': 3.10.1
+      '@sapphire/utilities': 3.11.0
       '@skyra/editable-commands': 2.1.4
-      '@types/ioredis': 4.28.10
-      bull: 4.10.0
+      bullmq: 2.1.3
       chrono-node: 2.4.1
+      discord-api-types: 0.36.3
       discord.js: 13.11.0
       dotenv-cra: 3.0.2
       faker: 5.5.3
@@ -112,11 +109,10 @@ importers:
       winston: 3.8.2
     devDependencies:
       '@sapphire/cli': 1.3.1
-      '@types/bull': 3.15.9
       '@types/faker': 5.5.9
       '@types/gifencoder': 2.0.1
       '@types/gm': 1.18.12
-      '@types/node': 17.0.45
+      '@types/node': 18.8.3
       '@types/puppeteer': 5.4.6
       '@types/sharp': 0.29.5
       '@types/ws': 8.5.3
@@ -179,19 +175,6 @@ packages:
       kuler: 2.0.0
     dev: false
 
-  /@discordjs/builders/0.15.0:
-    resolution: {integrity: sha512-w1UfCPzx2iKycn6qh/f0c+PcDpcTHzHr7TXALXu/a4gKHGamiSg3lP8GhYswweSJk/Q5cbFLHZUsnoY3MVKNAg==}
-    engines: {node: '>=16.9.0'}
-    deprecated: no longer supported
-    dependencies:
-      '@sapphire/shapeshift': 3.7.0
-      '@sindresorhus/is': 4.6.0
-      discord-api-types: 0.33.5
-      fast-deep-equal: 3.1.3
-      ts-mixer: 6.0.1
-      tslib: 2.4.0
-    dev: false
-
   /@discordjs/builders/0.16.0:
     resolution: {integrity: sha512-9/NCiZrLivgRub2/kBc0Vm5pMBE5AUdYbdXsLu/yg9ANgvnaJ0bZKTY8yYnLbsEc/LYUP79lEIdC73qEYhWq7A==}
     engines: {node: '>=16.9.0'}
@@ -202,12 +185,6 @@ packages:
       fast-deep-equal: 3.1.3
       ts-mixer: 6.0.1
       tslib: 2.4.0
-    dev: false
-
-  /@discordjs/collection/0.5.0:
-    resolution: {integrity: sha512-3Vr3y4/Kl6ThOsD/cbXkK4JmjawQahbM3ojHpD6XyTEOG4fwZFMYH/NTWKFd5WZUw38iQsvGC4Kt4VkL++1hFQ==}
-    engines: {node: '>=16.9.0'}
-    deprecated: no longer supported
     dev: false
 
   /@discordjs/collection/0.7.0:
@@ -282,6 +259,10 @@ packages:
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
+
+  /@ioredis/commands/1.2.0:
+    resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
+    dev: false
 
   /@jimp/bmp/0.16.2_@jimp+custom@0.16.2:
     resolution: {integrity: sha512-4g9vW45QfMoGhLVvaFj26h4e7cC+McHUQwyFQmNTLW4FfC1OonN9oUr2m/FEDGkTYKR7aqdXR5XUqqIkHWLaFw==}
@@ -799,11 +780,11 @@ packages:
     resolution: {integrity: sha512-pKYfpnHiDFknur3yoquA8cqbJZS140y2oqjshwGGmtjiuIbUngQhPHGwdWHNDKDrF6EKbOK06nd2URE+0eUrfQ==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dependencies:
-      '@sapphire/utilities': 3.10.1
+      '@sapphire/utilities': 3.11.0
     dev: false
 
-  /@sapphire/decorators/4.3.8:
-    resolution: {integrity: sha512-W8vU0AHuyx5mRAEG/YvxPs6Th99zNyIlsmw+JjUtk8S+fUd2TZor2JfFPMdNvQhUPDzAzdCagCM7cNNOOtLfXQ==}
+  /@sapphire/decorators/5.0.0:
+    resolution: {integrity: sha512-jEHsE79nacjlwbfX2zyRCQ15lEzJLI4gEVZGU9iKmqbXVM0FcwrqZeQoGovIGxq5y0UIymvtYZJXhGkHLBpSdg==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dependencies:
       tslib: 2.4.0
@@ -814,13 +795,13 @@ packages:
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dev: false
 
-  /@sapphire/discord.js-utilities/4.12.0:
-    resolution: {integrity: sha512-pBNYyBJNRRMgQ2xD+uljrVZaYJ6TywGUirwBecms8sdbRszm6kDczI3fuEl5tWwgU8vLweAViNZbbYBnts7y2A==}
+  /@sapphire/discord.js-utilities/5.0.1:
+    resolution: {integrity: sha512-J3PmnHW0c3Z8VylopSmQzQBunAiBmlMaPYxbeIRZB47xYiMTz/7bcVT9/8z6efprLyM2MdOdJrapoeArodU9CQ==}
     engines: {node: '>=16.6.0', npm: '>=7.0.0'}
     dependencies:
       '@sapphire/discord-utilities': 2.11.6
-      '@sapphire/time-utilities': 1.7.8
-      '@sapphire/utilities': 3.10.1
+      '@sapphire/duration': 1.0.0
+      '@sapphire/utilities': 3.11.0
       tslib: 2.4.0
     dev: false
 
@@ -838,18 +819,27 @@ packages:
       - encoding
     dev: false
 
-  /@sapphire/framework/2.5.1:
-    resolution: {integrity: sha512-ixuV6ZF5cUMVtdXGXMDjYEVzLQYJtw5v8CFBRrzpPLR6e0JKsMFWQ9IDPpMSYLDj/xtv8LWwhOgvnSSisYUwqg==}
+  /@sapphire/framework/3.1.3:
+    resolution: {integrity: sha512-YHB6oeY095vrRv8ksW0zm/GSWuw+vDLvU0BzJBTGI0KYQfNq2d6OVCjY0ADxFgQSgC9AxOHj2h2GvGcLET+S4g==}
     engines: {node: '>=16.6.0', npm: '>=7.0.0'}
     dependencies:
-      '@discordjs/builders': 0.15.0
+      '@discordjs/builders': 0.16.0
       '@sapphire/discord-utilities': 2.11.6
-      '@sapphire/discord.js-utilities': 4.12.0
+      '@sapphire/discord.js-utilities': 5.0.1
+      '@sapphire/lexure': 1.1.1
       '@sapphire/pieces': 3.5.2
       '@sapphire/ratelimits': 2.4.5
-      '@sapphire/utilities': 3.10.1
-      lexure: 0.17.0
+      '@sapphire/result': 2.5.0
+      '@sapphire/stopwatch': 1.5.0
+      '@sapphire/utilities': 3.11.0
       tslib: 2.4.0
+    dev: false
+
+  /@sapphire/lexure/1.1.1:
+    resolution: {integrity: sha512-VVrUBzyTJ+vxFNsXY5ftPzmkNNuCDb0SZ9/vC9rF1ez2vmsQeeBQwFqiGv542bNCGqcqtOlxj4RgN+6PSCjMCw==}
+    engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
+    dependencies:
+      '@sapphire/result': 2.5.0
     dev: false
 
   /@sapphire/pieces/3.5.2:
@@ -857,12 +847,12 @@ packages:
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dependencies:
       '@discordjs/collection': 1.2.0
-      '@sapphire/utilities': 3.10.1
+      '@sapphire/utilities': 3.11.0
       tslib: 2.4.0
     dev: false
 
-  /@sapphire/plugin-api/3.2.4:
-    resolution: {integrity: sha512-7Ly3V0lPeO/ehb2wY9qBzW1pzNKRq36WrC7VD09HRZ4xA6wFK+b/hqHfaCccOzADo3i8hC/MkkYhbQPWUAeDng==}
+  /@sapphire/plugin-api/4.0.1:
+    resolution: {integrity: sha512-c+7U8isH97Jm26w8COHJ47nNsyGTJdArjy2cW3kIP5EBJPdp9nkl97pNpkuUFYKIbQ789Sx2zE34+gtTwtdUEA==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dependencies:
       '@types/node-fetch': 2.6.2
@@ -875,26 +865,28 @@ packages:
       - encoding
     dev: false
 
-  /@sapphire/plugin-editable-commands/1.2.2:
-    resolution: {integrity: sha512-oy5DhHZCwfSVATF7BI7OpodluzPc5i/Yia7mRehcTbksL6hvG2fqB2osrjPQPqQd34YUbnpu+bRlr3iGq8p6LA==}
+  /@sapphire/plugin-editable-commands/2.0.1:
+    resolution: {integrity: sha512-uXM2YweVLgZWzZxR0TDRPertnWiR6Yi8kuABudLIJuSN4WtAUUxeE65iUNEGN8rzFnIvRwHTRLRPxgIub0I6VQ==}
     engines: {node: '>=16.6.0', npm: '>=7.0.0'}
     dependencies:
       '@skyra/editable-commands': 2.1.4
       tslib: 2.4.0
     dev: false
 
-  /@sapphire/plugin-scheduled-tasks/2.3.5:
-    resolution: {integrity: sha512-aT/jxhVrwRS7cpk3UsTz1HUsaJcsxhrjWa3LUoRL2sit83Tea5q68LWuzvn5aA7kwz7lcu9r17OpWtoZVdDZew==}
+  /@sapphire/plugin-scheduled-tasks/5.0.1:
+    resolution: {integrity: sha512-+rZbV98dSI5xZcGaK5B7a+IxOTBE6yZK7EUUPxVYA0GR2VQnZNtCOzciH4r4HUPiBvlbHAJ2uFD4t/wtWHzm+Q==}
     engines: {node: '>=v14.18.0', npm: '>=7.24.1'}
     dependencies:
-      '@sapphire/time-utilities': 1.7.8
+      '@sapphire/stopwatch': 1.5.0
+      '@sapphire/utilities': 3.11.0
       tslib: 2.4.0
     dev: false
 
-  /@sapphire/plugin-subcommands/2.2.2:
-    resolution: {integrity: sha512-FcIT5zR+HEennoeo0gxGJaVlPKuykKx2tqvHzM67rvV0j5u7FXhqAqAUhrmjrXVWdGZR6frMR+GUDvITdB36HQ==}
+  /@sapphire/plugin-subcommands/3.2.3:
+    resolution: {integrity: sha512-xUDkHdOXmqquO++I54ZOZg8Prh2YIJ7sSGBLXCU+FiNDbsfzbxr/McCfnKL65L6RBYOjf8d06up3GKPL8t9GpQ==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dependencies:
+      '@sapphire/utilities': 3.11.0
       tslib: 2.4.0
     dev: false
 
@@ -908,7 +900,6 @@ packages:
   /@sapphire/result/2.5.0:
     resolution: {integrity: sha512-MpEUUax8jOGjnB6pwIxCTrVmFRPrJG31ODPoqqjmvzWf9aMUsUuUCI5uB6FmqfKn8p8vpaCJ55K+5bWwwQ2MGg==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
-    dev: true
 
   /@sapphire/shapeshift/3.7.0:
     resolution: {integrity: sha512-A6vI1zJoxhjWo4grsxpBRBgk96SqSdjLX5WlzKp9H+bJbkM07mvwcbtbVAmUZHbi/OG3HLfiZ1rlw4BhH6tsBQ==}
@@ -958,27 +949,15 @@ packages:
       - supports-color
     dev: false
 
-  /@sapphire/utilities/3.10.1:
-    resolution: {integrity: sha512-nHK27Y+Z0NmK8p9wIlvLcrIgXdaICBYQZ78fgwobBj+2GLNU/4PV9QPLqcJ3io5TleQGTGvuNh1JdpGaa+kD/Q==}
+  /@sapphire/utilities/3.11.0:
+    resolution: {integrity: sha512-ich7J+329UTEgWxgk8b871rMhbFW/hvXdabdiKaUKd6g10eIMkIakWf+EGkDQsiDSiebIXll9TIPPmWtN3cVSw==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
-    dev: false
-
-  /@sindresorhus/is/4.6.0:
-    resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
-    engines: {node: '>=10'}
     dev: false
 
   /@skyra/editable-commands/2.1.4:
     resolution: {integrity: sha512-W/m7GVmPCFKmEc49J4dLP6+TRlbBhXUPkN5KAV4PSzk5JaYLOTl5fgjEzHJOxtLHwiQBd36lrQdsWKxL+N9zBQ==}
     engines: {node: '>=16.6', npm: '>=7.24.2'}
     dev: false
-
-  /@types/bull/3.15.9:
-    resolution: {integrity: sha512-MPUcyPPQauAmynoO3ezHAmCOhbB0pWmYyijr/5ctaCqhbKWsjW0YCod38ZcLzUBprosfZ9dPqfYIcfdKjk7RNQ==}
-    dependencies:
-      '@types/ioredis': 4.28.10
-      '@types/redis': 2.8.32
-    dev: true
 
   /@types/chrome/0.0.197:
     resolution: {integrity: sha512-m1NfS5bOjaypyqQfaX6CxmJodZVcvj5+Mt/K94EBHkflYjPNmXHAzbxfifdLMa0YM3PDyOxohoTS5ug/e6p5jA==}
@@ -1027,11 +1006,6 @@ packages:
     resolution: {integrity: sha512-rffW6MhQ9yoa75bdNi+rjZBAvu2HhehWJXlhuWXnWdENeuKe82wUgAwxYOb7KRKKmxYN+D/iRKd2NDQMLqlUmg==}
     dev: false
 
-  /@types/ioredis/4.28.10:
-    resolution: {integrity: sha512-69LyhUgrXdgcNDv7ogs1qXZomnfOEnSmrmMFqKgt1XMJxmoOSG/u3wYy13yACIfKuMJ8IhKgHafDO3sx19zVQQ==}
-    dependencies:
-      '@types/node': 18.8.3
-
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
@@ -1051,10 +1025,6 @@ packages:
     resolution: {integrity: sha512-QpLcX9ZSsq3YYUUnD3nFDY8H7wctAhQj/TFKL8Ya8v5fMm3CFXxo8zStsLAl780ltoYoo1WvKUVGBQK+1ifr7g==}
     dev: false
 
-  /@types/node/17.0.45:
-    resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
-    dev: true
-
   /@types/node/18.8.3:
     resolution: {integrity: sha512-0os9vz6BpGwxGe9LOhgP/ncvYN5Tx1fNcd2TM3rD/aCGBkysb+ZWpXEocG24h6ZzOi13+VB8HndAQFezsSOw1w==}
 
@@ -1066,12 +1036,6 @@ packages:
     resolution: {integrity: sha512-98Kghehs7+/GD9b56qryhqdqVCXUTbetTv3PlvDnmFRTHQH0j9DIp1f7rkAW3BAj4U3yoeSEQnKgdW8bDq0Y0Q==}
     dependencies:
       '@types/node': 18.8.3
-
-  /@types/redis/2.8.32:
-    resolution: {integrity: sha512-7jkMKxcGq9p242exlbsVzuJb57KqHRhNl4dHoQu2Y5v9bCAbtIXXH0R3HleSQW4CTOqpHIYUW3t6tpUj4BVQ+w==}
-    dependencies:
-      '@types/node': 18.8.3
-    dev: true
 
   /@types/sharp/0.29.5:
     resolution: {integrity: sha512-3TC+S3H5RwnJmLYMHrcdfNjz/CaApKmujjY9b6PU/pE6n0qfooi99YqXGWoW8frU9EWYj/XTI35Pzxa+ThAZ5Q==}
@@ -1352,6 +1316,12 @@ packages:
       balanced-match: 1.0.2
       concat-map: 0.0.1
 
+  /brace-expansion/2.0.1:
+    resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
+    dependencies:
+      balanced-match: 1.0.2
+    dev: false
+
   /braces/3.0.2:
     resolution: {integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==}
     engines: {node: '>=8'}
@@ -1379,19 +1349,17 @@ packages:
       ieee754: 1.2.1
     dev: false
 
-  /bull/4.10.0:
-    resolution: {integrity: sha512-VJ9/uTrpv7Xf1Xy/JrezwvqNmkCoL5gL00kOvmygCN9Gqe7jtNwd6U8X/48zykIjhEq3K2v+MGZzLpJM72kdIg==}
-    engines: {node: '>=10.1'}
+  /bullmq/2.1.3:
+    resolution: {integrity: sha512-sOuPHbCWegOnC0uKC1i8L6njmiDquenkStMXdpCzh+xrHEB4AxOFVhuM8SchmnjcJUBnW1lVe+SBc1vMNyR1ZQ==}
     dependencies:
       cron-parser: 4.6.0
-      debuglog: 1.0.1
-      get-port: 5.1.1
-      ioredis: 4.28.5
+      glob: 8.0.3
+      ioredis: 5.2.3
       lodash: 4.17.21
       msgpackr: 1.7.2
-      p-timeout: 3.2.0
       semver: 7.3.8
-      uuid: 8.3.2
+      tslib: 2.4.0
+      uuid: 9.0.0
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -1593,10 +1561,6 @@ packages:
     dependencies:
       ms: 2.1.2
 
-  /debuglog/1.0.1:
-    resolution: {integrity: sha512-syBZ+rnAK3EgMsH2aYEOLUW7mZSY9Gb+0wUMCFsZvcmiz+HigA0LOcq/HoQqVuGG+EKykunc7QG2bzrponfaSw==}
-    dev: false
-
   /decompress-response/4.2.1:
     resolution: {integrity: sha512-jOSne2qbyE+/r8G1VU+G/82LBs2Fs4LAsTiLSHOCOMZQl2OKZ6i8i4IyHemTe+/yIXOtTcRQMzPcgyhoFlqPkw==}
     engines: {node: '>=8'}
@@ -1636,6 +1600,11 @@ packages:
 
   /denque/1.5.1:
     resolution: {integrity: sha512-XwE+iZ4D6ZUB7mfYRMb5wByE8L74HCn30FBN7sWnXksWc1LO1bPDl67pBR9o/kC4z/xSNAwkMYcGgqDV3BE3Hw==}
+    engines: {node: '>=0.10'}
+    dev: false
+
+  /denque/2.1.0:
+    resolution: {integrity: sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==}
     engines: {node: '>=0.10'}
     dev: false
 
@@ -2145,11 +2114,6 @@ packages:
       has-symbols: 1.0.3
     dev: false
 
-  /get-port/5.1.1:
-    resolution: {integrity: sha512-g/Q1aTSDOxFpchXC4i8ZWvxA1lnPqx/JHqcpIw0/LX9T8x/GBbi6YnlN5nhaKIFkT8oFsscUKgDJYxfwfS6QsQ==}
-    engines: {node: '>=8'}
-    dev: false
-
   /get-stream/5.2.0:
     resolution: {integrity: sha512-nBF+F1rAZVCu/p7rjzgA+Yb4lfYXrpl7a6VmJrU8wF9I1CKvP/QwPNZHnOlwbTkY6dvtFIzFMSyQXbLoTQPRpA==}
     engines: {node: '>=8'}
@@ -2205,6 +2169,17 @@ packages:
       minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
+
+  /glob/8.0.3:
+    resolution: {integrity: sha512-ull455NHSHI/Y1FqGaaYFaLGkNMMJbavMrEGFXG/PGrg6y7sutWHUHrz6gy6WEBH6akM1M414dWKCNs+IhKdiQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      fs.realpath: 1.0.0
+      inflight: 1.0.6
+      inherits: 2.0.4
+      minimatch: 5.1.0
+      once: 1.4.0
+    dev: false
 
   /global/4.4.0:
     resolution: {integrity: sha512-wv/LAoHdRE3BeTGz53FAamhGlPLhlssK45usmGFThIi4XqnBmjKQ16u+RNbP7WvigRZDxUsM0J3gcQ5yicaL0w==}
@@ -2412,6 +2387,23 @@ packages:
       - supports-color
     dev: false
 
+  /ioredis/5.2.3:
+    resolution: {integrity: sha512-gQNcMF23/NpvjCaa1b5YycUyQJ9rBNH2xP94LWinNpodMWVUPP5Ai/xXANn/SM7gfIvI62B5CCvZxhg5pOgyMw==}
+    engines: {node: '>=12.22.0'}
+    dependencies:
+      '@ioredis/commands': 1.2.0
+      cluster-key-slot: 1.1.1
+      debug: 4.3.4
+      denque: 2.1.0
+      lodash.defaults: 4.2.0
+      lodash.isarguments: 3.1.0
+      redis-errors: 1.2.0
+      redis-parser: 3.0.0
+      standard-as-callback: 2.1.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /is-arrayish/0.3.2:
     resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
     dev: false
@@ -2579,11 +2571,6 @@ packages:
       type-check: 0.4.0
     dev: true
 
-  /lexure/0.17.0:
-    resolution: {integrity: sha512-0L8GqFgPW36sLNqxdp2VOOef5Ajpb98kc0Zk4AzE+Yf0xYTDndcT1vpFqwkTdrCCw+FV8DH4mC9NUw0RlARThA==}
-    engines: {node: '>=12.0.0'}
-    dev: false
-
   /load-bmfont/1.4.1:
     resolution: {integrity: sha512-8UyQoYmdRDy81Brz6aLAUhfZLwr5zV0L3taTQ4hju7m6biuwiWiJXjPhBJxbUQJA8PrkvJ/7Enqmwk2sM14soA==}
     dependencies:
@@ -2743,6 +2730,13 @@ packages:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
     dependencies:
       brace-expansion: 1.1.11
+
+  /minimatch/5.1.0:
+    resolution: {integrity: sha512-9TPBGGak4nHfGZsPBohm9AWg6NoT7QTCehS3BIJABslyZbzxfV78QM2Y6+i741OPZIafFAaiiEMh5OyIrJPgtg==}
+    engines: {node: '>=10'}
+    dependencies:
+      brace-expansion: 2.0.1
+    dev: false
 
   /minimist/1.2.6:
     resolution: {integrity: sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==}
@@ -2930,11 +2924,6 @@ packages:
       word-wrap: 1.2.3
     dev: true
 
-  /p-finally/1.0.0:
-    resolution: {integrity: sha512-LICb2p9CB7FS+0eR1oqWnHhp0FljGLZCWBE9aix0Uye9W8LTQPwMTYVGWQWIw9RdQiDg4+epXQODwIYJtSJaow==}
-    engines: {node: '>=4'}
-    dev: false
-
   /p-limit/2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
     engines: {node: '>=6'}
@@ -2966,13 +2955,6 @@ packages:
   /p-map/2.1.0:
     resolution: {integrity: sha512-y3b8Kpd8OAN444hxfBbFfj1FY/RjtTd8tzYwhUqNYXx0fXx2iX4maP4Qr6qhIKbQXI02wTLAda4fYUbDagTUFw==}
     engines: {node: '>=6'}
-    dev: false
-
-  /p-timeout/3.2.0:
-    resolution: {integrity: sha512-rhIwUycgwwKcP9yTOOFK/AKsAopjjCakVqLHePO3CC6Mir1Z99xT+R63jZxAT5lFZLa2inS5h+ZS2GvR99/FBg==}
-    engines: {node: '>=8'}
-    dependencies:
-      p-finally: 1.0.0
     dev: false
 
   /p-try/2.2.0:
@@ -3739,6 +3721,11 @@ packages:
 
   /uuid/8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    hasBin: true
+    dev: false
+
+  /uuid/9.0.0:
+    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
     hasBin: true
     dev: false
 

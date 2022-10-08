@@ -5,11 +5,11 @@ import { config } from "../../lib/config";
 import { logger } from "../../lib/logger";
 
 //TODO: Might want to consider runninng only on CommandSuccess, but for now this will fire on everything
-export class UserEvent extends Listener<typeof Events.CommandRun> {
+export class UserEvent extends Listener<typeof Events.MessageCommandRun> {
   public constructor(context: PieceContext, options?: ListenerOptions) {
     super(context, {
       ...options,
-      event: Events.CommandRun,
+      event: Events.MessageCommandRun,
     });
   }
 

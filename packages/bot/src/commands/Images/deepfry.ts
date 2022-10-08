@@ -34,7 +34,7 @@ const fryJimp = jimpConfig({
 export class DeepfryCommand extends Command {
   async messageRun(msg: Message, args: Args) {
     const mentioned = msg.mentions?.users?.first();
-    const target = args.nextMaybe().value;
+    const target = args.next();
     let imgUrl: string | undefined;
 
     if (!target) {
