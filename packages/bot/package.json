@@ -59,10 +59,5 @@
     "dev:debug": "npm run prep && tsc-watch --onSuccess \"node --inspect dist/index.js\"",
     "format": "prettier --write \"src/**/*.ts\"",
     "redis:gui": "redis-commander --redis-host redis"
-  },
-  "eslintConfig": {
-    "rules": {
-      "@typescript-eslint/explicit-module-boundary-types": "off"
-    }
   }
 }
