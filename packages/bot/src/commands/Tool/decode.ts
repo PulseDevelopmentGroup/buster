@@ -26,7 +26,7 @@ export class UserCommand extends Command {
           try {
             let decoded = "";
             const BinCharacter = encoded.match(new RegExp(".{1,8}", "g")) ?? "";
-            if (!BinCharacter || BinCharacter === []) throw new Error();
+            if (!BinCharacter) throw new Error();
             for (const bin of BinCharacter) {
               decoded += String.fromCharCode(parseInt(bin, 2));
             }
@@ -39,7 +39,7 @@ export class UserCommand extends Command {
             let decoded = "";
             const OctalCharacter =
               encoded.match(new RegExp(".{1,3}", "g")) ?? "";
-            if (!OctalCharacter || OctalCharacter === []) throw new Error();
+            if (!OctalCharacter) throw new Error();
             for (const octal of OctalCharacter) {
               decoded += String.fromCharCode(parseInt(`${octal}`, 8));
             }
@@ -51,7 +51,7 @@ export class UserCommand extends Command {
           try {
             let decoded = "";
             const HexCharacter = encoded.match(new RegExp(".{1,2}", "g")) ?? "";
-            if (!HexCharacter || HexCharacter === []) throw new Error();
+            if (!HexCharacter) throw new Error();
             for (const hex of HexCharacter) {
               decoded += String.fromCharCode(parseInt(`${hex}`, 16));
             }
