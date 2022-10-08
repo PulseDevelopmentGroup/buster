@@ -25,6 +25,7 @@
     "@skyra/editable-commands": "^2.1.2",
     "bullmq": "^2.1.3",
     "chrono-node": "^2.3.5",
+    "discord-api-types": "^0.33.5",
     "discord.js": "^13.11.0",
     "dotenv-cra": "^3.0.2",
     "faker": "5.5.3",
