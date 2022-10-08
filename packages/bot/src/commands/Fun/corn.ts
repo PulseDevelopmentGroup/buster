@@ -11,7 +11,7 @@ import { config } from "../../lib/config";
 )
 export default class CornCommand extends Command {
   async messageRun(msg: Message, args: Args) {
-    const type = args.nextMaybe().value;
+    const type = args.next();
 
     if (type) {
       switch (type.toLowerCase()) {

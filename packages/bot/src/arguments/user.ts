@@ -19,11 +19,11 @@ export class UserArgument extends Argument<User> {
 
     // Continue resolving normally
     const resolved = await Resolvers.resolveUser(parameter);
-    if (resolved.success) return this.ok(resolved.value);
+    if (resolved.ok()) return this.ok(resolved.unwrap());
 
     return this.error({
       parameter,
-      identifier: resolved.error,
+      identifier: resolved.err().unwrap(),
       message: "The given argument did not resolve to a Discord user.",
       context,
     });
