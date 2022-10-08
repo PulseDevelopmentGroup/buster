@@ -23,8 +23,6 @@ RUN  apt-get install -y chromium \
     build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev \
     --no-install-recommends
 
-RUN corepack enable && corepack prepare pnpm@7.13.2 --activate 
-
 USER node # non-root user that comes with `node` images.
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
