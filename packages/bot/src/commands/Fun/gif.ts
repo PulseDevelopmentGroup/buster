@@ -13,7 +13,7 @@ import { config } from "../../lib/config";
 )
 export default class GifCommand extends Command {
   async messageRun(msg: Message, args: Args) {
-    let search = args.nextMaybe().value;
+    let search = args.next();
 
     if (!search) {
       const terms: string[] = config.json.commands.gif.vars.search;

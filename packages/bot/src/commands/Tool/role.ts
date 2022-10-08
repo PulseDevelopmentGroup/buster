@@ -12,8 +12,9 @@ import { config } from "../../lib/config";
 )
 export default class RoleCommand extends Command {
   async messageRun(msg: Message, args: Args) {
-    const action = await args.nextMaybe().value;
-    const role = await args.nextMaybe().value;
+    const action = await args.next();
+    args.next();
+    const role = await args.next();
 
     if (!msg.guild) {
       return;
