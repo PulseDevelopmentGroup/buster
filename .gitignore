@@ -2,4 +2,3 @@ node_modules/
 .env.local
 **/*.db
 dist/
-.pnpm-store/
