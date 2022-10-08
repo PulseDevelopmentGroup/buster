@@ -33,7 +33,7 @@ RUN apk --no-cache add graphicsmagick \
       ca-certificates \
       ttf-freefont
 
-ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
+ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium
 ENV NODE_ENV production
 
 # Set workdir and copy build output

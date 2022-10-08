@@ -111,6 +111,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
       puppeteer.use(StealthPlugin());
 
       this.browser = await puppeteer.use(StealthPlugin()).launch({
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
         headless: true,
         ignoreHTTPSErrors: true,
         args: [
