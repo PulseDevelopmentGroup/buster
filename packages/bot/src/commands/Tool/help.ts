@@ -12,11 +12,11 @@ import { EMBED_COLOR } from "../../lib/constants";
 // Code influenced by https://github.com/NezuChan/kamado-tanjiro
 export class clientCommand extends Command {
   async messageRun(message: Message, args: Args) {
-    const userArgument = await args.restResult("string");
-    if (userArgument.success) {
+    const userArgument = await await args.restResult("string");
+    if (userArgument.isOk()) {
       const command = this.container.stores
         .get("commands")
-        .get(userArgument.value);
+        .get(userArgument.unwrap());
       if (!command) return;
       const embed = new MessageEmbed()
         .addField(

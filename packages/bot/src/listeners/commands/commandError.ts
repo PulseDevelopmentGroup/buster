@@ -1,10 +1,10 @@
-import type { CommandErrorPayload, Events } from "@sapphire/framework";
+import type { MessageCommandErrorPayload, Events } from "@sapphire/framework";
 import { Listener } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
 import { MessageEmbed } from "discord.js";
 
-export class UserEvent extends Listener<typeof Events.CommandError> {
-  public async run(e: Error, { message }: CommandErrorPayload) {
+export class UserEvent extends Listener<typeof Events.MessageCommandError> {
+  public async run(e: Error, { message }: MessageCommandErrorPayload) {
     await message.guild?.channels
       .fetch("893296394478182450")
       .then((channel) => {
