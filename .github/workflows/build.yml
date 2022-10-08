@@ -29,13 +29,3 @@ jobs:
           workdir: packages/bot
           tags: "latest,${{ steps.version.outputs.VERSION }}"
           buildargs: VERSION=${{ steps.version.outputs.VERSION }}
-#  deploy-web:
-#    name: Deploy Web
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Deploy Stage
-#        uses: fjogeleit/http-request-action@master
-#        with:
-#          url: ${{ secrets.CF_PAGES_HOOK }}
-#          method: "POST"
