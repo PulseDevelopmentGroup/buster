@@ -129,28 +129,28 @@ export class DeepfryCommand extends Command {
       let imgOkHand: jimp;
       if (useOkHand) {
         imgOkHand = await fryJimp.read(
-          path.join(__dirname, "../../assets/ok-hand.png"),
+          path.join(__dirname, "../../assets/fry/ok-hand.png"),
         );
       }
 
       let imgWearyFace: jimp;
       if (useWearyFace) {
         imgWearyFace = await fryJimp.read(
-          path.join(__dirname, "../../assets/weary-face.png"),
+          path.join(__dirname, "../../assets/fry/weary-face.png"),
         );
       }
 
       let imgHundred: jimp;
       if (useHundred) {
         imgHundred = await fryJimp.read(
-          path.join(__dirname, "../../assets/hundred.png"),
+          path.join(__dirname, "../../assets/fry/hundred.png"),
         );
       }
 
       let imgWater: jimp;
       if (useWater) {
         imgWater = await fryJimp.read(
-          path.join(__dirname, "../../assets/sweat-droplets.png"),
+          path.join(__dirname, "../../assets/fry/sweat-droplets.png"),
         );
       }
 
