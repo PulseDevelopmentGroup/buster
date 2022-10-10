@@ -11,6 +11,7 @@ export default class CornCommand extends Command {
   private corns = [
     config.json.commands.corn.vars.cornCornURL,
     config.json.commands.corn.vars.cubeURL,
+    config.json.commands.corn.vars.cornURL,
   ];
 
   public override registerApplicationCommands(
@@ -24,6 +25,6 @@ export default class CornCommand extends Command {
   public override async chatInputRun(
     interaction: Command.ChatInputInteraction,
   ) {
-    interaction.reply(`${this.corns[Math.floor(Math.random() * 2)]}`);
+    interaction.reply(`${this.corns[Math.floor(Math.random() * 3)]}`);
   }
 }
