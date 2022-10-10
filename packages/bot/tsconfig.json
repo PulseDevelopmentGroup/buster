@@ -2,6 +2,9 @@
   "include": ["src/**/*"],
   "extends": "@sapphire/ts-config",
   "compilerOptions": {
-    "outDir": "./dist"
+    "outDir": "./dist",
+    // Below handled by ESLint
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
   }
 }
