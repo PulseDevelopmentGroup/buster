@@ -1,4 +1,9 @@
-import { Args, Command, CommandOptions } from "@sapphire/framework";
+import {
+  ApplicationCommandRegistry,
+  Args,
+  Command,
+  CommandOptions,
+} from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
 import { fetch, FetchResultTypes } from "@sapphire/fetch";
 import { ApplyOptions } from "@sapphire/decorators";
@@ -12,8 +17,26 @@ import { config } from "../../lib/config";
   }),
 )
 export default class GifCommand extends Command {
-  async messageRun(msg: Message, args: Args) {
-    let search = args.next();
+  public override registerApplicationCommands(
+    registry: ApplicationCommandRegistry,
+  ) {
+    registry.registerChatInputCommand((builder) => {
+      builder
+        .setName(this.name)
+        .setDescription(this.description)
+        .addStringOption((option) =>
+          option
+            .setName("term")
+            .setDescription("Gif search term")
+            .setRequired(false),
+        );
+    });
+  }
+
+  public override async chatInputRun(
+    interaction: Command.ChatInputInteraction,
+  ) {
+    let search = interaction.options.getString("term", false);
 
     if (!search) {
       const terms: string[] = config.json.commands.gif.vars.search;
@@ -37,12 +60,15 @@ export default class GifCommand extends Command {
     if (res) {
       const json = JSON.parse(res);
       if (!json.results[0] || json.results[0].url.length == 0) {
-        return send(msg, "Unable to find gifs by that search term.");
+        return interaction.reply("Unable to find gifs by that search term.");
       }
 
-      return send(msg, json.results[0].url);
+      return interaction.reply(json.results[0].url);
     }
 
-    return send(msg, "Something went wrong, please try again later.");
+    return interaction.reply({
+      ephemeral: true,
+      content: "Something went wrong, try again later",
+    });
   }
 }
