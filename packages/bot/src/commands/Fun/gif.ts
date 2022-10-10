@@ -1,14 +1,10 @@
-import {
-  ApplicationCommandRegistry,
-  Command,
-  CommandOptions,
-} from "@sapphire/framework";
+import { ApplicationCommandRegistry, Command } from "@sapphire/framework";
 import { fetch, FetchResultTypes } from "@sapphire/fetch";
 import { ApplyOptions } from "@sapphire/decorators";
 import { TENOR_URL } from "../../lib/constants";
 import { config } from "../../lib/config";
 
-@ApplyOptions<CommandOptions>(
+@ApplyOptions(
   config.applyConfig("gif", {
     description: "Random gif getter, use at your own risk",
   }),
