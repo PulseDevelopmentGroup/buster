@@ -1,8 +1,6 @@
 import faker from "faker";
 import { ApplyOptions } from "@sapphire/decorators";
-import { Command } from "@sapphire/framework";
-import type { Message } from "discord.js";
-import { send } from "@sapphire/plugin-editable-commands";
+import { ApplicationCommandRegistry, Command } from "@sapphire/framework";
 import { config } from "../../lib/config";
 
 @ApplyOptions(
@@ -12,8 +10,16 @@ import { config } from "../../lib/config";
     preconditions: ["GuildOnly"],
   }),
 )
-export default class SupCommand extends Command {
-  async messageRun(msg: Message) {
-    return send(msg, faker.hacker.phrase());
+export default class TechTipCommand extends Command {
+  public override registerApplicationCommands(
+    registry: ApplicationCommandRegistry,
+  ) {
+    registry.registerChatInputCommand((builder) => {
+      builder.setName(this.name).setDescription(this.description);
+    });
+  }
+
+  public override chatInputRun(interaction: Command.ChatInputInteraction) {
+    return interaction.reply(faker.hacker.phrase());
   }
 }

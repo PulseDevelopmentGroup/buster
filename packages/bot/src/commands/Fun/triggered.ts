@@ -1,15 +1,16 @@
-import { Command, CommandOptions } from "@sapphire/framework";
-import { send } from "@sapphire/plugin-editable-commands";
+import { ApplicationCommandRegistry, Command } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
 import { fetch, FetchResultTypes } from "@sapphire/fetch";
-import { Message, MessageAttachment } from "discord.js";
+import { MessageAttachment, User } from "discord.js";
 import GifEncoder from "gifencoder";
 import { Readable } from "stream";
 import sharp from "sharp";
 import path from "path";
 import { config } from "../../lib/config";
+import { ApplicationCommandType } from "discord-api-types/v9";
+import { randomUUID } from "crypto";
 
-@ApplyOptions<CommandOptions>(
+@ApplyOptions(
   config.applyConfig("triggered", {
     name: "triggered",
     description: "Trigger people",
@@ -17,21 +18,66 @@ import { config } from "../../lib/config";
   }),
 )
 export default class TriggeredCommand extends Command {
-  async messageRun(msg: Message) {
-    const scale = 20;
-    let pfpUrl: string | undefined;
-    const mentioned = msg.mentions?.users?.first();
-    if (mentioned) {
-      pfpUrl = mentioned.displayAvatarURL();
-    } else {
-      pfpUrl = msg.author.displayAvatarURL();
+  public override registerApplicationCommands(
+    registry: ApplicationCommandRegistry,
+  ) {
+    registry.registerChatInputCommand((builder) => {
+      builder
+        .setName(this.name)
+        .setDescription(this.description)
+        .addUserOption((option) =>
+          option
+            .setName("user")
+            .setDescription("User to trigger")
+            .setRequired(false),
+        );
+    });
+
+    registry.registerContextMenuCommand((builder) => {
+      builder.setName(this.name).setType(ApplicationCommandType.User);
+    });
+  }
+
+  public override async chatInputRun(
+    interaction: Command.ChatInputInteraction,
+  ) {
+    let target = interaction.options.getUser("user", false);
+
+    if (!target) {
+      target = interaction.user;
     }
 
-    msg.channel.sendTyping();
+    const attachment = await this.trigger(target);
 
-    const pfp = await fetch(pfpUrl, FetchResultTypes.Buffer);
+    interaction.reply({ files: [attachment] });
+  }
 
-    const basePfp = await sharp(pfp)
+  public override async contextMenuRun(
+    interaction: Command.ContextMenuInteraction,
+  ) {
+    let target: User | undefined;
+
+    if (interaction.isUserContextMenu()) {
+      target = interaction.targetUser;
+    }
+
+    if (!target)
+      return interaction.reply({
+        ephemeral: true,
+        content: "Unable to get user to trigger",
+      });
+
+    const attachment = await this.trigger(target);
+
+    interaction.reply({ files: [attachment] });
+  }
+
+  async trigger(user: User): Promise<MessageAttachment> {
+    const scale = 20;
+
+    const pfp = await fetch(user.displayAvatarURL(), FetchResultTypes.Buffer);
+
+    const basePfp = sharp(pfp)
       .blur(2)
       .sharpen(3)
       .rotate(3)
@@ -109,15 +155,8 @@ export default class TriggeredCommand extends Command {
       chunks.push(chunk);
     }
 
-    const out = Buffer.concat(chunks);
-
-    const attachment = new MessageAttachment(
-      out,
-      `${msg.author.username}-triggered.gif`,
+    return Promise.resolve(
+      new MessageAttachment(Buffer.concat(chunks), `${randomUUID()}.gif`),
     );
-
-    return send(msg, {
-      files: [attachment],
-    });
   }
 }

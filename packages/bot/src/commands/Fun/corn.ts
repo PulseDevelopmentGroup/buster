@@ -1,27 +1,30 @@
 import { ApplyOptions } from "@sapphire/decorators";
-import { Args, Command, CommandOptions } from "@sapphire/framework";
-import { send } from "@sapphire/plugin-editable-commands";
-import type { Message } from "discord.js";
+import { Command, ApplicationCommandRegistry } from "@sapphire/framework";
 import { config } from "../../lib/config";
 
-@ApplyOptions<CommandOptions>(
+@ApplyOptions(
   config.applyConfig("corn", {
     description: "🌽",
   }),
 )
 export default class CornCommand extends Command {
-  async messageRun(msg: Message, args: Args) {
-    const type = args.next();
+  private corns = [
+    config.json.commands.corn.vars.cornCornURL,
+    config.json.commands.corn.vars.cubeURL,
+    config.json.commands.corn.vars.cornURL,
+  ];
 
-    if (type) {
-      switch (type.toLowerCase()) {
-        case "corn":
-          return send(msg, config.json.commands.corn.vars.cornCornURL);
-        case "cube":
-          return send(msg, config.json.commands.corn.vars.cubeURL);
-      }
-    }
+  public override registerApplicationCommands(
+    registry: ApplicationCommandRegistry,
+  ) {
+    registry.registerChatInputCommand((builder) => {
+      builder.setName(this.name).setDescription(this.description); // TODO: Add option to specify corn with complete functionality
+    });
+  }
 
-    return send(msg, config.json.commands.corn.vars.cornURL);
+  public override async chatInputRun(
+    interaction: Command.ChatInputInteraction,
+  ) {
+    interaction.reply(`${this.corns[Math.floor(Math.random() * 3)]}`);
   }
 }
