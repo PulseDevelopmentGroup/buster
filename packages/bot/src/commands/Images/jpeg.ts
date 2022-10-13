@@ -21,9 +21,13 @@ export class JpegCommand extends Command {
   public override registerApplicationCommands(
     registry: ApplicationCommandRegistry,
   ) {
-    registry.registerContextMenuCommand((builder) =>
-      builder.setName(this.name).setType(ApplicationCommandType.Message),
-    );
+    registry
+      .registerContextMenuCommand((builder) =>
+        builder.setName(this.name).setType(ApplicationCommandType.Message),
+      )
+      .registerContextMenuCommand((builder) =>
+        builder.setName(this.name).setType(ApplicationCommandType.User),
+      );
   }
 
   public override async contextMenuRun(
@@ -34,41 +38,35 @@ export class JpegCommand extends Command {
       isMessageInstance(interaction.targetMessage)
     ) {
       const msg = interaction.targetMessage;
-      const mentioned = msg.mentions.users.first();
-      let imgUrl: string;
 
-      if (mentioned) {
-        ////
-        //  If target param is a mention
-        ////
-        imgUrl = mentioned.displayAvatarURL().slice(0, -5);
-      } else {
-        const url = msg.attachments.first()?.url ?? getImageUrl(msg.content);
-        if (!url || !isImageURL(url)) {
-          return interaction.reply(
-            "The specified message doesn't appear to have any JPEGifiable attachments.",
-          );
-        }
-
-        imgUrl = url;
+      const url = msg.attachments.first()?.url ?? getImageUrl(msg.content);
+      if (!url || !isImageURL(url)) {
+        return interaction.reply(
+          "The specified message doesn't appear to have any JPEGifiable attachments.",
+        );
       }
 
       try {
-        const attachment = await jimp.read(imgUrl).then((i) => {
-          return i
-            .posterize(config.json.commands.jpeg.vars.posterize)
-            .quality(config.json.commands.jpeg.vars.jpeg)
-            .getBufferAsync(jimp.MIME_JPEG)
-            .then((b) => {
-              return b;
-            });
-        });
-
+        const attachment = await JpegCommand.jpegify(url);
         return interaction.reply({
           files: [new MessageAttachment(attachment)],
         });
       } catch (e) {
-        msg.client.logger.error(e);
+        this.container.client.logger.error(e);
+        return interaction.reply({
+          content: "Unable to JPEGify the image D:",
+        });
+      }
+    } else if (interaction.isUserContextMenu()) {
+      const pfpUrl = interaction.targetUser.displayAvatarURL().slice(0, -5);
+
+      try {
+        const attachment = await JpegCommand.jpegify(pfpUrl);
+        return interaction.reply({
+          files: [new MessageAttachment(attachment)],
+        });
+      } catch (e) {
+        this.container.client.logger.error(e);
         return interaction.reply({
           content: "Unable to JPEGify the image D:",
         });
@@ -76,5 +74,14 @@ export class JpegCommand extends Command {
     }
 
     return;
+  }
+
+  private static async jpegify(url: string): Promise<Buffer> {
+    return await jimp.read(url).then((i) => {
+      return i
+        .posterize(config.json.commands.jpeg.vars.posterize)
+        .quality(config.json.commands.jpeg.vars.jpeg)
+        .getBufferAsync(jimp.MIME_JPEG);
+    });
   }
 }
