@@ -111,122 +111,7 @@ export class DeepfryCommand extends Command {
       // This will take a while, so indicate the bot is working on it
       await msg.channel.sendTyping();
 
-      // Define some constants for the level of pixelation, and use of emojis
-      // All values are randomly generated
-      const pixels = getRandomInt(3, 2);
-      const useOkHand = getRandomBool(config.json.commands.fry.vars.okHandProb);
-      const useWearyFace = getRandomBool(
-        config.json.commands.fry.vars.wearyFaceProb,
-      );
-      const useHundred = getRandomBool(
-        config.json.commands.fry.vars.hundredProb,
-      );
-      const useWater = getRandomBool(config.json.commands.fry.vars.waterProb);
-
-      // Load images based on the random generation
-      // TODO: Possible to load these a single time, rather than when the command is called, or is that a bad idea?
-      // TODO: If that is a bad idea, maybe load them during the processing on lines 188-196ish? Is that possible?
-      let imgOkHand: jimp;
-      if (useOkHand) {
-        imgOkHand = await fryJimp.read(
-          path.join(__dirname, "../../assets/ok-hand.png"),
-        );
-      }
-
-      let imgWearyFace: jimp;
-      if (useWearyFace) {
-        imgWearyFace = await fryJimp.read(
-          path.join(__dirname, "../../assets/weary-face.png"),
-        );
-      }
-
-      let imgHundred: jimp;
-      if (useHundred) {
-        imgHundred = await fryJimp.read(
-          path.join(__dirname, "../../assets/hundred.png"),
-        );
-      }
-
-      let imgWater: jimp;
-      if (useWater) {
-        imgWater = await fryJimp.read(
-          path.join(__dirname, "../../assets/sweat-droplets.png"),
-        );
-      }
-
-      // Start applying image effects
-      const jimpOut = await fryJimp.read(imgUrl).then((i) => {
-        i.pixelate(pixels)
-          .posterize(config.json.commands.fry.vars.posterize)
-          .contrast(config.json.commands.fry.vars.contrast)
-          .color([
-            {
-              apply: "mix",
-              params: ["#eb4034", config.json.commands.fry.vars.redMixOpacity],
-            },
-          ])
-          .quality(config.json.commands.fry.vars.jpeg);
-
-        const superimposeScale = config.json.commands.fry.vars.superimposeScale;
-
-        // Add emojis
-        if (useHundred) {
-          imgHundred.scaleToFit(
-            i.getWidth() * superimposeScale,
-            i.getHeight() * superimposeScale,
-          );
-
-          this.superimpose(i, imgHundred);
-        }
-
-        if (useWater) {
-          imgWater.scaleToFit(
-            i.getWidth() * superimposeScale,
-            i.getHeight() * superimposeScale,
-          );
-
-          this.superimpose(i, imgWater);
-        }
-
-        if (useOkHand) {
-          imgOkHand.scaleToFit(
-            i.getWidth() * superimposeScale,
-            i.getHeight() * superimposeScale,
-          );
-
-          // Randomly select number of ok_hand to place
-          for (
-            let q = 1;
-            q <= getRandomInt(config.json.commands.fry.vars.maxHands, 1);
-            q++
-          ) {
-            this.superimpose(i, imgOkHand);
-          }
-        }
-
-        if (useWearyFace) {
-          imgWearyFace.scaleToFit(
-            i.getWidth() * superimposeScale,
-            i.getHeight() * superimposeScale,
-          );
-
-          this.superimpose(i, imgWearyFace);
-        }
-
-        // Return buffer
-        return i.getBufferAsync(fryJimp.MIME_JPEG).then((b) => {
-          return b;
-        });
-      });
-
-      // Generate noise and apply to image
-      const out = await this.gmToBuffer(gm(jimpOut).noise("laplacian"));
-
-      if (out.length <= 0) {
-        throw new Error(
-          "Buffer is empty, this probably means the image could not be read or GraphicsMagick died.",
-        );
-      }
+      const out = await this.fry(imgUrl);
 
       return send(msg, {
         files: [new MessageAttachment(out, "fried.jpg")],
@@ -236,6 +121,124 @@ export class DeepfryCommand extends Command {
       logger.command.error(error);
       return send(msg, error);
     }
+  }
+
+  private async fry(url: string) {
+    // Define some constants for the level of pixelation, and use of emojis
+    // All values are randomly generated
+    const pixels = getRandomInt(3, 2);
+    const useOkHand = getRandomBool(config.json.commands.fry.vars.okHandProb);
+    const useWearyFace = getRandomBool(
+      config.json.commands.fry.vars.wearyFaceProb,
+    );
+    const useHundred = getRandomBool(config.json.commands.fry.vars.hundredProb);
+    const useWater = getRandomBool(config.json.commands.fry.vars.waterProb);
+
+    // Load images based on the random generation
+    // TODO: Possible to load these a single time, rather than when the command is called, or is that a bad idea?
+    // TODO: If that is a bad idea, maybe load them during the processing on lines 188-196ish? Is that possible?
+    let imgOkHand: jimp;
+    if (useOkHand) {
+      imgOkHand = await fryJimp.read(
+        path.join(__dirname, "../../assets/ok-hand.png"),
+      );
+    }
+
+    let imgWearyFace: jimp;
+    if (useWearyFace) {
+      imgWearyFace = await fryJimp.read(
+        path.join(__dirname, "../../assets/weary-face.png"),
+      );
+    }
+
+    let imgHundred: jimp;
+    if (useHundred) {
+      imgHundred = await fryJimp.read(
+        path.join(__dirname, "../../assets/hundred.png"),
+      );
+    }
+
+    let imgWater: jimp;
+    if (useWater) {
+      imgWater = await fryJimp.read(
+        path.join(__dirname, "../../assets/sweat-droplets.png"),
+      );
+    }
+
+    // Start applying image effects
+    const jimpOut = await fryJimp.read(url).then((i) => {
+      i.pixelate(pixels)
+        .posterize(config.json.commands.fry.vars.posterize)
+        .contrast(config.json.commands.fry.vars.contrast)
+        .color([
+          {
+            apply: "mix",
+            params: ["#eb4034", config.json.commands.fry.vars.redMixOpacity],
+          },
+        ])
+        .quality(config.json.commands.fry.vars.jpeg);
+
+      const superimposeScale = config.json.commands.fry.vars.superimposeScale;
+
+      // Add emojis
+      if (useHundred) {
+        imgHundred.scaleToFit(
+          i.getWidth() * superimposeScale,
+          i.getHeight() * superimposeScale,
+        );
+
+        this.superimpose(i, imgHundred);
+      }
+
+      if (useWater) {
+        imgWater.scaleToFit(
+          i.getWidth() * superimposeScale,
+          i.getHeight() * superimposeScale,
+        );
+
+        this.superimpose(i, imgWater);
+      }
+
+      if (useOkHand) {
+        imgOkHand.scaleToFit(
+          i.getWidth() * superimposeScale,
+          i.getHeight() * superimposeScale,
+        );
+
+        // Randomly select number of ok_hand to place
+        for (
+          let q = 1;
+          q <= getRandomInt(config.json.commands.fry.vars.maxHands, 1);
+          q++
+        ) {
+          this.superimpose(i, imgOkHand);
+        }
+      }
+
+      if (useWearyFace) {
+        imgWearyFace.scaleToFit(
+          i.getWidth() * superimposeScale,
+          i.getHeight() * superimposeScale,
+        );
+
+        this.superimpose(i, imgWearyFace);
+      }
+
+      // Return buffer
+      return i.getBufferAsync(fryJimp.MIME_JPEG).then((b) => {
+        return b;
+      });
+    });
+
+    const out = await this.gmToBuffer(gm(jimpOut).noise("laplacian"));
+
+    if (out.length <= 0) {
+      throw new Error(
+        "Buffer is empty, this probably means the image could not be read or GraphicsMagick died.",
+      );
+    }
+
+    return out;
   }
 
   // Superimpose simply places an image at random coordinates (factoring in the size of the image being placed, I think..)
