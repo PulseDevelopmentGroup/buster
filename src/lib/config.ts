@@ -1,7 +1,6 @@
 import fs from "node:fs";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
 import type { CommandOptions } from "@sapphire/framework";
-import * as dotenv from "dotenv-cra";
 import { isURL } from "./utils";
 
 // Enviroment
@@ -58,11 +57,6 @@ export class BotConfiguration {
   public constructor() {
     // Set NODE_ENV to development if not already set
     process.env.NODE_ENV ??= "development";
-
-    // Parse enviornment variables from .env
-    // Note: .env.local and .env.development can be used as overrides
-    // All enviornemnt variables related to the bot should be prefixed with `BUSTER_`
-    dotenv.config({ prefix: "BUSTER_" });
 
     this.env = {
       botToken: process.env.BUSTER_BOT_TOKEN ?? "",
