@@ -13,7 +13,7 @@ import type { Reminder } from "../../lib/models";
   }),
 )
 export default class RemindCommand extends Command {
-  async messageRun(msg: Message, args: Args) {
+  public override async messageRun(msg: Message, args: Args) {
     const now = new Date();
 
     /* Error handling! */
@@ -44,8 +44,10 @@ export default class RemindCommand extends Command {
 
     /* Create reminder and inform user */
     this.container.tasks.create(
-      "reminder",
-      payload,
+      {
+        name: "reminder",
+        payload: payload,
+      },
       payload.when.getTime() - now.getTime(),
     );
 

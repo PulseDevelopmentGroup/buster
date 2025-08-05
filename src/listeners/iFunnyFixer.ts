@@ -1,6 +1,6 @@
-import type { ListenerOptions, PieceContext } from "@sapphire/framework";
+import type { ListenerOptions } from "@sapphire/framework";
 import { Events, Listener } from "@sapphire/framework";
-import { type Message, MessageEmbed } from "discord.js";
+import { EmbedBuilder, type Message } from "discord.js";
 import type { Browser, Page } from "puppeteer";
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
@@ -11,7 +11,10 @@ import { isURL } from "../lib/utils";
 export class UserEvent extends Listener<typeof Events.MessageCreate> {
   browser: Browser | undefined;
 
-  public constructor(context: PieceContext, options?: ListenerOptions) {
+  public constructor(
+    context: Listener.LoaderContext,
+    options?: ListenerOptions,
+  ) {
     super(context, {
       ...options,
       event: Events.MessageCreate,
@@ -19,7 +22,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
   }
 
   // Fires on every message sent by a user
-  public async run(message: Message) {
+  public override async run(message: Message) {
     if (!this.browser) return;
 
     // Hopefully ignore as much as we can to reduce load on the bot
@@ -29,15 +32,18 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     const ifunny = IfunnyURLRegex.exec(message.content);
 
     // If the regex returned nothing or what it returned isn't a URL, exit
-    if (!ifunny || !isURL(ifunny[0])) return;
+    if (!ifunny || !ifunny[0] || !ifunny[1] || !isURL(ifunny[0])) return;
 
     // Create a new page
     const page = await this.newPage();
 
     // Attempt to get URL and close the page
     let url = "";
-    if (page) {
-      url = await this.getDirect(page, ifunny[1], ifunny[0]);
+    if (page && ifunny[1] && ifunny[0]) {
+      const directUrl = await this.getDirect(page, ifunny[1], ifunny[0]);
+      if (directUrl) {
+        url = directUrl;
+      }
       await this.closePage(page);
     }
 
@@ -47,7 +53,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     }
 
     return await message.reply({
-      embeds: [new MessageEmbed().setImage(url).setColor("#FFCC00")],
+      embeds: [new EmbedBuilder().setImage(url).setColor("#FFCC00")],
     });
   }
 
@@ -59,7 +65,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
 
   // Create a new page
   public async newPage(): Promise<Page | undefined> {
-    if (!this.browser) return;
+    if (!this.browser) return undefined;
 
     const page = await this.browser.newPage();
 
@@ -86,7 +92,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     page: Page,
     type: string,
     url: string,
-  ): Promise<string> {
+  ): Promise<string | null> {
     if (type === "picture") type = "image";
     if (type === "video") type = "video:url";
 
@@ -97,12 +103,12 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     );
     page.close();
 
-    return directUrl ?? "";
+    return directUrl;
   }
 
   // Only enable if listener is enabled
-  public async onLoad() {
-    this.enabled = config.json.listeners[this.name].enabled;
+  public override async onLoad() {
+    this.enabled = config.json.listeners[this.name]?.enabled ?? false;
 
     if (this.enabled) {
       // May need to disable/configure these (outside of defaults) if not working
@@ -111,7 +117,6 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
       this.browser = await puppeteer.use(StealthPlugin()).launch({
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
         headless: true,
-        ignoreHTTPSErrors: true,
         args: [
           "--no-sandbox",
           "--disable-setuid-sandbox",

@@ -10,7 +10,7 @@ import { inspect } from "node:util";
 inspect.defaultOptions.depth = 1;
 
 import { SapphireClient } from "@sapphire/framework";
-import { ScheduledTaskRedisStrategy } from "@sapphire/plugin-scheduled-tasks/register-redis";
+import { GatewayIntentBits, OAuth2Scopes } from "discord.js";
 // Bot initialization
 import { config } from "./lib/config";
 import { logger } from "./lib/logger";
@@ -29,15 +29,13 @@ const main = async () => {
   }
 
   const tasks = {
-    strategy: new ScheduledTaskRedisStrategy({
-      bull: {
-        connection: {
-          host: config.env.dbRedisHost,
-          port: config.env.dbRedisPort,
-          db: config.env.dbRedisDB,
-        },
+    bull: {
+      connection: {
+        host: config.env.dbRedisHost,
+        port: config.env.dbRedisPort,
+        db: config.env.dbRedisDB,
       },
-    }),
+    },
   };
 
   const client = new SapphireClient({
@@ -48,15 +46,15 @@ const main = async () => {
     loadMessageCommandListeners: true,
     shards: "auto",
     intents: [
-      "GUILDS",
-      "GUILD_MEMBERS",
-      "GUILD_BANS",
-      "GUILD_EMOJIS_AND_STICKERS",
-      "GUILD_VOICE_STATES",
-      "GUILD_MESSAGES",
-      "GUILD_MESSAGE_REACTIONS",
-      "DIRECT_MESSAGES",
-      "DIRECT_MESSAGE_REACTIONS",
+      GatewayIntentBits.Guilds,
+      GatewayIntentBits.GuildMembers,
+      GatewayIntentBits.GuildBans,
+      GatewayIntentBits.GuildEmojisAndStickers,
+      GatewayIntentBits.GuildVoiceStates,
+      GatewayIntentBits.GuildMessages,
+      GatewayIntentBits.GuildMessageReactions,
+      GatewayIntentBits.DirectMessages,
+      GatewayIntentBits.DirectMessageReactions,
     ],
     // API should be accessible at /api/oauth/callback but it doesn't seem to work
     // Probably something to work on in the future
@@ -66,7 +64,7 @@ const main = async () => {
         secret: env.httpAuthSecret,
         cookie: "SAPPHIRE_AUTH",
         redirect: env.httpFrontendUrl,
-        scopes: ["identify"],
+        scopes: [OAuth2Scopes.Identify],
         transformers: [],
       },
       prefix: "api/",

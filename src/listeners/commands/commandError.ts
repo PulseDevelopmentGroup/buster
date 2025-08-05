@@ -1,21 +1,22 @@
 import type { Events, MessageCommandErrorPayload } from "@sapphire/framework";
 import { Listener } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 
 export class UserEvent extends Listener<typeof Events.MessageCommandError> {
   public async run(e: Error, { message }: MessageCommandErrorPayload) {
     await message.guild?.channels
       .fetch("893296394478182450")
       .then((channel) => {
-        if (channel?.isText()) {
-          const embed = new MessageEmbed({
-            title: "Error Details",
-          });
-          embed.setColor("RED");
+        if (channel?.isSendable()) {
+          const embed = new EmbedBuilder()
+            .setTitle("Error Details")
+            .setColor("Red");
 
-          embed.addField("Error Message", e.message, true);
-          embed.addField("Error Type", e.name, true);
+          const fields = [
+            { name: "Error Message", value: e.message, inline: true },
+            { name: "Error Type", value: e.name, inline: true },
+          ];
 
           if (message.member) {
             const pfp = message.member.user.avatarURL();
@@ -24,23 +25,35 @@ export class UserEvent extends Listener<typeof Events.MessageCommandError> {
               embed.setThumbnail(pfp);
             }
 
-            embed.addField("Message Author", message.member?.user.username);
+            fields.push({
+              name: "Message Author",
+              value: message.member?.user.username,
+              inline: false,
+            });
           }
 
           if (message.content) {
-            embed.addField(
-              "Message Content",
-              message.content.substring(0, 1024),
-            );
+            fields.push({
+              name: "Message Content",
+              value: message.content.substring(0, 1024),
+              inline: false,
+            });
           }
-
-          embed.setTimestamp(new Date());
-          embed.setURL(message.url);
-          embed.setFooter("Fields may be trimmed (<= 1024 characters)");
 
           if (e.stack) {
-            embed.addField("Stack", `\`${e.stack.substring(0, 1019)}\``);
+            fields.push({
+              name: "Stack",
+              value: `\`${e.stack.substring(0, 1019)}\``,
+              inline: false,
+            });
           }
+
+          embed.addFields(fields);
+          embed.setTimestamp(new Date());
+          embed.setURL(message.url);
+          embed.setFooter({
+            text: "Fields may be trimmed (<= 1024 characters)",
+          });
 
           channel.send({
             embeds: [embed],

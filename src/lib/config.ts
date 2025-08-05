@@ -38,13 +38,13 @@ export interface JSONConfiguration {
 // Command
 interface Command {
   options: CommandOptions;
-  vars: Record<string, any>;
+  vars: Record<string, unknown>;
 }
 
 // Listener
 interface Listener {
   enabled: boolean;
-  vars: Record<string, any>;
+  vars: Record<string, unknown>;
 }
 
 export class BotConfiguration {

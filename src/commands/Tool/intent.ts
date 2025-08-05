@@ -1,7 +1,7 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Args, Command, type CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
-import { type Message, MessageEmbed } from "discord.js";
+import { EmbedBuilder, type Message } from "discord.js";
 import { google } from "googleapis";
 import { config } from "../../lib/config";
 import { PERSPECTIVE_URL } from "../../lib/constants";
@@ -15,7 +15,7 @@ import { IntentAttributeNameLookup } from "../../lib/models";
   }),
 )
 export default class IntentCommand extends Command {
-  async messageRun(msg: Message, args: Args) {
+  public override async messageRun(msg: Message, args: Args) {
     let targetMessage = (await args.pickResult("message")).unwrapOr(undefined);
     const client = await google.discoverAPI(PERSPECTIVE_URL.toString());
 
@@ -68,7 +68,7 @@ export default class IntentCommand extends Command {
     );
 
     if (res.status === 200) {
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setTitle("Intent Summary")
         .setColor("#f5b342")
         .setDescription(`Intent Analysis for \`${targetMessage.content}\``);
@@ -90,7 +90,7 @@ export default class IntentCommand extends Command {
             scoreSummary.spanScores[0].score.value * 100,
           );
 
-          embed.addField(name, `${percent}%`);
+          embed.addFields({ name, value: `${percent}%` });
         });
 
       return send(msg, {

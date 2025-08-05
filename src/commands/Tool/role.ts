@@ -1,7 +1,7 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Args, Command, type CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
-import { type Message, MessageEmbed, type Role } from "discord.js";
+import { EmbedBuilder, type Message, type Role } from "discord.js";
 import { config } from "../../lib/config";
 
 @ApplyOptions<CommandOptions>(
@@ -11,7 +11,7 @@ import { config } from "../../lib/config";
   }),
 )
 export default class RoleCommand extends Command {
-  async messageRun(msg: Message, args: Args) {
+  public override async messageRun(msg: Message, args: Args) {
     const action = await args.next();
     args.next();
     const role = await args.next();
@@ -21,7 +21,7 @@ export default class RoleCommand extends Command {
     }
 
     if (!action) {
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setTitle("Available Roles")
         .setColor("#ffaa00")
         .setDescription("A list of opt-in roles");
@@ -31,7 +31,13 @@ export default class RoleCommand extends Command {
           const name = role.name.slice(1);
           const memberCount = role.members.size;
 
-          embed.addField(name, `${memberCount} members`, true);
+          embed.addFields([
+            {
+              name,
+              value: `${memberCount} members`,
+              inline: true,
+            },
+          ]);
         }
       }
 

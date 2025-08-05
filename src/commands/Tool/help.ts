@@ -1,45 +1,50 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Args, Command, type CommandOptions } from "@sapphire/framework";
-import { type Message, MessageEmbed } from "discord.js";
+import { EmbedBuilder, type Message } from "discord.js";
 import { EMBED_COLOR } from "../../lib/constants";
 
 @ApplyOptions<CommandOptions>({
   name: "help",
   description: "get bot help command",
-  requiredClientPermissions: ["SEND_MESSAGES", "EMBED_LINKS"],
+  requiredClientPermissions: ["SendMessages", "EmbedLinks"],
 })
 
 // Code influenced by https://github.com/NezuChan/kamado-tanjiro
 export class clientCommand extends Command {
-  async messageRun(message: Message, args: Args) {
+  public override async messageRun(message: Message, args: Args) {
     const userArgument = await await args.restResult("string");
     if (userArgument.isOk()) {
       const command = this.container.stores
         .get("commands")
         .get(userArgument.unwrap());
       if (!command) return;
-      const embed = new MessageEmbed()
-        .addField(
-          "Description",
-          `${command.description ? command.description : "No description"}`,
-        )
-        .addField(
-          "Detailed Description",
-          `${
-            command.detailedDescription
-              ? command.detailedDescription
-              : "No detailed description"
-          }`,
-        )
-        .addField(
-          "Aliases",
-          command.aliases.length > 1
-            ? `\`${command.aliases.join("` `")}\``
-            : "No aliases",
-          true,
-        )
+      const embed = new EmbedBuilder()
+        .addFields([
+          {
+            name: "Description",
+            value: `${command.description ? command.description : "No description"}`,
+          },
+          {
+            name: "Detailed Description",
+            value: `${
+              command.detailedDescription
+                ? command.detailedDescription
+                : "No detailed description"
+            }`,
+          },
+          {
+            name: "Aliases",
+            value:
+              command.aliases.length > 1
+                ? `\`${command.aliases.join("` `")}\``
+                : "No aliases",
+            inline: true,
+          },
+        ])
         .setColor(EMBED_COLOR);
-      return message.channel.send({ embeds: [embed] });
+      if (message.channel.isSendable()) {
+        return message.channel.send({ embeds: [embed] });
+      }
     }
 
     const categories = [
@@ -49,23 +54,28 @@ export class clientCommand extends Command {
           .map((x) => x.fullCategory[x.fullCategory.length - 1]),
       ),
     ];
-    const embed = new MessageEmbed()
-      .setAuthor(
-        `❯ ${this.container.client.user?.username} command(s) list`,
-        this.container.client.user?.displayAvatarURL(),
-      )
+    const embed = new EmbedBuilder()
+      .setAuthor({
+        name: `❯ ${this.container.client.user?.username} command(s) list`,
+        iconURL: this.container.client.user?.displayAvatarURL(),
+      })
       .setDescription("A list of available commands.")
       .setColor(EMBED_COLOR);
+    const fields = [];
     for (const category of categories) {
       const commands = this.container.stores
         .get("commands")
         .filter((x) => x.category === category);
-      embed.fields.push({
+      fields.push({
         name: `${category as string}`,
         value: commands.map((x) => `\`${x.name}\``).join(", "),
         inline: false,
       });
     }
-    return message.channel.send({ embeds: [embed] });
+    embed.addFields(fields);
+    if (message.channel.isSendable()) {
+      return message.channel.send({ embeds: [embed] });
+    }
+    return undefined;
   }
 }

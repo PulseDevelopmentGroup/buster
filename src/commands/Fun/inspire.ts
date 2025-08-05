@@ -2,7 +2,7 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
 import { Command, type CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
-import { type Message, MessageEmbed } from "discord.js";
+import { EmbedBuilder, type Message } from "discord.js";
 import { config } from "../../lib/config";
 import { INSPIRE_URL } from "../../lib/constants";
 
@@ -14,7 +14,7 @@ import { INSPIRE_URL } from "../../lib/constants";
   }),
 )
 export class InspireCommand extends Command {
-  async messageRun(msg: Message) {
+  public override async messageRun(msg: Message) {
     INSPIRE_URL.search = new URLSearchParams({ generate: "true" }).toString();
 
     const res = await fetch(INSPIRE_URL, FetchResultTypes.Text);
@@ -22,7 +22,7 @@ export class InspireCommand extends Command {
     if (res) {
       return send(msg, {
         embeds: [
-          new MessageEmbed()
+          new EmbedBuilder()
             .setURL("https://inspirobot.me")
             .setImage(res)
             .setColor("#6dd3ff"),

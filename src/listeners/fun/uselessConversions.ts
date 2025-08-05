@@ -1,4 +1,4 @@
-import type { ListenerOptions, PieceContext } from "@sapphire/framework";
+import type { ListenerOptions } from "@sapphire/framework";
 import { Events, Listener } from "@sapphire/framework";
 import type { Message } from "discord.js";
 import { config } from "../../lib/config";
@@ -14,7 +14,10 @@ const numberFormatter = new Intl.NumberFormat("en-US", {
 });
 
 export class UserEvent extends Listener<typeof Events.MessageCreate> {
-  public constructor(context: PieceContext, options?: ListenerOptions) {
+  public constructor(
+    context: Listener.LoaderContext,
+    options?: ListenerOptions,
+  ) {
     super(context, {
       ...options,
       event: Events.MessageCreate,
@@ -22,7 +25,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
   }
 
   // Fires on every message sent by a user
-  public async run(message: Message) {
+  public override async run(message: Message) {
     // Hopefully ignore as much as we can to reduce load on the bot
     if (
       message.author.bot ||
@@ -43,16 +46,19 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     // Build return message
     let result = "";
     for (const unit of units) {
-      const standard =
-        StandardMeasurements[unit.measurement][
-          Math.floor(
-            Math.random() * StandardMeasurements[unit.measurement].length,
-          )
-        ];
+      const standardMeasurements = StandardMeasurements[unit.measurement];
+      if (standardMeasurements && standardMeasurements.length > 0) {
+        const standard =
+          standardMeasurements[
+            Math.floor(Math.random() * standardMeasurements.length)
+          ];
 
-      result += `\`${unit.input}\` is equal to about \`${numberFormatter.format(
-        unit.value / standard.value,
-      )} ${standard.name}\`\n`;
+        if (standard) {
+          result += `\`${unit.input}\` is equal to about \`${numberFormatter.format(
+            unit.value / standard.value,
+          )} ${standard.name}\`\n`;
+        }
+      }
     }
 
     if (!result) return;
@@ -65,13 +71,14 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     if (!unit) return null;
 
     // Get the value and convert it
+    if (!unit[1] || !unit[2]) return null;
     let value: number = parseFloat(unit[1]);
     if (!value) return null;
 
     let measurement: Measurement;
 
     // WARNING: This is awful code, proceed with caution
-    switch (unit[2].toLowerCase()) {
+    switch (unit[2]?.toLowerCase()) {
       // Length
       case "mm":
       case "milimeter":
@@ -253,8 +260,8 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
   }
 
   // Only enable if logCommands is true or we are in a dev enviornment
-  public onLoad() {
-    this.enabled = config.json.listeners[this.name].enabled;
+  public override onLoad() {
+    this.enabled = config.json.listeners[this.name]?.enabled ?? false;
     return super.onLoad();
   }
 }
