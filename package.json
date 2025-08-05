@@ -1,9 +1,9 @@
 {
   "name": "buster",
-  "version": "4.4.0",
+  "version": "0.0.0",
   "private": true,
   "type": "module",
-  "main": "dist/index.js",
+  "main": "src/main.ts",
   "dependencies": {
     "@faker-js/faker": "^9.9.0",
     "@jimp/custom": "^0.22.12",
@@ -22,7 +22,6 @@
     "@sapphire/plugin-subcommands": "^7.0.1",
     "@sapphire/stopwatch": "^1.5.4",
     "@sapphire/time-utilities": "^1.7.14",
-    "@sapphire/type": "^2.6.0",
     "@sapphire/utilities": "^3.18.2",
     "@skyra/editable-commands": "^3.0.4",
     "bullmq": "^5.56.9",
@@ -58,8 +57,8 @@
   "scripts": {
     "build": "tsc --noEmit && bun build --compile --minify --sourcemap --bytecode src/main.ts src/assets/**/* --outfile dist/buster",
     "start": "./dist/buster",
-    "dev": "concurrently \"bun run tsc --noEmit --watch\" \"bun run src/main.ts --watch\" --names \"tsc,bun\" --prefix-colors \"blue,green\"",
-    "dev:debug": "bun run src/main.ts --watch --inspect",
+    "dev": "bun run --watch src/main.ts",
+    "dev:debug": "bun run --watch --inspect src/main.ts",
     "redis:gui": "redis-commander --redis-host redis",
     "format": "biome format --write .",
     "lint": "biome lint --write ."

@@ -17,7 +17,7 @@ const RegexArr = [BinaryRegex, OctalRegex, HexRegex, BaseSixtyFourRegex];
     description: "decode all the things",
   }),
 )
-export class UserCommand extends Command {
+export class DecodeCommand extends Command {
   public override async messageRun(message: Message, args: Args) {
     const encoded = await args.rest("string");
     for (const reg of RegexArr) {

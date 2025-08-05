@@ -10,7 +10,7 @@ import type { ChatInputCommandInteraction } from "discord.js";
 @ApplyOptions<CommandOptions>({
   description: "ping pong",
 })
-export class UserCommand extends Command {
+export class PingCommand extends Command {
   public override async chatInputRun(interaction: ChatInputCommandInteraction) {
     const msg = await interaction.reply({
       content: "Ping?",

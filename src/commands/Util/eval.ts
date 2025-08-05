@@ -2,9 +2,53 @@ import { inspect } from "node:util";
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Args, Command, type CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
-import { Type } from "@sapphire/type";
 import { codeBlock, isThenable } from "@sapphire/utilities";
 import type { Message } from "discord.js";
+
+/**
+ * Simple type detection function to replace @sapphire/type functionality
+ * Returns a TypeScript-like type string for the given value
+ */
+function getType(value: unknown): string {
+  if (value === null) return "null";
+  if (value === undefined) return "undefined";
+
+  const primitiveType = typeof value;
+
+  // Handle primitive types
+  if (primitiveType !== "object" && primitiveType !== "function") {
+    return primitiveType;
+  }
+
+  // Handle functions
+  if (primitiveType === "function") {
+    return "Function";
+  }
+
+  // Handle objects - use Object.prototype.toString for accurate type detection
+  const objectType = Object.prototype.toString.call(value);
+  const match = objectType.match(/^\[object (\w+)\]$/);
+
+  if (match?.[1]) {
+    const typeName = match[1];
+
+    // Handle arrays with generic type notation
+    if (typeName === "Array") {
+      const arr = value as unknown[];
+      if (arr.length === 0) {
+        return "Array<unknown>";
+      }
+
+      // Get the type of the first element as a simple approximation
+      const firstElementType = getType(arr[0]);
+      return `Array<${firstElementType}>`;
+    }
+
+    return typeName;
+  }
+
+  return "object";
+}
 
 @ApplyOptions<CommandOptions>({
   aliases: ["ev"],
@@ -14,7 +58,7 @@ import type { Message } from "discord.js";
   flags: ["async", "hidden", "showHidden", "silent", "s"],
   options: ["depth"],
 })
-export class UserCommand extends Command {
+export class EvalCommand extends Command {
   public override async messageRun(message: Message, args: Args) {
     const code = await args.rest("string");
 
@@ -65,7 +109,7 @@ export class UserCommand extends Command {
       success = false;
     }
 
-    const type = new Type(result).toString();
+    const type = getType(result);
     if (isThenable(result)) result = await result;
 
     if (typeof result !== "string") {

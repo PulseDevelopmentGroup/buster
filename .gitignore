@@ -1,5 +1,8 @@
 node_modules/
-.env.local
 **/*.db
 dist/
 *.tsbuildinfo
+
+.env*
+!.env.example
+!.env.development

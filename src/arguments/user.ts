@@ -28,9 +28,3 @@ export class UserArgument extends Argument<User> {
     });
   }
 }
-
-declare module "@sapphire/framework" {
-  interface ArgType {
-    user: User;
-  }
-}

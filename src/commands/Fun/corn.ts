@@ -1,5 +1,5 @@
 import { ApplyOptions } from "@sapphire/decorators";
-import { type Args, Command, type CommandOptions } from "@sapphire/framework";
+import { Command, type CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
 import type { Message } from "discord.js";
 import { config } from "../../lib/config";
@@ -10,23 +10,10 @@ import { config } from "../../lib/config";
   }),
 )
 export default class CornCommand extends Command {
-  override async messageRun(msg: Message, args: Args) {
-    const type = args.next();
-    const cornConfig = config.json.commands.corn;
-
-    if (!cornConfig) {
-      return send(msg, "Corn command configuration not found");
-    }
-
-    if (type) {
-      switch (type.toLowerCase()) {
-        case "corn":
-          return send(msg, cornConfig.vars.cornCornURL as string);
-        case "cube":
-          return send(msg, cornConfig.vars.cubeURL as string);
-      }
-    }
-
-    return send(msg, cornConfig.vars.cornURL as string);
+  override async messageRun(msg: Message) {
+    return send(
+      msg,
+      "https://media1.tenor.com/images/f2992828c6d4faeaced7aff0aa8d45ba/tenor.gif?itemid=19044521",
+    );
   }
 }

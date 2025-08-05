@@ -1,17 +1,9 @@
-// Initialize application dependencies
-import "reflect-metadata";
 import "@sapphire/plugin-api/register";
 import "@sapphire/plugin-editable-commands/register";
-
-// Inspection stuff
-// TODO: What does this do?
-import { inspect } from "node:util";
-
-inspect.defaultOptions.depth = 1;
+import "reflect-metadata";
 
 import { SapphireClient } from "@sapphire/framework";
-import { GatewayIntentBits, OAuth2Scopes } from "discord.js";
-// Bot initialization
+import { GatewayIntentBits, OAuth2Scopes, Partials } from "discord.js";
 import { config } from "./lib/config";
 import { logger } from "./lib/logger";
 
@@ -42,20 +34,24 @@ const main = async () => {
     defaultPrefix: env.prefix,
     regexPrefix: /^((hey|yo) +)?(bot|buster)[,! ]/i,
     caseInsensitiveCommands: true,
-    loadDefaultErrorListeners: env.development,
     loadMessageCommandListeners: true,
+    loadDefaultErrorListeners: env.development,
     shards: "auto",
     intents: [
+      GatewayIntentBits.MessageContent,
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildMembers,
-      GatewayIntentBits.GuildBans,
-      GatewayIntentBits.GuildEmojisAndStickers,
+      GatewayIntentBits.GuildModeration,
+      GatewayIntentBits.GuildExpressions,
       GatewayIntentBits.GuildVoiceStates,
       GatewayIntentBits.GuildMessages,
       GatewayIntentBits.GuildMessageReactions,
+      GatewayIntentBits.GuildMessageTyping,
       GatewayIntentBits.DirectMessages,
       GatewayIntentBits.DirectMessageReactions,
+      GatewayIntentBits.DirectMessageTyping,
     ],
+    partials: [Partials.Message, Partials.Channel],
     // API should be accessible at /api/oauth/callback but it doesn't seem to work
     // Probably something to work on in the future
     api: {
