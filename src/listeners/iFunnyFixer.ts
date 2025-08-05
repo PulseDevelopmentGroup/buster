@@ -65,7 +65,7 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
 
   // Create a new page
   public async newPage(): Promise<Page | undefined> {
-    if (!this.browser) return undefined;
+    if (!this.browser) return;
 
     const page = await this.browser.newPage();
 
@@ -115,7 +115,9 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
       puppeteer.use(StealthPlugin());
 
       this.browser = await puppeteer.use(StealthPlugin()).launch({
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+        ...(process.env.PUPPETEER_EXECUTABLE_PATH && {
+          executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+        }),
         headless: true,
         args: [
           "--no-sandbox",

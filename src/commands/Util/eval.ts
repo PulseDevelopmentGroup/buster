@@ -15,7 +15,7 @@ import type { Message } from "discord.js";
   options: ["depth"],
 })
 export class UserCommand extends Command {
-  public async messageRun(message: Message, args: Args) {
+  public override async messageRun(message: Message, args: Args) {
     const code = await args.rest("string");
 
     const { result, success, type } = await this.eval(message, code, {
@@ -42,14 +42,14 @@ export class UserCommand extends Command {
   }
 
   private async eval(
-    message: Message,
+    _message: Message,
     code: string,
     flags: { async: boolean; depth: number; showHidden: boolean },
   ) {
     if (flags.async) code = `(async () => {\n${code}\n})();`;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const msg = message;
+    // const msg = message; // Unused variable removed
 
     let success = true;
     let result = null;

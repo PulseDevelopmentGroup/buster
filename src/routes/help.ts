@@ -1,21 +1,19 @@
-import type { PieceContext } from "@sapphire/framework";
-import {
-  type ApiRequest,
-  type ApiResponse,
-  methods,
-  Route,
-  type RouteOptions,
-} from "@sapphire/plugin-api";
+import { type ApiRequest, type ApiResponse, Route } from "@sapphire/plugin-api";
 
 export class HelpRoute extends Route {
-  public constructor(context: PieceContext, options?: RouteOptions) {
+  public constructor(context: Route.LoaderContext) {
     super(context, {
-      ...options,
       route: "commands/help",
     });
   }
 
-  public [methods.GET](_request: ApiRequest, response: ApiResponse): void {
+  public override async run(
+    request: ApiRequest,
+    response: ApiResponse,
+  ): Promise<void> {
+    if (request.method !== "GET") {
+      return response.status(405).json({ error: "Method not allowed" });
+    }
     const commands = this.container.stores.get("commands").reduce(
       (acc, command, key) => {
         command.name;

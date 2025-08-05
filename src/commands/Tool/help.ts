@@ -57,7 +57,9 @@ export class clientCommand extends Command {
     const embed = new EmbedBuilder()
       .setAuthor({
         name: `❯ ${this.container.client.user?.username} command(s) list`,
-        iconURL: this.container.client.user?.displayAvatarURL(),
+        ...(this.container.client.user && {
+          iconURL: this.container.client.user.displayAvatarURL(),
+        }),
       })
       .setDescription("A list of available commands.")
       .setColor(EMBED_COLOR);
@@ -76,6 +78,6 @@ export class clientCommand extends Command {
     if (message.channel.isSendable()) {
       return message.channel.send({ embeds: [embed] });
     }
-    return undefined;
+    return;
   }
 }

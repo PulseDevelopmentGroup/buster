@@ -5,12 +5,13 @@ import {
   Command,
   type CommandOptions,
 } from "@sapphire/framework";
+import type { ChatInputCommandInteraction } from "discord.js";
 
 @ApplyOptions<CommandOptions>({
   description: "ping pong",
 })
 export class UserCommand extends Command {
-  public async chatInputRun(interaction: Command.ChatInputInteraction) {
+  public override async chatInputRun(interaction: ChatInputCommandInteraction) {
     const msg = await interaction.reply({
       content: "Ping?",
       ephemeral: true,

@@ -2,6 +2,7 @@
   "name": "buster",
   "version": "4.4.0",
   "private": true,
+  "type": "module",
   "main": "dist/index.js",
   "dependencies": {
     "@faker-js/faker": "^9.9.0",
@@ -51,12 +52,13 @@
     "@types/puppeteer": "^7.0.4",
     "@types/sharp": "^0.32.0",
     "@types/ws": "^8.18.1",
+    "concurrently": "^9.1.0",
     "typescript": "^5.9.2"
   },
   "scripts": {
-    "build": "bun build --compile --minify --sourcemap --bytecode src/main.ts src/assets/**/* --outfile dist/buster",
+    "build": "tsc --noEmit && bun build --compile --minify --sourcemap --bytecode src/main.ts src/assets/**/* --outfile dist/buster",
     "start": "./dist/buster",
-    "dev": "bun run src/main.ts --watch",
+    "dev": "concurrently \"bun run tsc --noEmit --watch\" \"bun run src/main.ts --watch\" --names \"tsc,bun\" --prefix-colors \"blue,green\"",
     "dev:debug": "bun run src/main.ts --watch --inspect",
     "redis:gui": "redis-commander --redis-host redis",
     "format": "biome format --write .",

@@ -27,6 +27,6 @@ export class RemindTask extends ScheduledTask {
 
 declare module "@sapphire/plugin-scheduled-tasks" {
   interface ScheduledTasks {
-    reminder: never;
+    reminder: Reminder;
   }
 }

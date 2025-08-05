@@ -10,18 +10,23 @@ import { config } from "../../lib/config";
   }),
 )
 export default class CornCommand extends Command {
-  async messageRun(msg: Message, args: Args) {
+  override async messageRun(msg: Message, args: Args) {
     const type = args.next();
+    const cornConfig = config.json.commands.corn;
+
+    if (!cornConfig) {
+      return send(msg, "Corn command configuration not found");
+    }
 
     if (type) {
       switch (type.toLowerCase()) {
         case "corn":
-          return send(msg, config.json.commands.corn.vars.cornCornURL);
+          return send(msg, cornConfig.vars.cornCornURL as string);
         case "cube":
-          return send(msg, config.json.commands.corn.vars.cubeURL);
+          return send(msg, cornConfig.vars.cubeURL as string);
       }
     }
 
-    return send(msg, config.json.commands.corn.vars.cornURL);
+    return send(msg, cornConfig.vars.cornURL as string);
   }
 }

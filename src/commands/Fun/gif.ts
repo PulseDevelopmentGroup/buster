@@ -12,25 +12,37 @@ import { TENOR_URL } from "../../lib/constants";
   }),
 )
 export default class GifCommand extends Command {
-  async messageRun(msg: Message, args: Args) {
+  override async messageRun(msg: Message, args: Args) {
     let search = args.next();
+    const gifConfig = config.json.commands.gif;
 
-    if (!search) {
-      const terms: string[] = config.json.commands.gif.vars.search;
-      search = terms[Math.floor(Math.random() * terms.length)];
+    if (!gifConfig) {
+      return send(msg, "GIF command configuration not found");
     }
 
-    TENOR_URL.search = new URLSearchParams(
-      Object.entries({
-        key: config.env.tenorToken,
-        q: search,
-        locale: "en_US",
-        contentfilter: config.json.commands.gif.vars.contentfilter,
-        media_filter: "minimal",
-        limit: 1,
-        ar_range: "standard",
-      }),
-    ).toString();
+    if (!search) {
+      const terms = gifConfig.vars.search as string[];
+      if (terms && terms.length > 0) {
+        search = terms[Math.floor(Math.random() * terms.length)] ?? "";
+      }
+    }
+
+    if (!search) {
+      return send(
+        msg,
+        "No search term provided and no default terms configured",
+      );
+    }
+
+    TENOR_URL.search = new URLSearchParams({
+      key: config.env.tenorToken || "",
+      q: search,
+      locale: "en_US",
+      contentfilter: (gifConfig.vars.contentfilter as string) || "off",
+      media_filter: "minimal",
+      limit: "1",
+      ar_range: "standard",
+    }).toString();
 
     const res = await fetch(TENOR_URL, FetchResultTypes.Text);
 

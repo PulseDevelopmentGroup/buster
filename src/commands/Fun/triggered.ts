@@ -4,7 +4,7 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
 import { Command, type CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
-import { type Message, MessageAttachment } from "discord.js";
+import { AttachmentBuilder, type Message } from "discord.js";
 import GifEncoder from "gifencoder";
 import sharp from "sharp";
 import { config } from "../../lib/config";
@@ -17,7 +17,7 @@ import { config } from "../../lib/config";
   }),
 )
 export default class TriggeredCommand extends Command {
-  async messageRun(msg: Message) {
+  override async messageRun(msg: Message) {
     const scale = 20;
     let pfpUrl: string | undefined;
     const mentioned = msg.mentions?.users?.first();
@@ -27,7 +27,9 @@ export default class TriggeredCommand extends Command {
       pfpUrl = msg.author.displayAvatarURL();
     }
 
-    msg.channel.sendTyping();
+    if (msg.channel.isSendable()) {
+      msg.channel.sendTyping();
+    }
 
     const pfp = await fetch(pfpUrl, FetchResultTypes.Buffer);
 
@@ -111,10 +113,9 @@ export default class TriggeredCommand extends Command {
 
     const out = Buffer.concat(chunks);
 
-    const attachment = new MessageAttachment(
-      out,
-      `${msg.author.username}-triggered.gif`,
-    );
+    const attachment = new AttachmentBuilder(out, {
+      name: `${msg.author.username}-triggered.gif`,
+    });
 
     return send(msg, {
       files: [attachment],

@@ -1,11 +1,10 @@
 import { Argument, Resolvers } from "@sapphire/framework";
-import type { PieceContext } from "@sapphire/pieces";
 import type { User } from "discord.js";
 
 // Based on code found here: https://github.com/sapphiredev/framework/blob/main/src/arguments/CoreUser.ts
 // Since the name of this parser is "user" it will overwrite the existing user parser
 export class UserArgument extends Argument<User> {
-  public constructor(context: PieceContext) {
+  public constructor(context: Argument.LoaderContext) {
     super(context, { name: "user" });
   }
 

@@ -1,8 +1,8 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { type Args, Command, type CommandOptions } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
-import { type Message, MessageAttachment } from "discord.js";
-import jimp from "jimp";
+import { AttachmentBuilder, type Message } from "discord.js";
+import { Jimp } from "jimp";
 import { config } from "../../lib/config";
 import { getImageUrl, isImageURL } from "../../lib/utils";
 
@@ -12,7 +12,7 @@ import { getImageUrl, isImageURL } from "../../lib/utils";
   }),
 )
 export class JpegCommand extends Command {
-  public async messageRun(msg: Message, args: Args) {
+  public override async messageRun(msg: Message, args: Args) {
     const target = !args.finished && (await args.rest("string"));
     const mentioned = msg.mentions?.users?.first();
     let imgUrl: string;
@@ -88,18 +88,22 @@ export class JpegCommand extends Command {
     }
 
     try {
-      const attachment = await jimp.read(imgUrl).then((i) => {
+      const jpegConfig = config.json.commands.jpeg;
+      if (!jpegConfig) {
+        return send(msg, "JPEG command configuration not found");
+      }
+
+      const attachment = await Jimp.read(imgUrl).then((i: any) => {
         return i
-          .posterize(config.json.commands.jpeg.vars.posterize)
-          .quality(config.json.commands.jpeg.vars.jpeg)
-          .getBufferAsync(jimp.MIME_JPEG)
-          .then((b) => {
+          .posterize(jpegConfig.vars.posterize as number)
+          .getBufferAsync("image/jpeg")
+          .then((b: Buffer) => {
             return b;
           });
       });
 
       return send(msg, {
-        files: [new MessageAttachment(attachment)],
+        files: [new AttachmentBuilder(attachment, { name: "jpeg.jpg" })],
       });
     } catch (e) {
       msg.client.logger.error(e);

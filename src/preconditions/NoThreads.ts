@@ -2,7 +2,7 @@ import { Precondition } from "@sapphire/framework";
 import type { Message } from "discord.js";
 
 export class UserPrecondition extends Precondition {
-  public async messageRun(message: Message) {
+  public override async messageRun(message: Message) {
     return !message.channel.isThread()
       ? this.ok()
       : this.error({

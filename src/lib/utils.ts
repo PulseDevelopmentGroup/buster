@@ -9,7 +9,8 @@ import { ImageURLRegex } from "./constants";
  */
 export function pickRandom<T>(array: readonly T[]): T {
   const { length } = array;
-  return array[Math.floor(Math.random() * length)];
+  if (length === 0) throw new Error("Array cannot be empty");
+  return array[Math.floor(Math.random() * length)] as T;
 }
 
 /**
@@ -45,7 +46,7 @@ export function getImageUrl(message: string) {
 
   if (urls) return urls[0];
 
-  return undefined;
+  return;
 }
 
 /**
