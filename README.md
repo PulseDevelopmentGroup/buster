@@ -1,115 +1,62 @@
 # buster
 
-## Resources
+Discord bot built with the Sapphire Framework (Discord.js v14).
 
-### Guides
+## Quick start
 
-The guides for D.js and Sapphire seem pretty sparse, but some of the better docs can be found at:
+Prereqs
+- Bun installed
+- GraphicsMagick installed (for image commands)
+- Chromium available if enabling the iFunny listener (Puppeteer)
 
-- Getting Started: https://deploy-preview-711--discordjs-guide.netlify.app/sapphire/
-- Other resources hopefully coming soon?
-
-### API References
-
-- **[@sapphire/framework](https://sapphiredev.github.io/framework/)**
-- **[@sapphire/utilities](https://sapphiredev.github.io/utilities/)**
-- [@sapphire/plugin-editable-commands](https://sapphiredev.github.io/plugins/modules/_sapphire_plugin_editable_commands.html)
-- [@sapphire/plugin-api](https://sapphiredev.github.io/plugins/modules/_sapphire_plugin_api.html)
-- [@sapphire/plugin-logger](https://sapphiredev.github.io/plugins/modules/_sapphire_plugin_logger.html)
-- [@sapphire/plugin-subcommands](https://sapphiredev.github.io/plugins/modules/_sapphire_plugin_subcommands.html)
-
-## Development
-
-### Getting started:
-
-1. `npm install`
-2. Set up your `.env.local` file (see below)
-3. In VS Code, hit F5 to start up with debugging & hot reloading. Alternatively, you can use `npm run watch:start` to run it via CLI.
-
-### Enviornment
-
-At a _minimum_ `.env.local` must include `BUSTER_BOT_TOKEN`. Optionally, it can include other fields overriding things in `.env.development` or where necessary as documented in `.env.example`.
-
-Minimum `.env.local`:
-
+Setup
+1. Copy `.env.example` to `.env` and set:
+   - `BUSTER_BOT_TOKEN`
+2. Install deps:
+```bash
+bun install
 ```
-# Bot Token (Vault)
-BUSTER_BOT_TOKEN=
+3. Run in dev:
+```bash
+bun run dev
 ```
 
-### Config
-
-The bot is currently reliant on a `config.json` either hosted at a URL or on the filesystem. The minimum config looks something like:
-
-```json
-{
-  "owners": [123456...],
-}
+Build
+```bash
+bun run build           # builds to dist/buster
+./dist/buster           # run compiled binary
 ```
 
-## Project Structure
-
-I'm gonna be honest, this bot relies on _a lot_ of magic behind the scenes (which I'm personally not a fan of). This section hopes to unmistify some of that magic.
-
-### Base Project Directory
-
-Should contain general configs, including:
-
-- `.env` file(s)
-- `Dockerfile` for container builds
-- `.dockerignore`
-- `data/config.json` for bot config (unless a URL is specified)
-- Any other config files or DB's
-
-### `src/`
-
-Where the code is located, with `index.ts` being the main file and `setup.ts` being any code that is ran _immediately_ upon launch.
-
-### `src/commands/`
-
-_[Command Class](https://sapphiredev.github.io/framework/classes/Command.html)_
-
-Where command files are placed. Files can be placed directly in the `commands/` directory (`//TODO: Fact check this`), or in subdirectories to categorize them.
-
-Very basic command template:
-
-```ts
-import { ApplyOptions } from "@sapphire/decorators";
-import { Command, CommandOptions } from "@sapphire/framework";
-import type { Message } from "discord.js";
-
-@ApplyOptions<CommandOptions>({
-  description: "ping pong",
-})
-export class UserCommand extends Command {
-  public async run(message: Message) {
-    return message.channel.send("Pong!");
-  }
-}
+Lint/format (Biome)
+```bash
+bun run lint
+bun run format
 ```
 
-### `src/lib/`
+## Configuration
 
-Utility and shared components used in the rest of the application. It is possible the contents of this directory will be reduced into the root `src/` folder to simplify things later.
+Environment (see `.env.example`, `.env.development`)
+- Required: `BUSTER_BOT_TOKEN`, `BUSTER_BOT_CONFIG`
+- Optional: `BUSTER_BOT_PREFIX`, `BUSTER_BOT_DATA_PATH`, logging flags
+- Feature keys: `BUSTER_WEB_TENOR_TOKEN`, `BUSTER_WEB_PERSPECTIVE_API_KEY`, `PUPPETEER_EXECUTABLE_PATH`
 
-### `src/listeners/`
+JSON config: `data/config.json`
+- `owners`: string[]
+- `listeners.<Name>.enabled`: boolean
+- `commands.<name>.options`: Sapphire CommandOptions
+- `commands.<name>.vars`: per-command tunables
 
-_[Listener Class](https://sapphiredev.github.io/framework/classes/Listener.html)_
+## Project structure & conventions
 
-Event listener code. Honestly, I'm still not entirely sure how these work, but the gist is that these work in a similar way to that of commands, except they listen for other events listed [here](https://sapphiredev.github.io/framework/modules.html#Events).
+- Entry: `src/main.ts` creates the SapphireClient and logs in.
+- Config: `src/lib/config.ts` provides `config.env` and `config.json`.
+  - Use `config.applyConfig("<name>", defaults)` in `@ApplyOptions` for commands.
+- Commands: `src/commands/<Category>/<name>.ts` implement `messageRun`.
+- Listeners: `src/listeners/**`; enable/disable via `config.json.listeners` in `onLoad()`.
+- Preconditions: `src/preconditions/**` (e.g., `OwnerOnly`, `NoThreads`).
+- Utilities/constants: `src/lib/utils.ts`, `src/lib/constants.ts`.
+- Static assets: `src/assets/**`.
 
-### `src/preconditions/`
+## Docker
 
-_[Preconditions Interface](https://sapphiredev.github.io/framework/interfaces/Preconditions.html)_
-
-Precondition code. Once again, not entirely sure how this works, but it seems to be code that gets called before commands, determining whether or not they're allowed to run.
-
-### `src/routes/`
-
-_[Plugin-API](https://sapphiredev.github.io/plugins/modules/_sapphire_plugin_api.html)_
-
-Code for handling HTTP API requests. Although unused now, this could be a great way to write web integrations with CF Workers, Pages, and/or maybe some sort of file hosting?
-
-### `data/`
-
-Data folder for holding database files, configs, or static assets
+`Dockerfile` builds and runs with GraphicsMagick and Chromium. Provide the same `BUSTER_*` env vars.
