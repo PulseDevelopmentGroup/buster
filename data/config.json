@@ -20,11 +20,6 @@
         "posterize": 8
       }
     },
-    "corn": {
-      "options": {
-        "aliases": ["🌽"]
-      }
-    },
     "inspire": {
       "options": {
         "cooldownDelay": 60000,

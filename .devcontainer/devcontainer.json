@@ -1,14 +1,22 @@
 {
-  "name": "PulseDev/Buster",
+  "name": "Buster",
+
   "dockerComposeFile": "docker-compose.yml",
-  "service": "bot",
-  "workspaceFolder": "/buster",
-  "shutdownAction": "stopCompose",
-  "forwardPorts": [3000, 4000], // Defaults: Port 3000 for web and 4000 for bot
-  "extensions": [
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "bradlc.vscode-tailwindcss",
-    "ms-azuretools.vscode-docker"
-  ]
+  "remoteUser": "node",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "init": true,
+
+  "onCreateCommand": ".devcontainer/scripts/on-create.sh",
+  "postCreateCommand": "bun install",
+
+  "features": {
+    // TODO
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["biomejs.biome", "ms-azuretools.vscode-containers"]
+    }
+  }
 }
