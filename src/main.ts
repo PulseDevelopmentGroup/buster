@@ -1,9 +1,9 @@
 import "@sapphire/plugin-api/register";
 import "@sapphire/plugin-editable-commands/register";
-import "reflect-metadata";
+import "@sapphire/plugin-hmr/register";
 
 import { SapphireClient } from "@sapphire/framework";
-import { GatewayIntentBits, OAuth2Scopes, Partials } from "discord.js";
+import { GatewayIntentBits, Partials } from "discord.js";
 import { config } from "./lib/config";
 import { logger } from "./lib/logger";
 
@@ -19,16 +19,6 @@ const main = async () => {
     );
     process.exit(1);
   }
-
-  const tasks = {
-    bull: {
-      connection: {
-        host: config.env.dbRedisHost,
-        port: config.env.dbRedisPort,
-        db: config.env.dbRedisDB,
-      },
-    },
-  };
 
   const client = new SapphireClient({
     defaultPrefix: env.prefix,
@@ -52,24 +42,9 @@ const main = async () => {
       GatewayIntentBits.DirectMessageTyping,
     ],
     partials: [Partials.Message, Partials.Channel],
-    // API should be accessible at /api/oauth/callback but it doesn't seem to work
-    // Probably something to work on in the future
-    api: {
-      auth: {
-        id: env.httpAuthId,
-        secret: env.httpAuthSecret,
-        cookie: "SAPPHIRE_AUTH",
-        redirect: env.httpFrontendUrl,
-        scopes: [OAuth2Scopes.Identify],
-        transformers: [],
-      },
-      prefix: "api/",
-      origin: "*",
-      listenOptions: {
-        port: env.httpPort,
-      },
+    hmr: {
+      enabled: env.development,
     },
-    tasks,
   });
 
   try {
