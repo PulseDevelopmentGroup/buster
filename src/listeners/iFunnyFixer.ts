@@ -8,7 +8,7 @@ import { config } from "../lib/config";
 import { IfunnyURLRegex } from "../lib/constants";
 import { isURL } from "../lib/utils";
 
-export class UserEvent extends Listener<typeof Events.MessageCreate> {
+export class IFunnyFixerListener extends Listener<typeof Events.MessageCreate> {
   browser: Browser | undefined;
 
   public constructor(
@@ -106,11 +106,8 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
     return directUrl;
   }
 
-  // Only enable if listener is enabled
   public override async onLoad() {
-    this.enabled = config.json.listeners[this.name]?.enabled ?? false;
-
-    if (this.enabled) {
+    if (config.json.listeners[this.name]?.enabled) {
       // May need to disable/configure these (outside of defaults) if not working
       puppeteer.use(StealthPlugin());
 

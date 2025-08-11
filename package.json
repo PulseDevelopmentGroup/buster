@@ -18,6 +18,7 @@
     "@sapphire/pieces": "^4.4.1",
     "@sapphire/plugin-api": "^8.3.1",
     "@sapphire/plugin-editable-commands": "^4.0.4",
+    "@sapphire/plugin-hmr": "^3.0.2",
     "@sapphire/plugin-scheduled-tasks": "^10.0.3",
     "@sapphire/plugin-subcommands": "^7.0.1",
     "@sapphire/stopwatch": "^1.5.4",

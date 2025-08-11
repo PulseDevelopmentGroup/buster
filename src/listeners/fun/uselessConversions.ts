@@ -1,19 +1,21 @@
-import type { ListenerOptions } from "@sapphire/framework";
-import { Events, Listener } from "@sapphire/framework";
-import type { Message } from "discord.js";
-import { config } from "../../lib/config";
 import {
+  type InputUnit,
+  Measurement,
   NumberRegex,
   StandardMeasurements,
   UnitRegex,
-} from "../../lib/constants";
-import { type InputUnit, Measurement } from "../../lib/models";
+} from "@lib/constants";
+import type { ListenerOptions } from "@sapphire/framework";
+import { Events, Listener } from "@sapphire/framework";
+import type { Message } from "discord.js";
 
 const numberFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 10,
 });
 
-export class UserEvent extends Listener<typeof Events.MessageCreate> {
+export class UselessConversionsListener extends Listener<
+  typeof Events.MessageCreate
+> {
   public constructor(
     context: Listener.LoaderContext,
     options?: ListenerOptions,
@@ -257,11 +259,5 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
       measurement,
       value,
     };
-  }
-
-  // Only enable if logCommands is true or we are in a dev enviornment
-  public override onLoad() {
-    this.enabled = config.json.listeners[this.name]?.enabled ?? false;
-    return super.onLoad();
   }
 }

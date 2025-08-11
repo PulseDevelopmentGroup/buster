@@ -1,5 +1,4 @@
 import type { CommandOptions } from "@sapphire/framework";
-import { Measurement, type StandardUnit } from "./models";
 
 export const IfunnyURLRegex =
   /https:\/\/(?:www\.)?ifunny\.co\/(picture|video)\/(\w*){9}/gim;
@@ -54,6 +53,27 @@ export const PERSPECTIVE_URL = new URL(
 export const EMBED_COLOR = "#DBC12F";
 
 /* Useless Conversions */
+
+export enum Measurement {
+  length = "length", // meter
+  volume = "volume", // liter
+  mass = "mass", // gram
+  time = "time", // second
+  unknown = "unknown",
+}
+
+export interface Unit {
+  value: number;
+  measurement: Measurement;
+}
+
+export interface InputUnit extends Unit {
+  input: string;
+}
+
+export interface StandardUnit extends Unit {
+  name: string;
+}
 
 export const StandardMeasurements: Record<Measurement, StandardUnit[]> = {
   length: [

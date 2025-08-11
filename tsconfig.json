@@ -22,6 +22,11 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+
+    "paths": {
+      "@lib/*": ["./src/lib/*"],
+      "@assets/*": ["./src/assets/*"]
+    }
   }
 }

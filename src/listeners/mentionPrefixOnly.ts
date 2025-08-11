@@ -1,8 +1,8 @@
 import { Listener } from "@sapphire/framework";
 import type { Message } from "discord.js";
 
-export class UserEvent extends Listener<"mentionPrefixOnly"> {
-  public async run(message: Message): Promise<void> {
+export class MentionPrefixOnlyListener extends Listener<"mentionPrefixOnly"> {
+  public async run(message: Message) {
     const prefix = this.container.client.options.defaultPrefix;
     if (message.channel.isSendable()) {
       await message.channel.send(

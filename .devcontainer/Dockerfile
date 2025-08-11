@@ -6,6 +6,7 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install --no-install-recommends -y -q \
+    chromium \
     build-essential \
     libcairo2-dev \
     libpango1.0-dev \

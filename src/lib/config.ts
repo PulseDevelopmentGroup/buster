@@ -10,6 +10,7 @@ export interface Environment {
   prefix: string;
   config: string;
   dataPath: string;
+  devGuildIds?: string[];
 
   logCommands: boolean;
   logMessages: boolean;
@@ -64,6 +65,11 @@ export class BotConfiguration {
       dataPath: process.env.BUSTER_DATA_PATH ?? "/data",
       development: process.env.NODE_ENV === "development",
       prefix: process.env.BUSTER_BOT_PREFIX ?? "!",
+      devGuildIds: process.env.BUSTER_DEV_GUILD_IDS
+        ? process.env.BUSTER_DEV_GUILD_IDS.split(",")
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : undefined,
 
       dbRedisHost: process.env.BUSTER_DB_REDIS_HOST,
       dbRedisPort: parseInt(process.env.BUSTER_DB_REDIS_PORT ?? "6379"),

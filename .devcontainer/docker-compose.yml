@@ -8,18 +8,19 @@ services:
     volumes:
       - ..:/workspace:cached
       - node-deps:/workspace/node_modules
-    depends_on:
-      - redis
+    # depends_on:
+    #   - redis
 
-  redis:
-    image: redis:latest
-    command: redis-server --save 60 1 --loglevel warning
-    ports:
-      - 6379:6379
-    restart: unless-stopped
-    volumes:
-      - redis-data:/data
+  # Disabled until we need Redis again
+  # redis:
+  #   image: redis:latest
+  #   command: redis-server --save 60 1 --loglevel warning
+  #   ports:
+  #     - 6379:6379
+  #   restart: unless-stopped
+  #   volumes:
+  #     - redis-data:/data
 
 volumes:
-  redis-data:
+  # redis-data:
   node-deps:
