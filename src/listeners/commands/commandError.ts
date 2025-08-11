@@ -3,7 +3,9 @@ import { Listener } from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
 import { EmbedBuilder } from "discord.js";
 
-export class UserEvent extends Listener<typeof Events.MessageCommandError> {
+export class CommandErrorListener extends Listener<
+  typeof Events.MessageCommandError
+> {
   public async run(e: Error, { message }: MessageCommandErrorPayload) {
     await message.guild?.channels
       .fetch("893296394478182450")

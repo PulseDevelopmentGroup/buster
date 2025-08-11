@@ -1,9 +1,15 @@
 import { inspect } from "node:util";
 import { ApplyOptions } from "@sapphire/decorators";
-import { type Args, Command, type CommandOptions } from "@sapphire/framework";
+import {
+  type ApplicationCommandRegistry,
+  type Args,
+  Command,
+  type CommandOptions,
+} from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
 import { codeBlock, isThenable } from "@sapphire/utilities";
-import type { Message } from "discord.js";
+import type { ChatInputCommandInteraction, Message } from "discord.js";
+import { registerSlash } from "../../lib/registry";
 
 /**
  * Simple type detection function to replace @sapphire/type functionality
@@ -69,8 +75,8 @@ export class EvalCommand extends Command {
     });
 
     const output = success
-      ? codeBlock("js", result)
-      : `**ERROR**: ${codeBlock("bash", result)}`;
+      ? codeBlock("js", result as string)
+      : `**ERROR**: ${codeBlock("bash", result as string)}`;
     if (args.getFlags("silent", "s")) return null;
 
     const typeFooter = `**Type**: ${codeBlock("typescript", type)}`;
@@ -85,18 +91,51 @@ export class EvalCommand extends Command {
     return send(message, `${output}\n${typeFooter}`);
   }
 
+  public override async chatInputRun(interaction: ChatInputCommandInteraction) {
+    const code = interaction.options.getString("code", true);
+    const { result, success, type } = await this.evalForSlash(code);
+    const output = success
+      ? codeBlock("js", result as string)
+      : `**ERROR**: ${codeBlock("bash", result as string)}`;
+    const typeFooter = `**Type**: ${codeBlock("typescript", type)}`;
+    if (output.length > 2000) {
+      return interaction.reply({
+        content: `Output was too long... sent the result as a file.\n\n${typeFooter}`,
+        files: [{ attachment: Buffer.from(output), name: "output.js" }],
+        flags: ["Ephemeral"],
+      });
+    }
+    return interaction.reply({
+      content: `${output}\n${typeFooter}`,
+      flags: ["Ephemeral"],
+    });
+  }
+
+  public override registerApplicationCommands(
+    registry: ApplicationCommandRegistry,
+  ) {
+    registerSlash(registry, (b) => {
+      b.setName(this.name)
+        .setDescription(this.description)
+        .addStringOption((o) =>
+          o.setName("code").setDescription("JS code to eval").setRequired(true),
+        );
+      return b;
+    });
+  }
+
   private async eval(
     _message: Message,
     code: string,
     flags: { async: boolean; depth: number; showHidden: boolean },
-  ) {
+  ): Promise<{ result: string; success: boolean; type: string }> {
     if (flags.async) code = `(async () => {\n${code}\n})();`;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // const msg = message; // Unused variable removed
 
     let success = true;
-    let result = null;
+    let result: unknown = null;
 
     try {
       // eslint-disable-next-line no-eval
@@ -112,13 +151,37 @@ export class EvalCommand extends Command {
     const type = getType(result);
     if (isThenable(result)) result = await result;
 
+    let rendered: string;
     if (typeof result !== "string") {
-      result = inspect(result, {
+      rendered = inspect(result, {
         depth: flags.depth,
         showHidden: flags.showHidden,
       });
+    } else {
+      rendered = result;
     }
 
+    return { result: rendered, success, type };
+  }
+
+  private async evalForSlash(code: string) {
+    let success = true;
+    let result: unknown = null;
+    try {
+      // eslint-disable-next-line no-eval
+      result = eval(code);
+    } catch (error) {
+      if (error && error instanceof Error && error.stack) {
+        this.container.client.logger.error(error);
+      }
+      result = error;
+      success = false;
+    }
+    const type = getType(result);
+    if (isThenable(result)) result = await result;
+    if (typeof result !== "string") {
+      result = inspect(result, { depth: 0, showHidden: false });
+    }
     return { result, success, type };
   }
 }

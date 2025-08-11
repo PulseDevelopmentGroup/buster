@@ -1,10 +1,19 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
-import { Command, type CommandOptions } from "@sapphire/framework";
+import {
+  type ApplicationCommandRegistry,
+  Command,
+  type CommandOptions,
+} from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
-import { EmbedBuilder, type Message } from "discord.js";
+import {
+  type ChatInputCommandInteraction,
+  EmbedBuilder,
+  type Message,
+} from "discord.js";
 import { config } from "../../lib/config";
 import { INSPIRE_URL } from "../../lib/constants";
+import { registerSlash } from "../../lib/registry";
 
 @ApplyOptions<CommandOptions>(
   config.applyConfig("inspire", {
@@ -31,5 +40,34 @@ export class InspireCommand extends Command {
     }
 
     return send(msg, "It seems something went wrong, try again later?");
+  }
+
+  public override async chatInputRun(interaction: ChatInputCommandInteraction) {
+    INSPIRE_URL.search = new URLSearchParams({ generate: "true" }).toString();
+
+    const res = await fetch(INSPIRE_URL, FetchResultTypes.Text);
+    if (!res)
+      return interaction.reply({
+        content: "Something went wrong, try again later?",
+        flags: ["Ephemeral"],
+      });
+
+    return interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setURL("https://inspirobot.me")
+          .setImage(res)
+          .setColor("#6dd3ff"),
+      ],
+    });
+  }
+
+  public override registerApplicationCommands(
+    registry: ApplicationCommandRegistry,
+  ) {
+    registerSlash(registry, (b) => {
+      b.setName(this.name).setDescription(this.description);
+      return b;
+    });
   }
 }

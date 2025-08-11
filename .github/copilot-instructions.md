@@ -17,13 +17,23 @@ These notes make AI agents productive fast in this Sapphire (Discord.js v14) bot
 - Globals: `config` and `logger` singletons in `src/lib/config.ts` and `src/lib/logger.ts` (Winston). Use `logger.bot` for lifecycle logs and `logger.command` for command logs.
 
 ## Conventions and patterns (use these in new code)
-- Commands live under `src/commands/<Category>/<name>.ts`, extend `Command`, implement `messageRun` (message-based, not slash). Always decorate with `@ApplyOptions(config.applyConfig("<name>", { ... }))`.
-  - Example: `src/commands/Fun/gif.ts` pulls defaults + JSON `commands.gif.vars` and uses `TENOR_URL` with `config.env.tenorToken`.
-  - Example with assets/image processing: `src/commands/Images/deepfry.ts` reads `config.json.commands.fry.vars` and uses Jimp + GraphicsMagick (gm).
+- Commands live under `src/commands/<Category>/<name>.ts`, extend `Command`, and should support both:
+  - `messageRun(message, args)` for prefix/message commands, and
+  - `chatInputRun(interaction)` for slash commands with options and buttons where helpful.
+- Always decorate commands with `@ApplyOptions(config.applyConfig("<name>", { ... }))`.
+- Register slash commands via the helper `registerSlash(registry, builder => { ...; return builder; })` from `src/lib/registry.ts`.
+  - If `BUSTER_DEV_GUILD_IDS` is set (comma‑separated guild IDs), slash commands are registered in those guilds; otherwise they’re registered globally.
+- DRY principle: keep the core logic in a single helper that both handlers call. Parse inputs in `messageRun`/`chatInputRun`, then delegate to a shared function (e.g., `generateJpegBuffer`, `generateTriggeredGif`, `fryImage`). Avoid duplicating buffer→attachment or embed-building code.
+- For slash options:
+  - Prefer explicit types (string, user, role, attachment) and keep them optional where message parsing allows.
+  - You can add simple components (e.g., a “Regenerate” button) to enhance UX.
+- Example: `src/commands/Fun/gif.ts` has message + slash, uses Tenor via `src/lib/web/gif.ts`, and provides a “Regenerate” button handled by `listeners/gifRegenerate.ts`.
+- Example with assets/image processing: `src/commands/Images/deepfry.ts` reads `config.json.commands.fry.vars` and uses Jimp + GraphicsMagick (gm).
 - Listeners extend `Listener` and toggle enablement from JSON: check `onLoad()` and set `this.enabled = config.json.listeners[this.name]?.enabled ?? false;` (see `src/listeners/iFunnyFixer.ts`). Heavy resources (Puppeteer browser) are created in `onLoad` and cleaned per-use.
 - Preconditions live in `src/preconditions`. `OwnerOnly` checks `config.json.owners`; `NoThreads` blocks thread channels. Reference by name in `preconditions: ["OwnerOnly"]`.
 - Utilities/constants: use `src/lib/utils.ts` (URL/image helpers) and `src/lib/constants.ts` (regexes, URLs, embed color). Prefer these over ad‑hoc regex/strings.
 - Replies: prefer `@sapphire/plugin-editable-commands` `send(msg, ...)` and check `message.channel.isSendable()` when sending embeds/files (see `help.ts`, `deepfry.ts`).
+  - For slash commands, use `interaction.reply/editReply`, and set ephemeral only when appropriate (e.g., `ping`).
 
 ## Developer workflows
 - Install deps: `bun install` (repo targets Bun + TS ESNext; tsconfig extends `@sapphire/ts-config`).
@@ -31,15 +41,19 @@ These notes make AI agents productive fast in this Sapphire (Discord.js v14) bot
 - Typecheck only: `bunx tsc --noEmit`.
 - Build: `bun run build` (runs `tsc --noEmit` then `bun build --compile` to `dist/buster`). Run built binary via `./dist/buster`.
 - Lint/format: `bun run lint` and `bun run format` (Biome).
+  - Note: It’s acceptable to keep existing lints in untouched code. Focus on fixing lints you introduce; do not refactor unrelated areas just to satisfy lint rules.
 - Docker: see `Dockerfile` (build stage compiles; runtime installs GraphicsMagick and Chromium; sets `PUPPETEER_EXECUTABLE_PATH`).
 
 ## Required config/env
 - Minimal: set `BUSTER_BOT_TOKEN` and `BUSTER_BOT_CONFIG` (path like `data/config.json` or a URL). See `.env.example` and `.env.development`.
 - Feature keys: `BUSTER_WEB_TENOR_TOKEN` for `gif`, `BUSTER_WEB_PERSPECTIVE_API_KEY` for `intent`. `PUPPETEER_EXECUTABLE_PATH` may be needed in some environments (see `iFunnyFixer`).
 - Image commands require system GraphicsMagick available to the `gm` module.
+ - Optional: `BUSTER_DEV_GUILD_IDS` (comma‑separated) for guild‑scoped slash registration during development.
 
 ## When adding features
 - New command: create `src/commands/<Category>/<name>.ts`, export class extends `Command` with `@ApplyOptions(config.applyConfig("<name>", { description, preconditions, ... }))`. Put tunables (numbers/flags) in `data/config.json -> commands.<name>.vars`.
+  - Implement both `messageRun` and `chatInputRun` where feasible.
+  - Register slash options with `registerSlash(...)`. Use autocomplete and buttons when they add clear value.
 - New listener: gate enablement via `config.json.listeners.<ListenerName>.enabled`; do heavy init in `onLoad`.
 - Logging: use `logger.bot` for startup/shutdown/errors; `logger.command` for per-command events.
 

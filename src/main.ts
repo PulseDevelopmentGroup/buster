@@ -10,7 +10,6 @@ import { logger } from "./lib/logger";
 const main = async () => {
   const env = config.env;
 
-  // Load JSON configuration
   try {
     await config.load();
   } catch {
@@ -48,9 +47,9 @@ const main = async () => {
   });
 
   try {
-    logger.bot.info("Logging in");
+    logger.bot.info("Starting...");
     await client.login(config.env.botToken);
-    logger.bot.info("Logged in");
+    logger.bot.info("Started.");
   } catch (error) {
     client.destroy();
     logger.bot.error(error);

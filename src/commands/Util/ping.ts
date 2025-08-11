@@ -5,20 +5,34 @@ import {
   Command,
   type CommandOptions,
 } from "@sapphire/framework";
-import type { ChatInputCommandInteraction } from "discord.js";
+import { send } from "@sapphire/plugin-editable-commands";
+import type { ChatInputCommandInteraction, Message } from "discord.js";
+import { registerSlash } from "../../lib/registry";
 
 @ApplyOptions<CommandOptions>({
   description: "ping pong",
 })
 export class PingCommand extends Command {
+  public override async messageRun(message: Message) {
+    const msg = await send(message, "Ping?");
+
+    const content = `Pong! Bot Latency ${Math.round(
+      this.container.client.ws.ping,
+    )}ms. API Latency ${
+      (msg.editedTimestamp || msg.createdTimestamp) - message.createdTimestamp
+    }ms.`;
+
+    return send(message, content);
+  }
+
   public override async chatInputRun(interaction: ChatInputCommandInteraction) {
-    const msg = await interaction.reply({
+    await interaction.reply({
       content: "Ping?",
-      ephemeral: true,
-      fetchReply: true,
+      flags: ["Ephemeral"],
     });
 
-    if (isMessageInstance(msg)) {
+    const msg = await interaction.fetchReply().catch(() => null);
+    if (msg && isMessageInstance(msg)) {
       const content = `Pong! Bot Latency ${Math.round(
         this.container.client.ws.ping,
       )}ms. API Latency ${
@@ -26,16 +40,17 @@ export class PingCommand extends Command {
         interaction.createdTimestamp
       }ms.`;
 
-      return interaction.editReply(content);
+      return interaction.editReply({ content });
     }
-    return interaction.editReply("Failed to retrieve ping :(");
+    return interaction.editReply({ content: "Failed to retrieve ping :(" });
   }
 
   public override registerApplicationCommands(
     registry: ApplicationCommandRegistry,
   ) {
-    registry.registerChatInputCommand((builder) =>
-      builder.setName(this.name).setDescription(this.description),
-    );
+    registerSlash(registry, (b) => {
+      b.setName(this.name).setDescription(this.description);
+      return b;
+    });
   }
 }

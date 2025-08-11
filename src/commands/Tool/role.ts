@@ -1,8 +1,19 @@
 import { ApplyOptions } from "@sapphire/decorators";
-import { type Args, Command, type CommandOptions } from "@sapphire/framework";
+import {
+  type ApplicationCommandRegistry,
+  type Args,
+  Command,
+  type CommandOptions,
+} from "@sapphire/framework";
 import { send } from "@sapphire/plugin-editable-commands";
-import { EmbedBuilder, type Message, type Role } from "discord.js";
+import {
+  type ChatInputCommandInteraction,
+  EmbedBuilder,
+  type Message,
+  type Role,
+} from "discord.js";
 import { config } from "../../lib/config";
+import { registerSlash } from "../../lib/registry";
 
 @ApplyOptions<CommandOptions>(
   config.applyConfig("role", {
@@ -11,6 +22,24 @@ import { config } from "../../lib/config";
   }),
 )
 export default class RoleCommand extends Command {
+  private buildAvailableRolesEmbed(
+    guild: import("discord.js").Guild,
+  ): EmbedBuilder {
+    const embed = new EmbedBuilder()
+      .setTitle("Available Roles")
+      .setColor("#ffaa00")
+      .setDescription("A list of opt-in roles");
+    for (const role of guild.roles.cache.values()) {
+      if (role.name.startsWith(":")) {
+        const name = role.name.slice(1);
+        const memberCount = role.members.size;
+        embed.addFields([
+          { name, value: `${memberCount} members`, inline: true },
+        ]);
+      }
+    }
+    return embed;
+  }
   public override async messageRun(msg: Message, args: Args) {
     const action = await args.next();
     args.next();
@@ -21,26 +50,7 @@ export default class RoleCommand extends Command {
     }
 
     if (!action) {
-      const embed = new EmbedBuilder()
-        .setTitle("Available Roles")
-        .setColor("#ffaa00")
-        .setDescription("A list of opt-in roles");
-
-      for (const role of msg.guild.roles.cache.values()) {
-        if (role.name.startsWith(":")) {
-          const name = role.name.slice(1);
-          const memberCount = role.members.size;
-
-          embed.addFields([
-            {
-              name,
-              value: `${memberCount} members`,
-              inline: true,
-            },
-          ]);
-        }
-      }
-
+      const embed = this.buildAvailableRolesEmbed(msg.guild);
       return send(msg, {
         embeds: [embed],
       });
@@ -126,5 +136,88 @@ export default class RoleCommand extends Command {
     }
 
     return send(msg, "Hmm... I can't understand that. Maybe try again?");
+  }
+
+  public override async chatInputRun(interaction: ChatInputCommandInteraction) {
+    if (
+      !interaction.guild ||
+      !interaction.member ||
+      !("roles" in interaction.member)
+    ) {
+      return interaction.reply({
+        content: "Guild only.",
+        flags: ["Ephemeral"],
+      });
+    }
+
+    const sub = interaction.options.getSubcommand(true);
+    if (sub === "list") {
+      const embed = this.buildAvailableRolesEmbed(interaction.guild);
+      return interaction.reply({ embeds: [embed], flags: ["Ephemeral"] });
+    }
+
+    if (sub === "give") {
+      const role = interaction.options.getRole("role", true);
+      if (!role.name.startsWith(":"))
+        return interaction.reply({
+          content: "This role is not opt-in.",
+          flags: ["Ephemeral"],
+        });
+      const gm = await interaction.guild.members.fetch(interaction.user.id);
+      await gm.roles.add(role.id);
+      return interaction.reply({
+        content: `Given role ${role.name.substring(1)}.`,
+        flags: ["Ephemeral"],
+      });
+    }
+
+    if (sub === "take") {
+      const role = interaction.options.getRole("role", true);
+      if (!role.name.startsWith(":"))
+        return interaction.reply({
+          content: "This role is not opt-in.",
+          flags: ["Ephemeral"],
+        });
+      const gm = await interaction.guild.members.fetch(interaction.user.id);
+      await gm.roles.remove(role.id);
+      return interaction.reply({
+        content: `Removed role ${role.name.substring(1)}.`,
+        flags: ["Ephemeral"],
+      });
+    }
+
+    return interaction.reply({
+      content: "Unknown subcommand.",
+      flags: ["Ephemeral"],
+    });
+  }
+
+  public override registerApplicationCommands(
+    registry: ApplicationCommandRegistry,
+  ) {
+    registerSlash(registry, (b) => {
+      b.setName(this.name)
+        .setDescription(this.description)
+        .addSubcommand((s) =>
+          s.setName("list").setDescription("List opt-in roles"),
+        )
+        .addSubcommand((s) =>
+          s
+            .setName("give")
+            .setDescription("Give yourself a role")
+            .addRoleOption((o) =>
+              o.setName("role").setDescription("Role").setRequired(true),
+            ),
+        )
+        .addSubcommand((s) =>
+          s
+            .setName("take")
+            .setDescription("Remove a role from yourself")
+            .addRoleOption((o) =>
+              o.setName("role").setDescription("Role").setRequired(true),
+            ),
+        );
+      return b;
+    });
   }
 }
